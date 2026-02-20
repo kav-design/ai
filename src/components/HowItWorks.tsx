@@ -1,13 +1,13 @@
-import { PhoneMissed, MessageSquareText, CalendarCheck } from "lucide-react";
+import { Phone, MessageSquareText, CalendarCheck } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 
 const steps = [
   {
-    icon: PhoneMissed,
+    icon: Phone,
     number: "01",
-    title: "Patient calls, you miss it",
+    title: "Patient calls, Milo picks up",
     description:
-      "Milo detects the missed call instantly. Within 2 seconds, a personalised SMS is sent — no patient left waiting.",
+      "Milo answers with a natural AI voice or sends an instant SMS within 2 seconds. No patient left waiting, day or night.",
     iconBg: "bg-terracotta-light",
     iconColor: "text-terracotta",
   },
@@ -16,16 +16,16 @@ const steps = [
     number: "02",
     title: "Milo has the conversation",
     description:
-      "AI trained on dental industry knowledge chats naturally via SMS — answering questions, understanding urgency, qualifying the lead.",
+      "AI trained on dental knowledge chats naturally via voice or SMS — answering questions, understanding urgency, qualifying the lead.",
     iconBg: "bg-teal-light",
     iconColor: "text-teal",
   },
   {
     icon: CalendarCheck,
     number: "03",
-    title: "You get a qualified lead",
+    title: "You get a booked patient",
     description:
-      "Name, service needed, preferred time — all captured and sent to you instantly. You just confirm the booking.",
+      "Name, service needed, appointment time — all captured and booked. You just show up and treat.",
     iconBg: "bg-sage-light",
     iconColor: "text-sage",
   },

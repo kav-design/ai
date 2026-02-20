@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Phone, Globe, MessageSquare, Zap } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 
@@ -118,8 +118,24 @@ export default function ConversationDemo() {
   const [active, setActive] = useState<Scenario>("missed-call");
   const [visibleCount, setVisibleCount] = useState(0);
   const [showTyping, setShowTyping] = useState(false);
+  const [inView, setInView] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   const s = scenarios[active];
+
+  // Only start animation when section is in view
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setInView(true);
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Reset animation when tab changes
   useEffect(() => {
@@ -127,8 +143,9 @@ export default function ConversationDemo() {
     setShowTyping(false);
   }, [active]);
 
-  // Animate messages in one at a time
+  // Animate messages in one at a time (only when in view)
   useEffect(() => {
+    if (!inView) return;
     const msgs = scenarios[active].messages;
     if (visibleCount >= msgs.length) {
       setShowTyping(false);
@@ -136,9 +153,7 @@ export default function ConversationDemo() {
     }
 
     const typingTimer = setTimeout(
-      () => {
-        setShowTyping(true);
-      },
+      () => setShowTyping(true),
       visibleCount === 0 ? 300 : 400,
     );
 
@@ -147,17 +162,17 @@ export default function ConversationDemo() {
         setShowTyping(false);
         setVisibleCount((c) => c + 1);
       },
-      visibleCount === 0 ? 800 : 1500 + Math.random() * 500,
+      visibleCount === 0 ? 800 : 1400,
     );
 
     return () => {
       clearTimeout(typingTimer);
       clearTimeout(msgTimer);
     };
-  }, [active, visibleCount]);
+  }, [active, visibleCount, inView]);
 
   return (
-    <section className="relative py-24 sm:py-32">
+    <section ref={sectionRef} className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid items-center gap-16 lg:grid-cols-2">
           {/* Left - Text content */}
@@ -223,7 +238,7 @@ export default function ConversationDemo() {
                 </div>
 
                 {/* Messages */}
-                <div className="flex min-h-[340px] flex-col gap-3 overflow-y-auto p-5">
+                <div className="flex h-[420px] flex-col gap-3 overflow-y-auto p-5">
                   {s.messages.slice(0, visibleCount).map((msg, i) => (
                     <div
                       key={`${active}-${i}`}

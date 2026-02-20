@@ -28,17 +28,10 @@ const messages = [
 
 function FloatingBubbles() {
   const [visibleCount, setVisibleCount] = useState(0);
-  const [showBookingToast, setShowBookingToast] = useState(false);
-
   useEffect(() => {
-    if (visibleCount >= messages.length) {
-      const toastTimer = setTimeout(() => {
-        setShowBookingToast(true);
-      }, 1200);
-      return () => clearTimeout(toastTimer);
-    }
+    if (visibleCount >= messages.length) return;
 
-    const delay = visibleCount === 0 ? 1500 : 1500 + Math.random() * 500;
+    const delay = visibleCount === 0 ? 600 : 900;
     const timer = setTimeout(() => {
       setVisibleCount((c) => c + 1);
     }, delay);
@@ -85,28 +78,6 @@ function FloatingBubbles() {
         ))}
       </div>
 
-      {/* Booking confirmed toast */}
-      {showBookingToast && (
-        <div className="absolute bottom-4 right-0 bubble-in">
-          <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 shadow-sm ring-1 ring-emerald-200">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#059669"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
-            <span className="text-xs font-semibold text-emerald-700">
-              Appointment booked ✓
-            </span>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -137,7 +108,7 @@ export default function Hero() {
             <h1 className="mb-6 text-[2.75rem] font-bold leading-[1.08] tracking-tight text-charcoal sm:text-5xl lg:text-[3.5rem]">
               Turn missed calls into{" "}
               <br />
-              <span className="font-[family-name:var(--font-display)] italic text-terracotta">
+              <span className="text-terracotta">
                 booked patients.
               </span>
             </h1>

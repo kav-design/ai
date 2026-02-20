@@ -137,7 +137,7 @@ export default function VoiceAgent() {
               </p>
               <h2 className="mb-5 text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl">
                 Hear Milo{" "}
-                <span className="font-[family-name:var(--font-display)] italic text-terracotta">
+                <span className="text-terracotta">
                   answer
                 </span>{" "}
                 your phone.

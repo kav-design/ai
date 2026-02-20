@@ -1,6 +1,6 @@
 import {
   PhoneOff, MessageSquare, Brain, Globe, BellRing, Star,
-  BarChart3, Clock, CalendarDays, ShieldCheck, Repeat, Zap,
+  BarChart3, Clock, CalendarDays, ShieldCheck, Repeat, Zap, Phone,
 } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 
@@ -13,6 +13,11 @@ const accentCycle = [
 ];
 
 const features = [
+  {
+    icon: Phone,
+    title: "AI Voice Agent",
+    description: "Milo answers calls with a natural AI voice — books appointments, answers FAQs, and transfers to staff when needed.",
+  },
   {
     icon: PhoneOff,
     title: "Missed Call Text-Back",
