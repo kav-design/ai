@@ -82,8 +82,12 @@ export default function SpeedToLead() {
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
   return (
-    <section className="py-24 sm:py-32">
-      <div className="mx-auto max-w-5xl px-6 lg:px-8">
+    <section className="relative overflow-hidden py-24 sm:py-32">
+      {/* Organic background shapes */}
+      <div className="organic-shape organic-berry absolute -right-48 top-0 h-[500px] w-[500px]" />
+      <div className="organic-shape organic-teal absolute -left-40 bottom-0 h-[400px] w-[400px]" />
+
+      <div className="relative z-10 mx-auto max-w-5xl px-6 lg:px-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

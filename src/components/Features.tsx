@@ -134,8 +134,12 @@ export default function Features() {
   let stdIdx = 0;
 
   return (
-    <section id="features" className="py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+    <section id="features" className="relative overflow-hidden py-24 sm:py-32">
+      {/* Organic background shapes */}
+      <div className="organic-shape organic-gold absolute -left-40 top-20 h-[500px] w-[500px]" />
+      <div className="organic-shape organic-sage absolute -right-32 bottom-40 h-[450px] w-[450px]" />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -8,9 +8,9 @@
   --color-muted: #999999;
   --color-light: #bbbbbb;
   --color-border: #e8e2d9;
-  --color-terracotta: #c25b3f;
-  --color-terracotta-dark: #a84d35;
-  --color-terracotta-light: #faf0ec;
+  --color-terracotta: #9F1239;
+  --color-terracotta-dark: #881337;
+  --color-terracotta-light: #FFF1F2;
   --color-teal: #7a9e93;
   --color-teal-dark: #5f8577;
   --color-teal-light: #e8f0ed;
@@ -37,29 +37,55 @@ body {
   overflow-x: hidden;
 }
 
+/* === FLOWING PAGE GRADIENT === */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 50% at 15% 8%, rgba(133, 142, 98, 0.12), transparent 60%),
+    radial-gradient(ellipse 70% 45% at 85% 15%, rgba(197, 165, 90, 0.10), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 75% 45%, rgba(159, 18, 57, 0.05), transparent 50%),
+    radial-gradient(ellipse 80% 50% at 20% 55%, rgba(122, 158, 147, 0.08), transparent 55%),
+    radial-gradient(ellipse 70% 45% at 80% 75%, rgba(197, 165, 90, 0.08), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 25% 90%, rgba(133, 142, 98, 0.06), transparent 50%);
+}
+
+/* Ensure all content sits above the gradient */
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
 /* === ORGANIC BACKGROUND SHAPES === */
 .organic-shape {
   border-radius: 50%;
-  filter: blur(120px);
+  filter: blur(100px);
   position: absolute;
   pointer-events: none;
   z-index: 0;
 }
 
 .organic-sage {
-  background: radial-gradient(circle, rgba(133, 142, 98, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(133, 142, 98, 0.35) 0%, transparent 70%);
 }
 
 .organic-gold {
-  background: radial-gradient(circle, rgba(225, 166, 96, 0.25) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(225, 166, 96, 0.28) 0%, transparent 70%);
 }
 
 .organic-blue {
-  background: radial-gradient(circle, rgba(129, 164, 169, 0.25) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(129, 164, 169, 0.28) 0%, transparent 70%);
 }
 
 .organic-teal {
-  background: radial-gradient(circle, rgba(122, 158, 147, 0.2) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(122, 158, 147, 0.25) 0%, transparent 70%);
+}
+
+.organic-berry {
+  background: radial-gradient(circle, rgba(159, 18, 57, 0.12) 0%, transparent 70%);
 }
 
 /* === SCROLL ANIMATIONS === */
@@ -178,4 +204,17 @@ body {
 .float-fast {
   animation: subtle-float 5s ease-in-out infinite;
   animation-delay: -4s;
+}
+
+/* === NOISE TEXTURE OVERLAY === */
+.noise-overlay::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
 }

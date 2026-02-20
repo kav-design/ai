@@ -66,7 +66,7 @@ function FloatingBubbles() {
     <div className="relative">
       <div
         ref={scrollRef}
-        className="no-scrollbar flex max-h-[470px] flex-col gap-2.5 overflow-y-auto"
+        className="no-scrollbar flex max-h-[470px] flex-col gap-2.5 overflow-y-auto pt-2"
       >
         {messages.map((msg, i) => (
           <div
@@ -101,9 +101,9 @@ function FloatingBubbles() {
         ))}
       </div>
 
-      {/* Lead Captured — micro notification */}
+      {/* Lead Captured — micro notification (right side) */}
       {showLeadCapture && (
-        <div className="absolute -left-2 top-[42%] z-10 animate-in sm:-left-6">
+        <div className="absolute -right-1 top-[42%] z-10 animate-in sm:-right-4">
           <div className="flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 text-[9px] shadow-sm ring-1 ring-black/5 backdrop-blur-sm">
             <div className="h-1.5 w-1.5 rounded-full bg-teal" />
             <span className="font-medium text-charcoal">Lead captured</span>
@@ -111,9 +111,9 @@ function FloatingBubbles() {
         </div>
       )}
 
-      {/* Appointment Booked — micro notification */}
+      {/* Appointment Booked — micro notification (left side) */}
       {showBooked && (
-        <div className="absolute -right-1 bottom-1 z-10 animate-in sm:-right-4">
+        <div className="absolute -left-2 bottom-1 z-10 animate-in sm:-left-6">
           <div className="flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 text-[9px] shadow-sm ring-1 ring-black/5 backdrop-blur-sm">
             <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
             <span className="font-medium text-charcoal">Booked</span>
@@ -134,6 +134,7 @@ export default function Hero() {
   const bgY1 = useTransform(scrollYProgress, [0, 1], [0, -150]);
   const bgY2 = useTransform(scrollYProgress, [0, 1], [0, -100]);
   const bgY3 = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const bgY4 = useTransform(scrollYProgress, [0, 1], [0, -120]);
 
   return (
     <section
@@ -142,13 +143,16 @@ export default function Hero() {
     >
       {/* Organic background shapes with parallax */}
       <motion.div style={{ y: bgY1 }} className="absolute -top-40 -left-32">
-        <div className="organic-shape organic-sage float-slow h-[550px] w-[550px]" />
+        <div className="organic-shape organic-sage float-slow h-[600px] w-[600px]" />
       </motion.div>
       <motion.div style={{ y: bgY2 }} className="absolute -top-20 -right-40">
-        <div className="organic-shape organic-gold float-medium h-[600px] w-[600px]" />
+        <div className="organic-shape organic-gold float-medium h-[650px] w-[650px]" />
       </motion.div>
       <motion.div style={{ y: bgY3 }} className="absolute -bottom-32 left-1/3">
-        <div className="organic-shape organic-blue float-fast h-[450px] w-[450px]" />
+        <div className="organic-shape organic-blue float-fast h-[500px] w-[500px]" />
+      </motion.div>
+      <motion.div style={{ y: bgY4 }} className="absolute top-20 right-1/4">
+        <div className="organic-shape organic-berry float-medium h-[400px] w-[400px]" />
       </motion.div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
@@ -161,7 +165,7 @@ export default function Hero() {
             className="text-center lg:text-left"
           >
             {/* Badge */}
-            <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-1.5 shadow-sm">
+            <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-white/80 px-4 py-1.5 shadow-sm backdrop-blur-sm">
               <div className="relative h-2 w-2">
                 <div className="absolute inset-0 animate-ping rounded-full bg-terracotta opacity-75" />
                 <div className="relative h-2 w-2 rounded-full bg-terracotta" />
