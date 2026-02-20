@@ -131,13 +131,13 @@ export default function ConversationDemo() {
               <h2 className="mb-5 text-4xl sm:text-5xl font-bold leading-[1.1] tracking-tight text-charcoal">
                 Real conversations.
                 <br />
-                <span className="font-[family-name:var(--font-display)] italic text-terracotta">
+                <span className="text-terracotta font-bold">
                   Real bookings.
                 </span>
               </h2>
               <p className="mb-10 max-w-md text-lg leading-relaxed text-body">
-                Milo doesn&apos;t sound like a chatbot. Natural, helpful
-                conversations that patients actually enjoy.
+                Milo doesn&apos;t sound like a chatbot. It handles objections,
+                suggests services, and books appointments — naturally.
               </p>
 
               {/* Tab switcher */}

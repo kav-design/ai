@@ -4,6 +4,7 @@ import LogoBar from "@/components/LogoBar";
 import SpeedToLead from "@/components/SpeedToLead";
 import HowItWorks from "@/components/HowItWorks";
 import ConversationDemo from "@/components/ConversationDemo";
+import VoiceAgent from "@/components/VoiceAgent";
 import Features from "@/components/Features";
 import DashboardPreview from "@/components/DashboardPreview";
 import Testimonials from "@/components/Testimonials";
@@ -21,6 +22,7 @@ export default function Home() {
       <SpeedToLead />
       <HowItWorks />
       <ConversationDemo />
+      <VoiceAgent />
       <Features />
       <DashboardPreview />
       <Testimonials />

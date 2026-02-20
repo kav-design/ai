@@ -86,13 +86,13 @@ export default function Features() {
             </p>
             <h2 className="mb-5 text-4xl font-bold tracking-tight text-charcoal sm:text-5xl">
               One AI employee.{" "}
-              <span className="font-[family-name:var(--font-display)] italic text-terracotta">
+              <span className="text-terracotta">
                 Every job covered.
               </span>
             </h2>
             <p className="mx-auto max-w-lg text-lg text-body leading-relaxed">
-              From the moment a patient calls to the Google review they leave —
-              Milo handles the entire journey.
+              From the first missed call to the 5-star Google review — Milo
+              handles the entire patient journey.
             </p>
           </div>
         </ScrollReveal>

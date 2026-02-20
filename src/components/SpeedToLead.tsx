@@ -83,15 +83,15 @@ export default function SpeedToLead() {
                 The problem
               </p>
               <h2 className="mb-5 text-4xl sm:text-5xl font-bold leading-[1.1] tracking-tight text-charcoal">
-                Every minute costs you{" "}
-                <span className="font-[family-name:var(--font-display)] italic text-terracotta">
-                  $2,500
+                Your competitors answer in 5 minutes.{" "}
+                <span className="text-terracotta font-bold">
+                  $2,500 lost.
                 </span>
               </h2>
               <p className="mb-10 text-lg leading-relaxed text-body">
-                Australian dental clinics miss 35% of incoming calls. Each one
-                is a patient who needed you right now — and will call someone
-                else if they don&apos;t hear back fast.
+                Australian dental clinics miss 35% of incoming calls. Every
+                unanswered ring is a patient calling someone else — and
+                $2,500 in lifetime value walking out the door.
               </p>
 
               {/* Stats grid */}

@@ -11,7 +11,7 @@ export default function DashboardPreview() {
               Your command centre
             </p>
             <h2 className="mb-5 text-4xl font-bold tracking-tight text-charcoal sm:text-5xl">
-              See everything Milo does for you
+              Everything Milo does, in one dashboard
             </h2>
             <p className="mx-auto max-w-lg text-lg text-body leading-relaxed">
               Real-time dashboard with conversations, leads, revenue, and

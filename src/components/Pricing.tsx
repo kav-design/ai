@@ -78,7 +78,7 @@ export default function Pricing() {
             <h2 className="mb-5 text-4xl font-bold tracking-tight text-charcoal sm:text-5xl">
               Less than a part-time receptionist.
               <br />
-              <span className="font-[family-name:var(--font-display)] italic text-terracotta">
+              <span className="text-terracotta">
                 Works 10x harder.
               </span>
             </h2>

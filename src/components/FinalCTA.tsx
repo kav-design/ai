@@ -20,15 +20,14 @@ export default function FinalCTA() {
           </div>
 
           <h2 className="mb-6 text-4xl font-bold tracking-tight text-charcoal sm:text-5xl">
-            Stop losing patients to{" "}
-            <span className="font-[family-name:var(--font-display)] italic text-terracotta">
-              missed calls
+            Every missed call is revenue walking out{" "}
+            <span className="text-terracotta font-bold">
+              the door
             </span>
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-body">
-            Every missed call is a patient choosing your competitor. Milo
-            responds in 2 seconds, books them in, and follows up until
-            they&apos;re in your chair.
+            While you&apos;re with a patient, Milo is booking the next one.
+            2-second response time. 24/7. No salary, no sick days.
           </p>
 
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
