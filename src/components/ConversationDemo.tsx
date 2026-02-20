@@ -120,10 +120,11 @@ export default function ConversationDemo() {
   const [showTyping, setShowTyping] = useState(false);
   const [inView, setInView] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
 
   const s = scenarios[active];
 
-  // Only start animation when section is in view
+  // Only start animation when chat panel is well within viewport
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
@@ -131,7 +132,7 @@ export default function ConversationDemo() {
       ([entry]) => {
         if (entry.isIntersecting) setInView(true);
       },
-      { threshold: 0.3 }
+      { threshold: 0.5 }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -170,6 +171,16 @@ export default function ConversationDemo() {
       clearTimeout(msgTimer);
     };
   }, [active, visibleCount, inView]);
+
+  // Auto-scroll messages to bottom as they appear
+  useEffect(() => {
+    if (messagesRef.current) {
+      messagesRef.current.scrollTo({
+        top: messagesRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [visibleCount]);
 
   return (
     <section ref={sectionRef} className="relative py-24 sm:py-32">
@@ -238,7 +249,7 @@ export default function ConversationDemo() {
                 </div>
 
                 {/* Messages */}
-                <div className="flex h-[420px] flex-col gap-3 overflow-y-auto p-5">
+                <div ref={messagesRef} className="flex h-[420px] flex-col gap-3 overflow-y-auto p-5">
                   {s.messages.slice(0, visibleCount).map((msg, i) => (
                     <div
                       key={`${active}-${i}`}

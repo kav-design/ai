@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ArrowRight, Zap } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
+import { ArrowRight, Zap, Clock, Wifi, TrendingUp } from "lucide-react";
 
 const messages = [
   {
@@ -14,7 +14,7 @@ const messages = [
   },
   {
     role: "ai" as const,
-    text: "I'm sorry to hear that! We can fit you in today. What's your name so I can book you in?",
+    text: "I'm sorry to hear that! We can fit you in today. What's your name?",
   },
   {
     role: "customer" as const,
@@ -22,52 +22,77 @@ const messages = [
   },
   {
     role: "ai" as const,
-    text: "Thanks Sarah! I've got a 10:30am or 2pm slot today. Which works better for you? 🦷",
+    text: "Thanks Sarah! I've got 10:30am or 2pm today — which works? 🦷",
+  },
+  {
+    role: "customer" as const,
+    text: "2pm works!",
+  },
+  {
+    role: "ai" as const,
+    text: "You're all booked for 2pm today, Sarah! We'll text you a reminder. See you soon! ✨",
   },
 ];
 
 function FloatingBubbles() {
   const [visibleCount, setVisibleCount] = useState(0);
+  const [showLeadCapture, setShowLeadCapture] = useState(false);
+  const [showBooked, setShowBooked] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    if (visibleCount >= messages.length) return;
+    if (visibleCount >= messages.length) {
+      // Show "Appointment Booked" after last message
+      const t = setTimeout(() => setShowBooked(true), 600);
+      return () => clearTimeout(t);
+    }
 
-    const delay = visibleCount === 0 ? 600 : 900;
-    const timer = setTimeout(() => {
-      setVisibleCount((c) => c + 1);
-    }, delay);
+    // Show "Lead Captured" after customer gives name (index 3)
+    if (visibleCount === 4 && !showLeadCapture) {
+      setShowLeadCapture(true);
+    }
 
+    const delay = visibleCount === 0 ? 500 : 800;
+    const timer = setTimeout(() => setVisibleCount((c) => c + 1), delay);
     return () => clearTimeout(timer);
+  }, [visibleCount, showLeadCapture]);
+
+  // Auto-scroll to bottom as messages appear
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
   }, [visibleCount]);
 
   return (
-    <div className="relative min-h-[480px]">
-      <div className="flex flex-col gap-3">
+    <div className="relative">
+      <div
+        ref={scrollRef}
+        className="flex max-h-[460px] flex-col gap-2.5 overflow-y-auto pr-2"
+      >
         {messages.map((msg, i) => (
           <div
             key={i}
             className={`flex ${
               msg.role === "customer" ? "justify-end" : "justify-start"
+            } transition-all duration-500 ${
+              i < visibleCount
+                ? "translate-y-0 opacity-100"
+                : "pointer-events-none translate-y-3 opacity-0"
             }`}
-            style={{
-              opacity: i < visibleCount ? 1 : 0,
-              visibility: i < visibleCount ? "visible" : "hidden",
-            }}
           >
-            <div
-              className={`bubble-in flex max-w-[80%] items-end gap-1.5`}
-              style={{ animationDelay: `${i * 1.8}s` }}
-            >
+            <div className="flex max-w-[82%] items-end gap-1.5">
               {msg.role === "ai" && (
                 <Zap
-                  size={12}
+                  size={11}
                   className="mb-2.5 flex-shrink-0 text-teal"
                   fill="currentColor"
                 />
               )}
               <div
-                className={`rounded-2xl px-4 py-3 ${
+                className={`rounded-2xl px-4 py-2.5 ${
                   msg.role === "ai"
-                    ? "rounded-tl-sm bg-teal text-white shadow-lg shadow-teal/20"
+                    ? "rounded-tl-sm bg-teal text-white shadow-lg shadow-teal/10"
                     : "rounded-tr-sm bg-white text-charcoal shadow-md"
                 }`}
               >
@@ -78,9 +103,50 @@ function FloatingBubbles() {
         ))}
       </div>
 
+      {/* Lead Captured — subtle floating pill */}
+      {showLeadCapture && (
+        <div className="absolute -left-3 top-[45%] z-10 transition-all duration-500 animate-in sm:-left-8">
+          <div className="flex items-center gap-2 rounded-xl border border-border bg-white px-3 py-2 shadow-lg">
+            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-teal-light">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5f8577" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <polyline points="16 11 18 13 22 9" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-[10px] font-semibold text-charcoal">Lead Captured</p>
+              <p className="text-[9px] text-muted">Sarah M. — Emergency</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Appointment Booked — subtle floating pill */}
+      {showBooked && (
+        <div className="absolute -right-2 bottom-2 z-10 transition-all duration-500 animate-in sm:-right-6">
+          <div className="flex items-center gap-2 rounded-xl border border-border bg-white px-3 py-2 shadow-lg">
+            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-emerald-50">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-[10px] font-semibold text-charcoal">Appointment Booked</p>
+              <p className="text-[9px] text-muted">Today 2:00pm — Emergency</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
+const stats = [
+  { value: "2s", label: "Response time", icon: Clock, color: "text-teal", bg: "bg-teal-light" },
+  { value: "24/7", label: "Availability", icon: Wifi, color: "text-terracotta", bg: "bg-terracotta-light" },
+  { value: "3x", label: "More bookings", icon: TrendingUp, color: "text-sage", bg: "bg-sage-light" },
+];
 
 export default function Hero() {
   return (
@@ -139,18 +205,22 @@ export default function Hero() {
               </a>
             </div>
 
-            {/* Proof points */}
-            <div className="mt-12 flex flex-wrap justify-center gap-8 lg:justify-start">
-              {[
-                { value: "2s", label: "Response time" },
-                { value: "24/7", label: "Availability" },
-                { value: "3x", label: "More bookings" },
-              ].map((stat) => (
-                <div key={stat.label} className="text-center lg:text-left">
-                  <p className="text-2xl font-bold text-charcoal">
-                    {stat.value}
-                  </p>
-                  <p className="text-xs text-muted">{stat.label}</p>
+            {/* Proof points — styled cards */}
+            <div className="mt-12 flex flex-wrap justify-center gap-4 lg:justify-start">
+              {stats.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="flex items-center gap-3 rounded-2xl border border-border bg-white px-5 py-3 shadow-sm"
+                >
+                  <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${stat.bg}`}>
+                    <stat.icon size={16} className={stat.color} />
+                  </div>
+                  <div>
+                    <p className={`text-lg font-bold leading-none ${stat.color}`}>
+                      {stat.value}
+                    </p>
+                    <p className="text-[11px] text-muted">{stat.label}</p>
+                  </div>
                 </div>
               ))}
             </div>

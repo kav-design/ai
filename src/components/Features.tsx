@@ -69,11 +69,6 @@ const features = [
     description: "After-hours, weekends, holidays — every patient gets an instant, intelligent response.",
   },
   {
-    icon: Zap,
-    title: "5-Minute Setup",
-    description: "Complete the wizard, get your number, start catching leads. No complex integrations.",
-  },
-  {
     icon: ShieldCheck,
     title: "Dental Playbooks",
     description: "Emergency detection, whitening upsells, welcome-back offers — industry intelligence built in.",
