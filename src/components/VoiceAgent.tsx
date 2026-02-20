@@ -24,21 +24,26 @@ const transcriptLines = [
 ];
 
 function WaveformVisualizer() {
-  const barCount = 36;
+  const barCount = 48;
 
   return (
-    <div className="flex h-[120px] items-center justify-center gap-[3px]">
-      {Array.from({ length: barCount }).map((_, i) => (
-        <div
-          key={i}
-          className="waveform-bar w-1 rounded-full bg-teal"
-          style={{
-            animationDelay: `${Math.random() * 2}s`,
-            animationDuration: `${0.8 + Math.random() * 0.8}s`,
-            height: "100%",
-          }}
-        />
-      ))}
+    <div className="flex h-[140px] items-end justify-between px-2">
+      {Array.from({ length: barCount }).map((_, i) => {
+        // Deterministic pseudo-random based on index (avoids hydration mismatch)
+        const seed1 = ((i * 7 + 13) % 20) / 10;
+        const seed2 = ((i * 11 + 3) % 16) / 20 + 0.8;
+        return (
+          <div
+            key={i}
+            className="waveform-bar w-[3px] rounded-full bg-teal"
+            style={{
+              animationDelay: `${seed1}s`,
+              animationDuration: `${seed2}s`,
+              height: "100%",
+            }}
+          />
+        );
+      })}
     </div>
   );
 }
