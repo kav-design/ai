@@ -1,134 +1,109 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Phone, Mic, ArrowRight } from "lucide-react";
+import { Phone, ArrowRight } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 
-const transcript = [
+const transcriptLines = [
   {
     speaker: "milo" as const,
-    text: "Good morning, Bright Smile Dental. This is Milo, how can I help you today?",
+    text: "Good morning, Bright Smile Dental. This is Milo, how can I help?",
   },
   {
-    speaker: "caller" as const,
-    text: "Hi, I'd like to book a teeth cleaning appointment for next week.",
+    speaker: "patient" as const,
+    text: "I\u2019d like to book a teeth cleaning for next week.",
   },
   {
     speaker: "milo" as const,
-    text: "Of course! I have availability on Tuesday at 10am or Thursday at 2pm. Which works better for you?",
+    text: "I have Tuesday 10am or Thursday 2pm. Which works better?",
   },
   {
-    speaker: "caller" as const,
+    speaker: "patient" as const,
     text: "Thursday at 2pm would be perfect.",
-  },
-  {
-    speaker: "milo" as const,
-    text: "Great! I've booked you in for Thursday at 2pm. Can I grab your name and a contact number?",
   },
 ];
 
-function AnimatedCall() {
-  const [phase, setPhase] = useState<"ringing" | "connected" | "transcript">("ringing");
+function WaveformVisualizer() {
+  const barCount = 36;
+
+  return (
+    <div className="flex h-[120px] items-center justify-center gap-[3px]">
+      {Array.from({ length: barCount }).map((_, i) => (
+        <div
+          key={i}
+          className="waveform-bar w-1 rounded-full bg-teal"
+          style={{
+            animationDelay: `${Math.random() * 2}s`,
+            animationDuration: `${0.8 + Math.random() * 0.8}s`,
+            height: "100%",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function LiveCallCard() {
   const [seconds, setSeconds] = useState(0);
   const [visibleLines, setVisibleLines] = useState(0);
 
+  // Timer counting up from 0:00
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("connected"), 2000);
-    const t2 = setTimeout(() => setPhase("transcript"), 3200);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (phase !== "connected" && phase !== "transcript") return;
     const interval = setInterval(() => setSeconds((s) => s + 1), 1000);
     return () => clearInterval(interval);
-  }, [phase]);
+  }, []);
 
+  // Transcript lines appearing one at a time
   useEffect(() => {
-    if (phase !== "transcript") return;
-    if (visibleLines >= transcript.length) return;
-    const timer = setTimeout(
-      () => setVisibleLines((v) => v + 1),
-      visibleLines === 0 ? 800 : 2000 + Math.random() * 800
-    );
+    if (visibleLines >= transcriptLines.length) return;
+    const delay = visibleLines === 0 ? 2500 : 2500;
+    const timer = setTimeout(() => setVisibleLines((v) => v + 1), delay);
     return () => clearTimeout(timer);
-  }, [phase, visibleLines]);
+  }, [visibleLines]);
 
   const formatTime = (s: number) =>
     `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 
   return (
-    <div className="rounded-2xl border border-border bg-white shadow-xl overflow-hidden">
-      {/* Call header */}
-      <div className="bg-charcoal px-6 py-5 text-center">
-        <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-teal">
-          {phase === "ringing" ? (
-            <Phone size={24} className="animate-pulse text-white" />
-          ) : (
-            <Mic size={24} className="text-white" />
-          )}
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm">
+      {/* Call status header */}
+      <div className="mb-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
+            <span className="text-sm font-semibold text-emerald-400">
+              Live Call
+            </span>
+          </div>
+          <span className="font-mono text-sm text-white/50">
+            {formatTime(seconds)}
+          </span>
         </div>
-        <p className="text-sm font-semibold text-white">
-          {phase === "ringing" ? "Incoming Call..." : "Milo AI — Connected"}
-        </p>
-        <p className="text-xs text-white/60">
-          {phase === "ringing" ? "0412 345 678" : `0412 345 678 · ${formatTime(seconds)}`}
-        </p>
-        {phase === "ringing" && (
-          <div className="mt-3 flex justify-center gap-1">
-            <span className="inline-block h-1.5 w-1.5 animate-bounce rounded-full bg-emerald-400" style={{ animationDelay: "0ms" }} />
-            <span className="inline-block h-1.5 w-1.5 animate-bounce rounded-full bg-emerald-400" style={{ animationDelay: "150ms" }} />
-            <span className="inline-block h-1.5 w-1.5 animate-bounce rounded-full bg-emerald-400" style={{ animationDelay: "300ms" }} />
-          </div>
-        )}
-        {phase !== "ringing" && (
-          <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 px-3 py-1">
-            <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
-            <span className="text-[10px] font-medium text-emerald-400">Live</span>
-          </div>
-        )}
+        <p className="mt-1 text-sm text-white/40">Milo AI &rarr; Patient</p>
       </div>
 
+      {/* Waveform */}
+      <WaveformVisualizer />
+
       {/* Live transcript */}
-      <div className="min-h-[260px] px-5 py-4">
-        <p className="mb-3 text-[10px] font-semibold uppercase tracking-wider text-muted">
+      <div className="mt-6 border-t border-white/10 pt-5">
+        <p className="mb-3 text-[10px] font-semibold uppercase tracking-wider text-white/30">
           Live Transcript
         </p>
-        <div className="flex flex-col gap-3">
-          {transcript.slice(0, visibleLines).map((line, i) => (
-            <div key={i} className="msg-left flex gap-2.5">
-              <div
-                className={`mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-[9px] font-bold ${
-                  line.speaker === "milo"
-                    ? "bg-teal text-white"
-                    : "bg-cream-dark text-body"
-                }`}
-              >
-                {line.speaker === "milo" ? "M" : "C"}
-              </div>
-              <div>
-                <p className="text-[10px] font-semibold text-muted">
-                  {line.speaker === "milo" ? "Milo AI" : "Caller"}
-                </p>
-                <p className="text-[13px] leading-relaxed text-charcoal">
-                  {line.text}
-                </p>
-              </div>
-            </div>
+        <div className="flex flex-col gap-2.5">
+          {transcriptLines.slice(0, visibleLines).map((line, i) => (
+            <p
+              key={i}
+              className={`bubble-in text-[13px] leading-relaxed ${
+                line.speaker === "milo" ? "text-teal" : "text-white/70"
+              }`}
+            >
+              <span className="font-semibold">
+                {line.speaker === "milo" ? "Milo: " : "Patient: "}
+              </span>
+              {line.text}
+            </p>
           ))}
-          {phase === "transcript" && visibleLines < transcript.length && (
-            <div className="msg-left flex items-center gap-2 text-xs text-muted">
-              <div className="flex gap-1">
-                <span className="typing-dot h-1 w-1 rounded-full bg-teal" />
-                <span className="typing-dot h-1 w-1 rounded-full bg-teal" />
-                <span className="typing-dot h-1 w-1 rounded-full bg-teal" />
-              </div>
-              Transcribing...
-            </div>
-          )}
         </div>
       </div>
     </div>
@@ -137,65 +112,79 @@ function AnimatedCall() {
 
 export default function VoiceAgent() {
   return (
-    <section className="relative py-24 sm:py-32">
-      <div className="organic-shape organic-teal absolute -right-32 top-1/4 h-[400px] w-[400px]" />
+    <section className="relative overflow-hidden bg-charcoal py-24 sm:py-32">
+      {/* Subtle organic shape */}
+      <div
+        className="organic-shape absolute -right-40 top-0 h-[500px] w-[500px] opacity-30"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(122,158,147,0.3) 0%, transparent 70%)",
+        }}
+      />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid items-center gap-16 lg:grid-cols-2">
-          {/* Left - Content */}
+          {/* Left column - Content */}
           <ScrollReveal>
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-terracotta">
+              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-gold">
                 AI Voice Agent
               </p>
-              <h2 className="mb-5 text-4xl font-bold leading-[1.1] tracking-tight text-charcoal sm:text-5xl">
-                Answers your phone with a{" "}
+              <h2 className="mb-5 text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl">
+                Hear Milo{" "}
                 <span className="font-[family-name:var(--font-display)] italic text-terracotta">
-                  real voice.
-                </span>
+                  answer
+                </span>{" "}
+                your phone.
               </h2>
-              <p className="mb-8 max-w-md text-[17px] leading-relaxed text-body">
-                When patients call and you can&apos;t pick up, Milo answers with a
-                natural-sounding AI voice. It handles scheduling, answers FAQs,
-                and transfers to your team when needed.
+              <p className="mb-8 max-w-md text-[17px] leading-relaxed text-white/70">
+                When patients call and you can&apos;t pick up, Milo answers with
+                a natural AI voice. It books appointments, answers FAQs, and
+                transfers to staff when needed.
               </p>
 
-              <div className="mb-8 flex flex-col gap-4">
+              {/* Play button */}
+              <a
+                href="#pricing"
+                className="mb-10 inline-flex items-center gap-3 rounded-full bg-terracotta px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-terracotta-dark"
+              >
+                <span className="text-lg">&#9654;</span>
+                Listen to a sample call
+              </a>
+
+              {/* Feature bullets */}
+              <div className="mt-8 flex flex-col gap-4">
                 {[
-                  "Natural conversational voice — patients can't tell it's AI",
-                  "Books appointments directly into your calendar",
-                  "Handles after-hours and overflow calls",
-                  "Seamlessly transfers to staff for complex cases",
+                  "Natural conversational voice",
+                  "Books directly into your calendar",
+                  "Handles after-hours & overflow",
+                  "Transfers to staff for complex cases",
                 ].map((point) => (
                   <div key={point} className="flex items-start gap-3">
-                    <div className="mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-teal-light">
-                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#5f8577" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-teal">
+                      <svg
+                        width="10"
+                        height="10"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="white"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                     </div>
-                    <p className="text-sm text-body">{point}</p>
+                    <p className="text-sm text-white/60">{point}</p>
                   </div>
                 ))}
               </div>
-
-              <a
-                href="#pricing"
-                className="group inline-flex items-center gap-2 text-sm font-semibold text-terracotta transition-colors hover:text-terracotta-dark"
-              >
-                Try the voice agent
-                <ArrowRight
-                  size={14}
-                  className="transition-transform group-hover:translate-x-0.5"
-                />
-              </a>
             </div>
           </ScrollReveal>
 
-          {/* Right - Animated call */}
+          {/* Right column - Animated Waveform Visualization */}
           <ScrollReveal delay={150}>
-            <div className="mx-auto w-full max-w-sm">
-              <AnimatedCall />
-            </div>
+            <LiveCallCard />
           </ScrollReveal>
         </div>
       </div>

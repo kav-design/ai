@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Phone, Globe, MessageSquare, Zap } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 
@@ -116,7 +116,45 @@ const scenarios: Record<
 
 export default function ConversationDemo() {
   const [active, setActive] = useState<Scenario>("missed-call");
+  const [visibleCount, setVisibleCount] = useState(0);
+  const [showTyping, setShowTyping] = useState(false);
+
   const s = scenarios[active];
+
+  // Reset animation when tab changes
+  useEffect(() => {
+    setVisibleCount(0);
+    setShowTyping(false);
+  }, [active]);
+
+  // Animate messages in one at a time
+  useEffect(() => {
+    const msgs = scenarios[active].messages;
+    if (visibleCount >= msgs.length) {
+      setShowTyping(false);
+      return;
+    }
+
+    const typingTimer = setTimeout(
+      () => {
+        setShowTyping(true);
+      },
+      visibleCount === 0 ? 300 : 400,
+    );
+
+    const msgTimer = setTimeout(
+      () => {
+        setShowTyping(false);
+        setVisibleCount((c) => c + 1);
+      },
+      visibleCount === 0 ? 800 : 1500 + Math.random() * 500,
+    );
+
+    return () => {
+      clearTimeout(typingTimer);
+      clearTimeout(msgTimer);
+    };
+  }, [active, visibleCount]);
 
   return (
     <section className="relative py-24 sm:py-32">
@@ -128,16 +166,16 @@ export default function ConversationDemo() {
               <p className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-terracotta">
                 See it in action
               </p>
-              <h2 className="mb-5 text-4xl sm:text-5xl font-bold leading-[1.1] tracking-tight text-charcoal">
+              <h2 className="mb-5 text-4xl font-bold leading-[1.1] tracking-tight text-charcoal sm:text-5xl">
                 Real conversations.
                 <br />
-                <span className="text-terracotta font-bold">
+                <span className="font-bold text-terracotta">
                   Real bookings.
                 </span>
               </h2>
               <p className="mb-10 max-w-md text-lg leading-relaxed text-body">
                 Milo doesn&apos;t sound like a chatbot. It handles objections,
-                suggests services, and books appointments — naturally.
+                suggests services, and books appointments &mdash; naturally.
               </p>
 
               {/* Tab switcher */}
@@ -152,7 +190,7 @@ export default function ConversationDemo() {
                       className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-300 ${
                         isActive
                           ? "bg-charcoal text-white"
-                          : "text-body hover:text-charcoal font-medium border border-border hover:border-charcoal/20"
+                          : "border border-border font-medium text-body hover:border-charcoal/20 hover:text-charcoal"
                       }`}
                     >
                       <Icon size={15} />
@@ -167,9 +205,9 @@ export default function ConversationDemo() {
           {/* Right - Chat panel */}
           <ScrollReveal delay={150}>
             <div className="mx-auto w-full max-w-md">
-              <div className="bg-white rounded-2xl border border-border shadow-lg overflow-hidden">
+              <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-lg">
                 {/* Chat header */}
-                <div className="flex items-center gap-3 px-5 py-4 border-b border-border">
+                <div className="flex items-center gap-3 border-b border-border px-5 py-4">
                   <div className="relative">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-teal text-sm font-bold text-white">
                       M
@@ -185,19 +223,19 @@ export default function ConversationDemo() {
                 </div>
 
                 {/* Messages */}
-                <div className="flex max-h-[400px] flex-col gap-3 overflow-y-auto p-5">
-                  {s.messages.map((msg, i) => (
+                <div className="flex min-h-[340px] flex-col gap-3 overflow-y-auto p-5">
+                  {s.messages.slice(0, visibleCount).map((msg, i) => (
                     <div
                       key={`${active}-${i}`}
                       className={`flex items-end gap-2 ${
                         msg.role === "customer"
                           ? "flex-row-reverse"
                           : "flex-row"
-                      }`}
+                      } ${msg.role === "ai" ? "msg-left" : "msg-right"}`}
                     >
                       {/* Zap icon for AI messages */}
                       {msg.role === "ai" && (
-                        <div className="flex-shrink-0 mb-1">
+                        <div className="mb-1 flex-shrink-0">
                           <Zap size={12} className="text-terracotta" />
                         </div>
                       )}
@@ -205,8 +243,8 @@ export default function ConversationDemo() {
                       <div
                         className={`max-w-[84%] px-4 py-3 ${
                           msg.role === "ai"
-                            ? "bg-teal text-white rounded-2xl rounded-tl-sm"
-                            : "bg-cream-dark text-charcoal rounded-2xl rounded-tr-sm"
+                            ? "rounded-2xl rounded-tl-sm bg-teal text-white"
+                            : "rounded-2xl rounded-tr-sm bg-cream-dark text-charcoal"
                         }`}
                       >
                         <p className="text-[13px] leading-[1.55]">
@@ -215,14 +253,25 @@ export default function ConversationDemo() {
                       </div>
                     </div>
                   ))}
+
+                  {/* Typing indicator */}
+                  {showTyping && visibleCount < s.messages.length && (
+                    <div className="flex items-start">
+                      <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-sm bg-teal/10 px-4 py-3">
+                        <span className="typing-dot h-[6px] w-[6px] rounded-full bg-teal" />
+                        <span className="typing-dot h-[6px] w-[6px] rounded-full bg-teal" />
+                        <span className="typing-dot h-[6px] w-[6px] rounded-full bg-teal" />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Input bar */}
                 <div className="flex items-center gap-2 border-t border-border px-4 py-3">
-                  <div className="flex-1 rounded-full bg-cream px-4 py-2.5 border border-border">
+                  <div className="flex-1 rounded-full border border-border bg-cream px-4 py-2.5">
                     <p className="text-xs text-muted">Message...</p>
                   </div>
-                  <button className="flex h-9 w-9 items-center justify-center rounded-full bg-teal hover:bg-teal/90 transition-colors">
+                  <button className="flex h-9 w-9 items-center justify-center rounded-full bg-teal transition-colors hover:bg-teal/90">
                     <svg
                       width="14"
                       height="14"

@@ -14,7 +14,7 @@ const messages = [
   },
   {
     role: "ai" as const,
-    text: "Oh no, I'm sorry to hear that! We can definitely fit you in today. What's your name so I can book you in?",
+    text: "I'm sorry to hear that! We can fit you in today. What's your name so I can book you in?",
   },
   {
     role: "customer" as const,
@@ -26,106 +26,84 @@ const messages = [
   },
 ];
 
-function AnimatedChat() {
+function FloatingBubbles() {
   const [visibleCount, setVisibleCount] = useState(0);
-  const [showTyping, setShowTyping] = useState(false);
+  const [showBookingToast, setShowBookingToast] = useState(false);
 
   useEffect(() => {
-    if (visibleCount >= messages.length) return;
+    if (visibleCount >= messages.length) {
+      const toastTimer = setTimeout(() => {
+        setShowBookingToast(true);
+      }, 1200);
+      return () => clearTimeout(toastTimer);
+    }
 
-    const typingTimer = setTimeout(() => {
-      setShowTyping(true);
-    }, visibleCount === 0 ? 800 : 600);
+    const delay = visibleCount === 0 ? 1500 : 1500 + Math.random() * 500;
+    const timer = setTimeout(() => {
+      setVisibleCount((c) => c + 1);
+    }, delay);
 
-    const msgTimer = setTimeout(
-      () => {
-        setShowTyping(false);
-        setVisibleCount((c) => c + 1);
-      },
-      visibleCount === 0 ? 2200 : 1800 + Math.random() * 800
-    );
-
-    return () => {
-      clearTimeout(typingTimer);
-      clearTimeout(msgTimer);
-    };
+    return () => clearTimeout(timer);
   }, [visibleCount]);
 
   return (
-    <div className="relative">
-      <div className="rounded-2xl border border-border bg-white shadow-xl">
-        {/* Chat header */}
-        <div className="flex items-center gap-3 border-b border-border px-5 py-4">
-          <div className="relative">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-teal text-xs font-bold text-white">
-              M
-            </div>
-            <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white bg-emerald-500" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-charcoal">Milo AI</p>
-            <p className="text-xs text-emerald-600">Responding now</p>
-          </div>
-        </div>
-
-        {/* Messages */}
-        <div className="flex min-h-[340px] flex-col gap-3 px-5 py-4 sm:min-h-[380px]">
-          {messages.slice(0, visibleCount).map((msg, i) => (
+    <div className="relative min-h-[480px]">
+      <div className="flex flex-col gap-3">
+        {messages.map((msg, i) => (
+          <div
+            key={i}
+            className={`flex ${
+              msg.role === "customer" ? "justify-end" : "justify-start"
+            }`}
+            style={{
+              opacity: i < visibleCount ? 1 : 0,
+              visibility: i < visibleCount ? "visible" : "hidden",
+            }}
+          >
             <div
-              key={i}
-              className={`flex ${
-                msg.role === "customer" ? "justify-end" : "justify-start"
-              } ${msg.role === "customer" ? "msg-right" : "msg-left"}`}
+              className={`bubble-in flex max-w-[80%] items-end gap-1.5`}
+              style={{ animationDelay: `${i * 1.8}s` }}
             >
-              <div className="flex max-w-[85%] items-end gap-1.5">
-                {msg.role === "ai" && (
-                  <Zap
-                    size={12}
-                    className="mb-2 flex-shrink-0 text-terracotta"
-                    fill="currentColor"
-                  />
-                )}
-                <div
-                  className={`rounded-2xl px-4 py-2.5 ${
-                    msg.role === "ai"
-                      ? "rounded-tl-sm bg-teal text-white"
-                      : "rounded-tr-sm bg-cream-dark text-charcoal"
-                  }`}
-                >
-                  <p className="text-[13px] leading-relaxed">{msg.text}</p>
-                </div>
+              {msg.role === "ai" && (
+                <Zap
+                  size={12}
+                  className="mb-2.5 flex-shrink-0 text-teal"
+                  fill="currentColor"
+                />
+              )}
+              <div
+                className={`rounded-2xl px-4 py-3 ${
+                  msg.role === "ai"
+                    ? "rounded-tl-sm bg-teal text-white shadow-lg shadow-teal/20"
+                    : "rounded-tr-sm bg-white text-charcoal shadow-md"
+                }`}
+              >
+                <p className="text-[13px] leading-relaxed">{msg.text}</p>
               </div>
             </div>
-          ))}
-
-          {/* Typing indicator */}
-          {showTyping && visibleCount < messages.length && (
-            <div className="msg-left flex items-start">
-              <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-sm bg-teal/10 px-4 py-3">
-                <span className="typing-dot h-[6px] w-[6px] rounded-full bg-teal" />
-                <span className="typing-dot h-[6px] w-[6px] rounded-full bg-teal" />
-                <span className="typing-dot h-[6px] w-[6px] rounded-full bg-teal" />
-              </div>
-            </div>
-          )}
-        </div>
+          </div>
+        ))}
       </div>
 
-      {/* Floating notification */}
-      {visibleCount >= 4 && (
-        <div className="absolute -left-4 top-24 z-10 msg-left sm:-left-12">
-          <div className="rounded-xl border border-border bg-white p-3 shadow-lg">
-            <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-light">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5f8577" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-charcoal">Lead Captured</p>
-                <p className="text-[11px] text-muted">Sarah M. — Emergency</p>
-              </div>
-            </div>
+      {/* Booking confirmed toast */}
+      {showBookingToast && (
+        <div className="absolute bottom-4 right-0 bubble-in">
+          <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 shadow-sm ring-1 ring-emerald-200">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#059669"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            <span className="text-xs font-semibold text-emerald-700">
+              Appointment booked ✓
+            </span>
           </div>
         </div>
       )}
@@ -158,6 +136,7 @@ export default function Hero() {
 
             <h1 className="mb-6 text-[2.75rem] font-bold leading-[1.08] tracking-tight text-charcoal sm:text-5xl lg:text-[3.5rem]">
               Turn missed calls into{" "}
+              <br />
               <span className="font-[family-name:var(--font-display)] italic text-terracotta">
                 booked patients.
               </span>
@@ -206,10 +185,10 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right - Animated chat */}
+          {/* Right - Floating chat bubbles */}
           <div className="flex justify-center lg:justify-end">
-            <div className="w-full max-w-[400px]">
-              <AnimatedChat />
+            <div className="w-full max-w-[420px]">
+              <FloatingBubbles />
             </div>
           </div>
         </div>

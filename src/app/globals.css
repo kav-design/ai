@@ -100,6 +100,46 @@ body {
 .typing-dot:nth-child(2) { animation-delay: 0.15s; }
 .typing-dot:nth-child(3) { animation-delay: 0.3s; }
 
+/* === FLOATING BUBBLE ANIMATION === */
+@keyframes float-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bubble-in {
+  opacity: 0;
+  animation: float-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* === WAVEFORM / EQUALIZER ANIMATION === */
+@keyframes waveform {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+.waveform-bar {
+  animation: waveform 1.2s ease-in-out infinite;
+  transform-origin: bottom;
+}
+
+/* === PULSE RING === */
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* === SECTION DIVIDER === */
+.section-divider {
+  height: 1px;
+  background: var(--color-border);
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
 /* === SCROLLBAR === */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
