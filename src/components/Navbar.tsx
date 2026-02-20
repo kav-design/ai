@@ -24,17 +24,17 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "border-b border-white/[0.06] bg-navy-950/80 backdrop-blur-2xl"
+          ? "border-b border-border bg-white/80 backdrop-blur-lg"
           : "bg-transparent"
       }`}
     >
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 lg:px-8">
         {/* Logo */}
         <a href="#" className="flex items-center gap-2.5 group">
-          <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-milo-400 via-violet-500 to-emerald-400 text-sm font-bold text-white transition-transform group-hover:scale-105">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-terracotta text-sm font-bold text-white transition-transform group-hover:scale-105">
             M
           </div>
-          <span className="text-lg font-semibold tracking-tight text-white">
+          <span className="text-lg font-semibold tracking-tight text-charcoal">
             milo
           </span>
         </a>
@@ -45,7 +45,7 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="rounded-lg px-4 py-2 text-[13px] font-medium text-gray-400 transition-colors hover:text-white"
+              className="rounded-lg px-4 py-2 text-sm font-medium text-body transition-colors hover:text-charcoal"
             >
               {link.label}
             </a>
@@ -56,13 +56,13 @@ export default function Navbar() {
         <div className="hidden items-center gap-4 md:flex">
           <a
             href="#"
-            className="text-[13px] font-medium text-gray-400 transition-colors hover:text-white"
+            className="text-sm font-medium text-body transition-colors hover:text-charcoal"
           >
             Log in
           </a>
           <a
             href="#pricing"
-            className="btn-glow rounded-full bg-gradient-to-r from-milo-500 via-violet-500 to-milo-500 bg-[length:200%_100%] px-5 py-2 text-[13px] font-semibold text-white transition-all hover:bg-right"
+            className="rounded-full bg-charcoal px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#333]"
           >
             Get Started
           </a>
@@ -71,7 +71,7 @@ export default function Navbar() {
         {/* Mobile toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="text-gray-400 transition-colors hover:text-white md:hidden"
+          className="text-body transition-colors hover:text-charcoal md:hidden"
           aria-label="Toggle menu"
         >
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -80,21 +80,21 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="border-t border-white/[0.06] bg-navy-950/95 backdrop-blur-2xl md:hidden">
+        <div className="border-t border-border bg-white md:hidden">
           <div className="flex flex-col gap-1 p-4">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="rounded-lg px-4 py-3 text-sm text-gray-400 transition-colors hover:bg-white/[0.03] hover:text-white"
+                className="rounded-lg px-4 py-3 text-sm font-medium text-body transition-colors hover:bg-cream-dark hover:text-charcoal"
               >
                 {link.label}
               </a>
             ))}
             <a
               href="#pricing"
-              className="mt-3 rounded-full bg-gradient-to-r from-milo-500 to-violet-500 px-5 py-3 text-center text-sm font-semibold text-white"
+              className="mt-3 rounded-full bg-charcoal px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#333]"
             >
               Get Started
             </a>

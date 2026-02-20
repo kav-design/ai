@@ -8,7 +8,8 @@ const plans = [
     period: "/mo",
     description: "For single-location clinics getting started.",
     icon: Zap,
-    gradient: "from-gray-500 to-gray-600",
+    iconBg: "bg-sage-light",
+    iconColor: "text-sage",
     features: [
       "Missed call text-back",
       "AI SMS conversations",
@@ -27,7 +28,8 @@ const plans = [
     period: "/mo",
     description: "Full AI employee. Everything you need.",
     icon: Sparkles,
-    gradient: "from-milo-500 via-violet-500 to-milo-500",
+    iconBg: "bg-terracotta-light",
+    iconColor: "text-terracotta",
     features: [
       "Everything in Starter",
       "Unlimited conversations",
@@ -47,7 +49,8 @@ const plans = [
     period: "",
     description: "Multi-location with custom integrations.",
     icon: Building2,
-    gradient: "from-emerald-500 to-emerald-600",
+    iconBg: "bg-teal-light",
+    iconColor: "text-teal",
     features: [
       "Everything in Professional",
       "Multiple locations",
@@ -65,23 +68,21 @@ const plans = [
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="relative py-32">
-      <div className="section-line" />
-
-      <div className="absolute left-[20%] top-[30%] h-[500px] w-[500px] orb orb-violet opacity-15" />
-
-      <div className="relative mx-auto max-w-7xl px-6 pt-8 lg:px-8">
+    <section id="pricing" className="py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <ScrollReveal>
           <div className="mb-20 text-center">
-            <p className="mb-4 text-[11px] font-semibold tracking-[0.15em] text-milo-400 uppercase">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-terracotta">
               Pricing
             </p>
-            <h2 className="mb-5 text-[2.5rem] font-extrabold leading-[1.1] tracking-[-0.02em] text-white sm:text-[3rem]">
+            <h2 className="mb-5 text-4xl font-bold tracking-tight text-charcoal sm:text-5xl">
               Less than a part-time receptionist.
               <br />
-              <span className="gradient-text">Works 10x harder.</span>
+              <span className="font-[family-name:var(--font-display)] italic text-terracotta">
+                Works 10x harder.
+              </span>
             </h2>
-            <p className="mx-auto max-w-lg text-[16px] text-gray-400">
+            <p className="mx-auto max-w-lg text-lg text-body leading-relaxed">
               14-day free trial. No credit card required. Cancel any time.
             </p>
           </div>
@@ -91,45 +92,41 @@ export default function Pricing() {
           {plans.map((plan, i) => (
             <ScrollReveal key={plan.name} delay={i * 100}>
               <div
-                className={`group relative h-full overflow-hidden rounded-2xl transition-all duration-500 ${
+                className={`relative h-full overflow-hidden rounded-2xl ${
                   plan.popular
-                    ? "glow-border glass-strong"
-                    : "glass hover:border-white/[0.1] hover:bg-white/[0.04]"
-                }`}
+                    ? "border-2 border-charcoal shadow-lg"
+                    : "border border-border shadow-sm"
+                } bg-white`}
               >
-                {plan.popular && (
-                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-milo-400 to-transparent" />
-                )}
-
                 <div className="p-7">
                   {plan.popular && (
-                    <div className="mb-4 inline-flex rounded-full border border-milo-400/20 bg-milo-400/10 px-3 py-0.5">
-                      <span className="text-[10px] font-bold tracking-wider text-milo-400 uppercase">
+                    <div className="mb-4 inline-flex rounded-full bg-charcoal px-3 py-1">
+                      <span className="text-xs font-bold uppercase text-white">
                         Most Popular
                       </span>
                     </div>
                   )}
 
-                  <div className={`mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${plan.gradient}`}>
-                    <plan.icon size={20} className="text-white" />
+                  <div className={`mb-4 flex h-10 w-10 items-center justify-center rounded-xl ${plan.iconBg}`}>
+                    <plan.icon size={20} className={plan.iconColor} />
                   </div>
 
-                  <h3 className="text-[18px] font-bold text-white">{plan.name}</h3>
-                  <p className="mt-1 text-[13px] text-gray-500">{plan.description}</p>
+                  <h3 className="text-lg font-bold text-charcoal">{plan.name}</h3>
+                  <p className="mt-1 text-sm text-body">{plan.description}</p>
 
                   <div className="my-6 flex items-baseline gap-1">
-                    <span className="text-[2.5rem] font-extrabold tracking-tight text-white">
+                    <span className="text-5xl font-bold tracking-tight text-charcoal">
                       {plan.price}
                     </span>
-                    <span className="text-[14px] text-gray-500">{plan.period}</span>
+                    <span className="text-sm text-muted">{plan.period}</span>
                   </div>
 
                   <a
                     href="#"
-                    className={`mb-7 flex w-full items-center justify-center rounded-full py-3 text-[13px] font-semibold transition-all ${
+                    className={`mb-7 flex w-full items-center justify-center rounded-full py-3.5 text-sm font-semibold transition-colors ${
                       plan.popular
-                        ? "btn-glow bg-gradient-to-r from-milo-500 via-violet-500 to-milo-500 bg-[length:200%_100%] text-white hover:bg-right"
-                        : "border border-white/[0.08] bg-white/[0.03] text-white hover:border-white/[0.15] hover:bg-white/[0.06]"
+                        ? "bg-terracotta text-white hover:bg-terracotta-dark"
+                        : "border-2 border-charcoal text-charcoal hover:bg-charcoal hover:text-white"
                     }`}
                   >
                     {plan.cta}
@@ -138,8 +135,8 @@ export default function Pricing() {
                   <ul className="flex flex-col gap-3">
                     {plan.features.map((f) => (
                       <li key={f} className="flex items-start gap-3">
-                        <Check size={14} className="mt-0.5 flex-shrink-0 text-emerald-400" />
-                        <span className="text-[13px] text-gray-400">{f}</span>
+                        <Check size={14} className="mt-0.5 flex-shrink-0 text-teal" />
+                        <span className="text-sm text-body">{f}</span>
                       </li>
                     ))}
                   </ul>
@@ -150,7 +147,7 @@ export default function Pricing() {
         </div>
 
         <ScrollReveal delay={200}>
-          <p className="mt-12 text-center text-[13px] text-gray-600">
+          <p className="mt-12 text-center text-sm text-muted">
             30-day money-back guarantee. If Milo doesn&apos;t capture more leads
             in 30 days, full refund. No questions.
           </p>

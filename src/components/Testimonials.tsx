@@ -30,16 +30,14 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="relative py-32">
-      <div className="section-line" />
-
-      <div className="relative mx-auto max-w-7xl px-6 pt-8 lg:px-8">
+    <section className="py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <ScrollReveal>
           <div className="mb-20 text-center">
-            <p className="mb-4 text-[11px] font-semibold tracking-[0.15em] text-milo-400 uppercase">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-terracotta">
               Testimonials
             </p>
-            <h2 className="mb-5 text-[2.5rem] font-extrabold leading-[1.1] tracking-[-0.02em] text-white sm:text-[3rem]">
+            <h2 className="text-4xl font-bold tracking-tight text-charcoal sm:text-5xl">
               Don&apos;t take our word for it
             </h2>
           </div>
@@ -48,33 +46,33 @@ export default function Testimonials() {
         <div className="grid gap-6 md:grid-cols-3">
           {testimonials.map((t, i) => (
             <ScrollReveal key={t.name} delay={i * 100}>
-              <div className="group glass relative h-full overflow-hidden rounded-2xl p-6 transition-all duration-500 hover:border-white/[0.1] hover:bg-white/[0.04]">
+              <div className="h-full rounded-2xl border border-border bg-white p-8 shadow-sm">
                 {/* Stars */}
                 <div className="mb-5 flex gap-1">
                   {[...Array(5)].map((_, j) => (
-                    <Star key={j} size={14} className="fill-amber-400 text-amber-400" />
+                    <Star key={j} size={14} className="fill-gold text-gold" />
                   ))}
                 </div>
 
                 {/* Quote */}
-                <p className="mb-6 text-[14px] leading-relaxed text-gray-300">
+                <p className="mb-6 text-base leading-relaxed text-body">
                   &ldquo;{t.quote}&rdquo;
                 </p>
 
                 {/* Metric */}
-                <div className="mb-6 inline-flex items-baseline gap-1.5 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1">
-                  <span className="text-[16px] font-extrabold text-emerald-400">{t.metric}</span>
-                  <span className="text-[11px] text-emerald-400/70">{t.metricLabel}</span>
+                <div className="mb-6 inline-flex items-baseline gap-1.5 rounded-full bg-teal-light px-3 py-1">
+                  <span className="text-sm font-bold text-teal">{t.metric}</span>
+                  <span className="text-xs text-teal">{t.metricLabel}</span>
                 </div>
 
                 {/* Author */}
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-white/[0.06] to-white/[0.02] text-[12px] font-bold text-gray-400 ring-1 ring-white/[0.06]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-cream-dark text-[12px] font-bold text-body">
                     {t.name.split(" ").slice(1).map(n => n[0]).join("")}
                   </div>
                   <div>
-                    <p className="text-[13px] font-semibold text-white">{t.name}</p>
-                    <p className="text-[11px] text-gray-500">{t.role} &middot; {t.location}</p>
+                    <p className="text-sm font-semibold text-charcoal">{t.name}</p>
+                    <p className="text-xs text-muted">{t.role} &middot; {t.location}</p>
                   </div>
                 </div>
               </div>

@@ -43,18 +43,18 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-b border-white/[0.04] last:border-0">
+    <div className="border-b border-border last:border-0">
       <button
         onClick={() => setOpen(!open)}
         className="flex w-full items-center justify-between py-5 text-left"
       >
-        <span className="pr-4 text-[15px] font-semibold text-white">
+        <span className="pr-4 text-base font-semibold text-charcoal">
           {q}
         </span>
         <ChevronDown
           size={18}
-          className={`flex-shrink-0 text-gray-600 transition-transform duration-300 ${
-            open ? "rotate-180 text-milo-400" : ""
+          className={`flex-shrink-0 text-muted transition-transform duration-300 ${
+            open ? "rotate-180 text-terracotta" : ""
           }`}
         />
       </button>
@@ -64,7 +64,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
         }`}
       >
         <div className="overflow-hidden">
-          <p className="text-[14px] leading-relaxed text-gray-400">{a}</p>
+          <p className="text-sm leading-relaxed text-body">{a}</p>
         </div>
       </div>
     </div>
@@ -73,23 +73,21 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 
 export default function FAQ() {
   return (
-    <section id="faq" className="relative py-32">
-      <div className="section-line" />
-
-      <div className="relative mx-auto max-w-3xl px-6 pt-8 lg:px-8">
+    <section id="faq" className="py-24 sm:py-32">
+      <div className="mx-auto max-w-3xl px-6 lg:px-8">
         <ScrollReveal>
           <div className="mb-12 text-center">
-            <p className="mb-4 text-[11px] font-semibold tracking-[0.15em] text-milo-400 uppercase">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-terracotta">
               FAQ
             </p>
-            <h2 className="text-[2.5rem] font-extrabold tracking-[-0.02em] text-white">
+            <h2 className="text-4xl font-bold tracking-tight text-charcoal sm:text-5xl">
               Got questions?
             </h2>
           </div>
         </ScrollReveal>
 
         <ScrollReveal delay={100}>
-          <div className="glass rounded-2xl px-6">
+          <div className="rounded-2xl border border-border bg-white px-6 shadow-sm">
             {faqs.map((faq) => (
               <FAQItem key={faq.q} {...faq} />
             ))}
