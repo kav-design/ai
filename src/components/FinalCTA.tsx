@@ -11,7 +11,7 @@ export default function FinalCTA() {
       <div className="absolute left-[30%] top-[20%] h-[500px] w-[500px] orb orb-blue opacity-30" />
       <div className="absolute right-[20%] bottom-[10%] h-[400px] w-[400px] orb orb-violet opacity-20" />
 
-      <div className="relative mx-auto max-w-4xl px-6 pt-32 text-center lg:px-8">
+      <div className="relative mx-auto max-w-4xl px-6 pt-8 text-center lg:px-8">
         <ScrollReveal>
           {/* Urgency badge */}
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-rose-400/20 bg-rose-400/10 px-5 py-2">

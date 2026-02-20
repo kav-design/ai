@@ -76,7 +76,7 @@ export default function FAQ() {
     <section id="faq" className="relative py-32">
       <div className="section-line" />
 
-      <div className="relative mx-auto max-w-3xl px-6 pt-32 lg:px-8">
+      <div className="relative mx-auto max-w-3xl px-6 pt-8 lg:px-8">
         <ScrollReveal>
           <div className="mb-12 text-center">
             <p className="mb-4 text-[11px] font-semibold tracking-[0.15em] text-milo-400 uppercase">

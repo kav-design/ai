@@ -100,7 +100,7 @@ export default function Features() {
       <div className="absolute right-[-10%] top-[20%] h-[500px] w-[500px] orb orb-violet opacity-30" />
       <div className="absolute left-[-10%] bottom-[10%] h-[400px] w-[400px] orb orb-blue opacity-20" />
 
-      <div className="relative mx-auto max-w-7xl px-6 pt-32 lg:px-8">
+      <div className="relative mx-auto max-w-7xl px-6 pt-8 lg:px-8">
         <ScrollReveal>
           <div className="mb-20 text-center">
             <p className="mb-4 text-[11px] font-semibold tracking-[0.15em] text-milo-400 uppercase">

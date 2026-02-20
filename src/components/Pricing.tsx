@@ -70,7 +70,7 @@ export default function Pricing() {
 
       <div className="absolute left-[20%] top-[30%] h-[500px] w-[500px] orb orb-violet opacity-15" />
 
-      <div className="relative mx-auto max-w-7xl px-6 pt-32 lg:px-8">
+      <div className="relative mx-auto max-w-7xl px-6 pt-8 lg:px-8">
         <ScrollReveal>
           <div className="mb-20 text-center">
             <p className="mb-4 text-[11px] font-semibold tracking-[0.15em] text-milo-400 uppercase">

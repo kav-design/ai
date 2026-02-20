@@ -63,7 +63,7 @@ export default function ConversationDemo() {
       <div className="section-line" />
       <div className="absolute left-[-5%] top-[30%] h-[400px] w-[400px] orb orb-emerald opacity-20" />
 
-      <div className="relative mx-auto max-w-7xl px-6 pt-32 lg:px-8">
+      <div className="relative mx-auto max-w-7xl px-6 pt-8 lg:px-8">
         <div className="grid items-center gap-16 lg:grid-cols-2">
           {/* Left */}
           <ScrollReveal>
