@@ -30,8 +30,12 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+    <section className="gradient-mixed relative overflow-hidden py-24 sm:py-32">
+      {/* Organic background shapes */}
+      <div className="organic-shape organic-gold absolute -left-40 top-10 h-[450px] w-[450px]" />
+      <div className="organic-shape organic-blue absolute -right-32 bottom-0 h-[400px] w-[400px]" />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         <ScrollReveal>
           <div className="mb-20 text-center">
             <p className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-terracotta">

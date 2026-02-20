@@ -169,8 +169,12 @@ export default function ConversationDemo() {
   }, [visibleCount]);
 
   return (
-    <section ref={sectionRef} className="relative py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+    <section ref={sectionRef} className="gradient-warm relative overflow-hidden py-24 sm:py-32">
+      {/* Organic background shapes */}
+      <div className="organic-shape organic-gold absolute -left-40 top-20 h-[500px] w-[500px]" />
+      <div className="organic-shape organic-copper absolute -right-32 bottom-10 h-[400px] w-[400px]" />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid items-center gap-16 lg:grid-cols-2">
           {/* Left - Text content */}
           <motion.div

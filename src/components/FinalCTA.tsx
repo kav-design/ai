@@ -6,8 +6,8 @@ export default function FinalCTA() {
     <section className="relative overflow-hidden py-24 sm:py-32">
       {/* Background */}
       <div className="absolute inset-0 bg-cream-dark" />
-      <div className="organic-shape organic-sage" />
-      <div className="organic-shape organic-gold" />
+      <div className="organic-shape organic-sage absolute -left-40 top-10 h-[400px] w-[400px]" />
+      <div className="organic-shape organic-gold absolute -right-32 bottom-0 h-[450px] w-[450px]" />
 
       <div className="relative mx-auto max-w-4xl px-6 text-center lg:px-8">
         <ScrollReveal>

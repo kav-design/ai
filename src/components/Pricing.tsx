@@ -68,8 +68,12 @@ const plans = [
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+    <section id="pricing" className="gradient-cool relative overflow-hidden py-24 sm:py-32">
+      {/* Organic background shapes */}
+      <div className="organic-shape organic-teal absolute -right-48 top-0 h-[500px] w-[500px]" />
+      <div className="organic-shape organic-sage absolute -left-40 bottom-20 h-[450px] w-[450px]" />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         <ScrollReveal>
           <div className="mb-20 text-center">
             <p className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-terracotta">

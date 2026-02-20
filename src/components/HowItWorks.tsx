@@ -39,8 +39,12 @@ export default function HowItWorks() {
   const isInView = useInView(gridRef, { once: true, margin: "-60px" });
 
   return (
-    <section id="how-it-works" className="relative py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+    <section id="how-it-works" className="gradient-cool relative overflow-hidden py-24 sm:py-32">
+      {/* Organic background shapes */}
+      <div className="organic-shape organic-teal absolute -right-40 top-10 h-[450px] w-[450px]" />
+      <div className="organic-shape organic-sage absolute -left-32 bottom-0 h-[400px] w-[400px]" />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

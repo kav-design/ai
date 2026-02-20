@@ -35,6 +35,67 @@ const messages = [
   },
 ];
 
+function SnakeBorder({ label, color }: { label: string; color: string }) {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const rectRef = useRef<SVGRectElement>(null);
+
+  useEffect(() => {
+    const svg = svgRef.current;
+    const rect = rectRef.current;
+    if (!svg || !rect) return;
+
+    const { width, height } = svg.getBoundingClientRect();
+    const inset = 3;
+    rect.setAttribute("x", String(inset));
+    rect.setAttribute("y", String(inset));
+    rect.setAttribute("width", String(Math.max(0, width - inset * 2)));
+    rect.setAttribute("height", String(Math.max(0, height - inset * 2)));
+
+    const totalLength = rect.getTotalLength();
+    rect.style.strokeDasharray = `${totalLength}`;
+    rect.style.strokeDashoffset = `${totalLength}`;
+
+    requestAnimationFrame(() => {
+      if (rect) {
+        rect.style.transition =
+          "stroke-dashoffset 1.4s cubic-bezier(0.16, 1, 0.3, 1)";
+        rect.style.strokeDashoffset = "0";
+      }
+    });
+  }, []);
+
+  return (
+    <>
+      <svg
+        ref={svgRef}
+        className="pointer-events-none absolute"
+        style={{
+          top: "-3px",
+          left: "-3px",
+          width: "calc(100% + 6px)",
+          height: "calc(100% + 6px)",
+        }}
+        fill="none"
+      >
+        <rect
+          ref={rectRef}
+          rx="14"
+          ry="14"
+          stroke={color}
+          strokeWidth="1.5"
+          fill="none"
+        />
+      </svg>
+      <span
+        className="absolute -bottom-[18px] left-1 text-[10px] font-semibold tracking-wide animate-in"
+        style={{ color }}
+      >
+        {label}
+      </span>
+    </>
+  );
+}
+
 function FloatingBubbles() {
   const [visibleCount, setVisibleCount] = useState(0);
   const [showLeadCapture, setShowLeadCapture] = useState(false);
@@ -66,60 +127,55 @@ function FloatingBubbles() {
     <div className="relative">
       <div
         ref={scrollRef}
-        className="no-scrollbar flex max-h-[470px] flex-col gap-2.5 overflow-y-auto pt-2"
+        className="no-scrollbar flex max-h-[470px] flex-col gap-2.5 overflow-y-auto pt-2 pb-2"
       >
-        {messages.map((msg, i) => (
-          <div
-            key={i}
-            className={`flex ${
-              msg.role === "customer" ? "justify-end" : "justify-start"
-            } transition-all duration-500 ${
-              i < visibleCount
-                ? "translate-y-0 opacity-100"
-                : "pointer-events-none translate-y-3 opacity-0"
-            }`}
-          >
-            <div className="flex max-w-[82%] items-end gap-1.5">
-              {msg.role === "ai" && (
-                <Zap
-                  size={11}
-                  className="mb-2.5 flex-shrink-0 text-teal"
-                  fill="currentColor"
-                />
-              )}
-              <div
-                className={`rounded-2xl px-4 py-2.5 ${
-                  msg.role === "ai"
-                    ? "rounded-tl-sm bg-teal text-white shadow-lg shadow-teal/10"
-                    : "rounded-tr-sm bg-white text-charcoal shadow-md"
-                }`}
-              >
-                <p className="text-[13px] leading-relaxed">{msg.text}</p>
+        {messages.map((msg, i) => {
+          const isLeadMsg = i === 3;
+          const isBookedMsg = i === 6;
+          const hasSnake =
+            (isLeadMsg && showLeadCapture) || (isBookedMsg && showBooked);
+
+          return (
+            <div
+              key={i}
+              className={`flex ${
+                msg.role === "customer" ? "justify-end" : "justify-start"
+              } transition-all duration-500 ${
+                i < visibleCount
+                  ? "translate-y-0 opacity-100"
+                  : "pointer-events-none translate-y-3 opacity-0"
+              } ${hasSnake ? "mb-4" : ""}`}
+            >
+              <div className="flex max-w-[82%] items-end gap-1.5">
+                {msg.role === "ai" && (
+                  <Zap
+                    size={11}
+                    className="mb-2.5 flex-shrink-0 text-teal"
+                    fill="currentColor"
+                  />
+                )}
+                <div className="relative">
+                  <div
+                    className={`rounded-2xl px-4 py-2.5 ${
+                      msg.role === "ai"
+                        ? "rounded-tl-sm bg-teal text-white shadow-lg shadow-teal/10"
+                        : "rounded-tr-sm bg-white text-charcoal shadow-md"
+                    }`}
+                  >
+                    <p className="text-[13px] leading-relaxed">{msg.text}</p>
+                  </div>
+                  {hasSnake && (
+                    <SnakeBorder
+                      label={isLeadMsg ? "Lead captured" : "Booked \u2713"}
+                      color={isLeadMsg ? "#7a9e93" : "#22c55e"}
+                    />
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
-
-      {/* Lead Captured — micro notification (right side) */}
-      {showLeadCapture && (
-        <div className="absolute -right-1 top-[42%] z-10 animate-in sm:-right-4">
-          <div className="flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 text-[9px] shadow-sm ring-1 ring-black/5 backdrop-blur-sm">
-            <div className="h-1.5 w-1.5 rounded-full bg-teal" />
-            <span className="font-medium text-charcoal">Lead captured</span>
-          </div>
-        </div>
-      )}
-
-      {/* Appointment Booked — micro notification (left side) */}
-      {showBooked && (
-        <div className="absolute -left-2 bottom-1 z-10 animate-in sm:-left-6">
-          <div className="flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 text-[9px] shadow-sm ring-1 ring-black/5 backdrop-blur-sm">
-            <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            <span className="font-medium text-charcoal">Booked</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -152,7 +208,7 @@ export default function Hero() {
         <div className="organic-shape organic-blue float-fast h-[500px] w-[500px]" />
       </motion.div>
       <motion.div style={{ y: bgY4 }} className="absolute top-20 right-1/4">
-        <div className="organic-shape organic-berry float-medium h-[400px] w-[400px]" />
+        <div className="organic-shape organic-copper float-medium h-[400px] w-[400px]" />
       </motion.div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
@@ -207,7 +263,7 @@ export default function Hero() {
               </a>
             </div>
 
-            {/* Proof points — clean with dividers */}
+            {/* Proof points */}
             <div className="mt-12 flex items-center justify-center gap-0 lg:justify-start">
               {[
                 { value: "2s", label: "Response time", color: "text-teal" },
@@ -215,11 +271,11 @@ export default function Hero() {
                 { value: "3x", label: "More bookings", color: "text-charcoal" },
               ].map((stat, i) => (
                 <div key={stat.label} className="flex items-center">
-                  {i > 0 && (
-                    <div className="mx-6 h-8 w-px bg-border" />
-                  )}
+                  {i > 0 && <div className="mx-6 h-8 w-px bg-border" />}
                   <div className="text-center lg:text-left">
-                    <p className={`text-2xl font-bold tracking-tight ${stat.color}`}>
+                    <p
+                      className={`text-2xl font-bold tracking-tight ${stat.color}`}
+                    >
                       {stat.value}
                     </p>
                     <p className="text-[11px] text-muted">{stat.label}</p>
