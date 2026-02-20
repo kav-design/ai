@@ -9,21 +9,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Milo | AI Employee for Dental Clinics",
+  title: "Milo — Your AI Employee | Never Miss a Patient Again",
   description:
-    "Never miss a patient again. Milo is your AI-powered employee that handles missed calls, books appointments, follows up with leads, and collects Google reviews — 24/7.",
-  keywords: [
-    "AI employee",
-    "dental clinic",
-    "missed calls",
-    "appointment booking",
-    "AI receptionist",
-    "Australia",
-  ],
+    "Milo is the AI employee that handles missed calls, books appointments, follows up with leads, and collects Google reviews for dental clinics — 24/7.",
   openGraph: {
-    title: "Milo | AI Employee for Dental Clinics",
+    title: "Milo — Your AI Employee",
     description:
-      "Never miss a patient again. Your AI employee that handles calls, books appointments, and grows your practice — 24/7.",
+      "Never miss a patient again. AI-powered missed call handling, appointment booking, and review collection for dental clinics.",
     type: "website",
   },
 };

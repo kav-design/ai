@@ -1,94 +1,94 @@
-import {
-  PhoneMissed,
-  MessageSquareText,
-  CalendarCheck,
-  ArrowRight,
-} from "lucide-react";
+import { PhoneMissed, MessageSquareText, CalendarCheck } from "lucide-react";
+import ScrollReveal from "./ScrollReveal";
 
 const steps = [
   {
     icon: PhoneMissed,
     number: "01",
-    title: "A patient calls & you miss it",
+    title: "Patient calls, you miss it",
     description:
-      "Milo detects the missed call instantly. No patient is left waiting — within 2 seconds, Milo sends a friendly SMS.",
-    color: "from-rose-400 to-rose-500",
-    iconBg: "bg-rose-50",
-    iconColor: "text-rose-500",
+      "Milo detects the missed call instantly. Within 2 seconds, a personalised SMS is sent — no patient left waiting.",
+    gradient: "from-rose-400/20 to-rose-400/5",
+    iconColor: "text-rose-400",
+    glowColor: "shadow-rose-400/20",
   },
   {
     icon: MessageSquareText,
     number: "02",
-    title: "Milo has a real conversation",
+    title: "Milo has the conversation",
     description:
-      "Using AI trained on dental industry knowledge, Milo chats naturally via SMS — answering questions, understanding urgency, and qualifying the lead.",
-    color: "from-milo-400 to-milo-600",
-    iconBg: "bg-milo-50",
-    iconColor: "text-milo-600",
+      "AI trained on dental industry knowledge chats naturally via SMS — answering questions, understanding urgency, qualifying the lead.",
+    gradient: "from-milo-400/20 to-violet-400/5",
+    iconColor: "text-milo-400",
+    glowColor: "shadow-milo-400/20",
   },
   {
     icon: CalendarCheck,
     number: "03",
     title: "You get a qualified lead",
     description:
-      "Milo captures the patient's name, what they need, and when they're available — then notifies you instantly. You just confirm the booking.",
-    color: "from-emerald-400 to-emerald-500",
-    iconBg: "bg-emerald-50",
-    iconColor: "text-emerald-600",
+      "Name, service needed, preferred time — all captured and sent to you instantly. You just confirm the booking.",
+    gradient: "from-emerald-400/20 to-emerald-400/5",
+    iconColor: "text-emerald-400",
+    glowColor: "shadow-emerald-400/20",
   },
 ];
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="bg-white py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        {/* Section header */}
-        <div className="mb-16 text-center">
-          <p className="mb-3 text-sm font-semibold tracking-wide text-milo-600 uppercase">
-            How it works
-          </p>
-          <h2 className="mb-4 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            Three steps. Zero missed patients.
-          </h2>
-          <p className="mx-auto max-w-2xl text-lg text-gray-500">
-            Set up Milo in minutes. From there, every missed call becomes a
-            conversation, and every conversation becomes a booking.
-          </p>
-        </div>
+    <section id="how-it-works" className="relative py-32">
+      <div className="section-line" />
 
-        {/* Steps */}
-        <div className="relative grid gap-8 md:grid-cols-3">
-          {/* Connecting line */}
-          <div className="absolute top-16 left-[16.66%] right-[16.66%] hidden h-0.5 bg-gradient-to-r from-rose-200 via-milo-200 to-emerald-200 md:block" />
+      <div className="mx-auto max-w-7xl px-6 pt-32 lg:px-8">
+        <ScrollReveal>
+          <div className="mb-20 text-center">
+            <p className="mb-4 text-[11px] font-semibold tracking-[0.15em] text-milo-400 uppercase">
+              How it works
+            </p>
+            <h2 className="mb-5 text-[2.5rem] font-extrabold leading-[1.1] tracking-[-0.02em] text-white sm:text-[3rem]">
+              Three steps. Zero missed patients.
+            </h2>
+            <p className="mx-auto max-w-lg text-[16px] text-gray-400">
+              Set up in minutes. From there, every missed call becomes a
+              conversation, every conversation becomes a booking.
+            </p>
+          </div>
+        </ScrollReveal>
 
+        <div className="grid gap-6 md:grid-cols-3">
           {steps.map((step, i) => (
-            <div key={step.number} className="relative text-center">
-              {/* Step number */}
-              <div className="relative z-10 mx-auto mb-6 flex h-32 w-32 flex-col items-center justify-center rounded-3xl bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-100">
-                <div
-                  className={`mb-2 flex h-12 w-12 items-center justify-center rounded-2xl ${step.iconBg}`}
-                >
-                  <step.icon size={24} className={step.iconColor} />
+            <ScrollReveal key={step.number} delay={i * 100}>
+              <div className="group relative h-full">
+                {/* Card */}
+                <div className={`glass relative h-full overflow-hidden rounded-3xl p-8 transition-all duration-500 hover:border-white/[0.1] hover:bg-white/[0.04]`}>
+                  {/* Background gradient */}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-b ${step.gradient} opacity-0 transition-opacity group-hover:opacity-100`}
+                  />
+
+                  <div className="relative">
+                    {/* Number */}
+                    <p className="mb-6 text-[11px] font-bold tracking-[0.2em] text-gray-600">
+                      STEP {step.number}
+                    </p>
+
+                    {/* Icon */}
+                    <div
+                      className={`mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/[0.04] shadow-[0_0_30px] ${step.glowColor} ring-1 ring-white/[0.06] transition-all group-hover:bg-white/[0.06]`}
+                    >
+                      <step.icon size={24} className={step.iconColor} />
+                    </div>
+
+                    <h3 className="mb-3 text-[18px] font-bold text-white">
+                      {step.title}
+                    </h3>
+                    <p className="text-[14px] leading-relaxed text-gray-400">
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
-                <span className="text-xs font-bold text-gray-300">
-                  STEP {step.number}
-                </span>
               </div>
-
-              <h3 className="mb-3 text-xl font-bold text-gray-900">
-                {step.title}
-              </h3>
-              <p className="mx-auto max-w-xs text-sm leading-relaxed text-gray-500">
-                {step.description}
-              </p>
-
-              {/* Arrow between steps */}
-              {i < steps.length - 1 && (
-                <div className="absolute right-0 top-16 hidden -translate-x-1/2 translate-y-[-50%] md:block">
-                  <ArrowRight size={20} className="text-gray-300" />
-                </div>
-              )}
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>

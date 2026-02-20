@@ -1,31 +1,33 @@
-import { Check, Zap, Building2, Sparkles } from "lucide-react";
+import { Check, Zap, Sparkles, Building2 } from "lucide-react";
+import ScrollReveal from "./ScrollReveal";
 
 const plans = [
   {
     name: "Starter",
     price: "$197",
-    period: "/month",
-    description: "Perfect for single-location clinics getting started with AI.",
+    period: "/mo",
+    description: "For single-location clinics getting started.",
     icon: Zap,
+    gradient: "from-gray-500 to-gray-600",
     features: [
       "Missed call text-back",
       "AI SMS conversations",
       "Up to 200 conversations/mo",
       "Lead capture & notifications",
-      "Basic analytics dashboard",
-      "1 dedicated phone number",
+      "Basic analytics",
+      "1 phone number",
       "Email support",
     ],
     cta: "Start Free Trial",
     popular: false,
-    gradient: "from-gray-600 to-gray-700",
   },
   {
     name: "Professional",
     price: "$397",
-    period: "/month",
-    description: "Full AI employee with web chat, follow-ups, and reviews.",
+    period: "/mo",
+    description: "Full AI employee. Everything you need.",
     icon: Sparkles,
+    gradient: "from-milo-500 via-violet-500 to-milo-500",
     features: [
       "Everything in Starter",
       "Unlimited conversations",
@@ -38,119 +40,121 @@ const plans = [
     ],
     cta: "Start Free Trial",
     popular: true,
-    gradient: "from-milo-500 to-milo-700",
   },
   {
     name: "Enterprise",
     price: "Custom",
     period: "",
-    description: "For multi-location practices needing custom integrations.",
+    description: "Multi-location with custom integrations.",
     icon: Building2,
+    gradient: "from-emerald-500 to-emerald-600",
     features: [
       "Everything in Professional",
       "Multiple locations",
       "Custom AI playbooks",
       "PMS integration",
-      "Custom API access",
+      "API access",
       "Dedicated account manager",
       "Custom reporting",
       "SLA guarantee",
     ],
     cta: "Talk to Sales",
     popular: false,
-    gradient: "from-emerald-500 to-emerald-700",
   },
 ];
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="bg-gray-50 py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        {/* Section header */}
-        <div className="mb-16 text-center">
-          <p className="mb-3 text-sm font-semibold tracking-wide text-milo-600 uppercase">
-            Simple pricing
-          </p>
-          <h2 className="mb-4 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            Less than a part-time receptionist.{" "}
-            <br className="hidden sm:block" />
-            <span className="gradient-text">Works 10x harder.</span>
-          </h2>
-          <p className="mx-auto max-w-2xl text-lg text-gray-500">
-            14-day free trial on all plans. No credit card required.
-            Cancel any time.
-          </p>
-        </div>
+    <section id="pricing" className="relative py-32">
+      <div className="section-line" />
 
-        {/* Pricing cards */}
-        <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-3">
-          {plans.map((plan) => (
-            <div
-              key={plan.name}
-              className={`relative rounded-2xl border bg-white p-8 transition-all ${
-                plan.popular
-                  ? "border-milo-200 shadow-xl shadow-milo-100/50 ring-2 ring-milo-500"
-                  : "border-gray-200 shadow-sm hover:shadow-md"
-              }`}
-            >
-              {plan.popular && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                  <span className="rounded-full bg-gradient-to-r from-milo-500 to-milo-600 px-4 py-1 text-xs font-bold text-white shadow-md">
-                    Most Popular
-                  </span>
-                </div>
-              )}
+      <div className="absolute left-[20%] top-[30%] h-[500px] w-[500px] orb orb-violet opacity-15" />
 
+      <div className="relative mx-auto max-w-7xl px-6 pt-32 lg:px-8">
+        <ScrollReveal>
+          <div className="mb-20 text-center">
+            <p className="mb-4 text-[11px] font-semibold tracking-[0.15em] text-milo-400 uppercase">
+              Pricing
+            </p>
+            <h2 className="mb-5 text-[2.5rem] font-extrabold leading-[1.1] tracking-[-0.02em] text-white sm:text-[3rem]">
+              Less than a part-time receptionist.
+              <br />
+              <span className="gradient-text">Works 10x harder.</span>
+            </h2>
+            <p className="mx-auto max-w-lg text-[16px] text-gray-400">
+              14-day free trial. No credit card required. Cancel any time.
+            </p>
+          </div>
+        </ScrollReveal>
+
+        <div className="mx-auto grid max-w-5xl gap-6 lg:grid-cols-3">
+          {plans.map((plan, i) => (
+            <ScrollReveal key={plan.name} delay={i * 100}>
               <div
-                className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${plan.gradient}`}
-              >
-                <plan.icon size={22} className="text-white" />
-              </div>
-
-              <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
-              <p className="mt-1 text-sm text-gray-500">{plan.description}</p>
-
-              <div className="my-6 flex items-baseline gap-1">
-                <span className="text-4xl font-extrabold text-gray-900">
-                  {plan.price}
-                </span>
-                <span className="text-sm text-gray-500">{plan.period}</span>
-              </div>
-
-              <a
-                href="#"
-                className={`mb-8 flex w-full items-center justify-center rounded-full py-3 text-sm font-semibold transition-all ${
+                className={`group relative h-full overflow-hidden rounded-2xl transition-all duration-500 ${
                   plan.popular
-                    ? "bg-gradient-to-r from-milo-500 to-milo-600 text-white shadow-md shadow-milo-500/25 hover:shadow-lg"
-                    : "bg-gray-900 text-white hover:bg-gray-800"
+                    ? "glow-border glass-strong"
+                    : "glass hover:border-white/[0.1] hover:bg-white/[0.04]"
                 }`}
               >
-                {plan.cta}
-              </a>
+                {plan.popular && (
+                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-milo-400 to-transparent" />
+                )}
 
-              <ul className="flex flex-col gap-3">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3">
-                    <Check
-                      size={16}
-                      className="mt-0.5 flex-shrink-0 text-emerald-500"
-                    />
-                    <span className="text-sm text-gray-600">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                <div className="p-7">
+                  {plan.popular && (
+                    <div className="mb-4 inline-flex rounded-full border border-milo-400/20 bg-milo-400/10 px-3 py-0.5">
+                      <span className="text-[10px] font-bold tracking-wider text-milo-400 uppercase">
+                        Most Popular
+                      </span>
+                    </div>
+                  )}
+
+                  <div className={`mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${plan.gradient}`}>
+                    <plan.icon size={20} className="text-white" />
+                  </div>
+
+                  <h3 className="text-[18px] font-bold text-white">{plan.name}</h3>
+                  <p className="mt-1 text-[13px] text-gray-500">{plan.description}</p>
+
+                  <div className="my-6 flex items-baseline gap-1">
+                    <span className="text-[2.5rem] font-extrabold tracking-tight text-white">
+                      {plan.price}
+                    </span>
+                    <span className="text-[14px] text-gray-500">{plan.period}</span>
+                  </div>
+
+                  <a
+                    href="#"
+                    className={`mb-7 flex w-full items-center justify-center rounded-full py-3 text-[13px] font-semibold transition-all ${
+                      plan.popular
+                        ? "btn-glow bg-gradient-to-r from-milo-500 via-violet-500 to-milo-500 bg-[length:200%_100%] text-white hover:bg-right"
+                        : "border border-white/[0.08] bg-white/[0.03] text-white hover:border-white/[0.15] hover:bg-white/[0.06]"
+                    }`}
+                  >
+                    {plan.cta}
+                  </a>
+
+                  <ul className="flex flex-col gap-3">
+                    {plan.features.map((f) => (
+                      <li key={f} className="flex items-start gap-3">
+                        <Check size={14} className="mt-0.5 flex-shrink-0 text-emerald-400" />
+                        <span className="text-[13px] text-gray-400">{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </ScrollReveal>
           ))}
         </div>
 
-        {/* Money-back guarantee */}
-        <div className="mt-12 text-center">
-          <p className="text-sm text-gray-500">
-            <strong className="text-gray-700">30-day money-back guarantee.</strong>{" "}
-            If Milo doesn&apos;t help capture more leads in 30 days, we&apos;ll refund
-            every cent. No questions asked.
+        <ScrollReveal delay={200}>
+          <p className="mt-12 text-center text-[13px] text-gray-600">
+            30-day money-back guarantee. If Milo doesn&apos;t capture more leads
+            in 30 days, full refund. No questions.
           </p>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

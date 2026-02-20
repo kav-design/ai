@@ -1,118 +1,116 @@
-import { Clock, TrendingDown, AlertTriangle } from "lucide-react";
+"use client";
+
+import ScrollReveal from "./ScrollReveal";
 
 export default function SpeedToLead() {
   return (
-    <section className="bg-white py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          {/* Left - Stats visualization */}
-          <div className="relative">
-            <div className="rounded-2xl border border-gray-100 bg-gray-50 p-8">
-              {/* The problem */}
-              <h3 className="mb-6 text-lg font-bold text-gray-900">
-                What happens when you miss a call
-              </h3>
+    <section className="relative py-32">
+      <div className="absolute inset-0 mesh-gradient opacity-50" />
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="grid items-center gap-16 lg:grid-cols-2">
+          {/* Left - Visual */}
+          <ScrollReveal>
+            <div className="relative">
+              <div className="glass rounded-3xl p-8">
+                <h3 className="mb-8 text-[15px] font-semibold text-white">
+                  What happens when you miss a call
+                </h3>
 
-              {/* Timeline */}
-              <div className="relative flex flex-col gap-0">
-                {/* Line */}
-                <div className="absolute left-[19px] top-6 bottom-6 w-0.5 bg-gradient-to-b from-emerald-400 via-amber-400 to-rose-400" />
+                <div className="relative flex flex-col gap-0">
+                  {/* Gradient line */}
+                  <div className="absolute left-5 top-6 bottom-6 w-px bg-gradient-to-b from-emerald-400/60 via-amber-400/60 to-rose-400/60" />
 
-                <div className="relative flex items-start gap-4 pb-6">
-                  <div className="z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-emerald-100 ring-4 ring-gray-50">
-                    <Clock size={18} className="text-emerald-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-900">
-                      0 - 5 minutes
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Patient is still engaged and ready to book
-                    </p>
-                    <div className="mt-2 rounded-lg bg-emerald-50 px-3 py-1.5">
-                      <p className="text-xs font-bold text-emerald-700">
-                        Milo responds in 2 seconds
-                      </p>
+                  {[
+                    {
+                      time: "0–5 min",
+                      text: "Patient is ready to book",
+                      badge: "Milo responds in 2 seconds",
+                      color: "emerald",
+                      dotBg: "bg-emerald-400",
+                      dotGlow: "shadow-emerald-400/40",
+                    },
+                    {
+                      time: "5–30 min",
+                      text: "80% of leads already lost. They've called your competitor.",
+                      badge: null,
+                      color: "amber",
+                      dotBg: "bg-amber-400",
+                      dotGlow: "shadow-amber-400/40",
+                    },
+                    {
+                      time: "30+ min",
+                      text: "Patient has booked elsewhere. Lost value: $2,500/year.",
+                      badge: null,
+                      color: "rose",
+                      dotBg: "bg-rose-400",
+                      dotGlow: "shadow-rose-400/40",
+                    },
+                  ].map((step, i) => (
+                    <div key={i} className="relative flex items-start gap-5 pb-8 last:pb-0">
+                      <div
+                        className={`relative z-10 mt-1 h-[10px] w-[10px] flex-shrink-0 rounded-full ${step.dotBg} shadow-[0_0_12px] ${step.dotGlow}`}
+                      />
+                      <div>
+                        <p className="text-[13px] font-semibold text-white">
+                          {step.time}
+                        </p>
+                        <p className="mt-0.5 text-[13px] leading-relaxed text-gray-400">
+                          {step.text}
+                        </p>
+                        {step.badge && (
+                          <div className="mt-2 inline-flex rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1">
+                            <p className="text-[11px] font-semibold text-emerald-400">
+                              {step.badge}
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </div>
-
-                <div className="relative flex items-start gap-4 pb-6">
-                  <div className="z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-amber-100 ring-4 ring-gray-50">
-                    <TrendingDown size={18} className="text-amber-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-900">
-                      5 - 30 minutes
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      80% of leads are already lost. Patient has moved on or
-                      called your competitor.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="relative flex items-start gap-4">
-                  <div className="z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-rose-100 ring-4 ring-gray-50">
-                    <AlertTriangle size={18} className="text-rose-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-900">
-                      30+ minutes
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Patient has booked elsewhere. Average value of a lost
-                      dental patient: $2,500/year.
-                    </p>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Right - Content */}
-          <div>
-            <p className="mb-3 text-sm font-semibold tracking-wide text-milo-600 uppercase">
-              The speed-to-lead problem
-            </p>
-            <h2 className="mb-4 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Every minute costs you{" "}
-              <span className="text-rose-500">$2,500</span>
-            </h2>
-            <p className="mb-6 text-lg text-gray-500 leading-relaxed">
-              Australian dental clinics miss an average of 35% of incoming
-              calls. Each missed call is a patient who needed you right now — and
-              will call someone else if they don&apos;t hear back fast.
-            </p>
+          <ScrollReveal delay={150}>
+            <div>
+              <p className="mb-4 text-[11px] font-semibold tracking-[0.15em] text-milo-400 uppercase">
+                The problem
+              </p>
+              <h2 className="mb-5 text-[2.5rem] font-extrabold leading-[1.1] tracking-[-0.02em] text-white sm:text-[3rem]">
+                Every minute costs you{" "}
+                <span className="gradient-text-warm">$2,500</span>
+              </h2>
+              <p className="mb-10 text-[16px] leading-relaxed text-gray-400">
+                Australian dental clinics miss 35% of incoming calls. Each one
+                is a patient who needed you right now — and will call someone
+                else if they don&apos;t hear back fast.
+              </p>
 
-            {/* Key numbers */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-xl border border-gray-100 bg-white p-4">
-                <p className="text-3xl font-extrabold text-gray-900">35%</p>
-                <p className="text-sm text-gray-500">
-                  of calls missed by the average clinic
-                </p>
-              </div>
-              <div className="rounded-xl border border-gray-100 bg-white p-4">
-                <p className="text-3xl font-extrabold text-gray-900">$87K</p>
-                <p className="text-sm text-gray-500">
-                  lost revenue per year from missed calls
-                </p>
-              </div>
-              <div className="rounded-xl border border-gray-100 bg-white p-4">
-                <p className="text-3xl font-extrabold text-emerald-600">2s</p>
-                <p className="text-sm text-gray-500">
-                  Milo&apos;s average response time
-                </p>
-              </div>
-              <div className="rounded-xl border border-gray-100 bg-white p-4">
-                <p className="text-3xl font-extrabold text-emerald-600">91%</p>
-                <p className="text-sm text-gray-500">
-                  of patients respond to Milo&apos;s SMS
-                </p>
+              {/* Stats grid */}
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { value: "35%", label: "Calls missed by average clinic", color: "text-white" },
+                  { value: "$87K", label: "Lost revenue per year", color: "text-white" },
+                  { value: "2s", label: "Milo's response time", color: "text-emerald-400" },
+                  { value: "91%", label: "Patients respond to Milo", color: "text-emerald-400" },
+                ].map((stat) => (
+                  <div
+                    key={stat.label}
+                    className="glass rounded-2xl p-5"
+                  >
+                    <p className={`text-[2rem] font-extrabold tracking-tight ${stat.color}`}>
+                      {stat.value}
+                    </p>
+                    <p className="mt-1 text-[12px] leading-snug text-gray-500">
+                      {stat.label}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>

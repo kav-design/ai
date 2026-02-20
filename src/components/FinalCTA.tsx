@@ -1,63 +1,65 @@
-import { ArrowRight, Phone, Clock, Star } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import ScrollReveal from "./ScrollReveal";
 
 export default function FinalCTA() {
   return (
-    <section className="relative overflow-hidden bg-navy-900 py-24">
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-milo-600/20 via-transparent to-emerald-500/10" />
-      <div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-milo-500/10 blur-3xl" />
-      <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl" />
+    <section className="relative overflow-hidden py-32">
+      <div className="section-line" />
 
-      <div className="relative mx-auto max-w-4xl px-6 text-center">
-        {/* Stat highlight */}
-        <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-rose-400/30 bg-rose-400/10 px-5 py-2">
-          <Clock size={16} className="text-rose-400" />
-          <span className="text-sm font-medium text-rose-300">
-            80% of patient leads are lost in the first 5 minutes
-          </span>
-        </div>
+      {/* Background */}
+      <div className="absolute inset-0 mesh-gradient opacity-80" />
+      <div className="absolute left-[30%] top-[20%] h-[500px] w-[500px] orb orb-blue opacity-30" />
+      <div className="absolute right-[20%] bottom-[10%] h-[400px] w-[400px] orb orb-violet opacity-20" />
 
-        <h2 className="mb-6 text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
-          Stop losing patients to{" "}
-          <span className="gradient-text">missed calls</span>
-        </h2>
-        <p className="mx-auto mb-10 max-w-2xl text-lg text-gray-400">
-          Every missed call is a patient choosing your competitor. Milo responds
-          in 2 seconds, books them in, and follows up until they&apos;re in
-          your chair. Start your free trial today.
-        </p>
+      <div className="relative mx-auto max-w-4xl px-6 pt-32 text-center lg:px-8">
+        <ScrollReveal>
+          {/* Urgency badge */}
+          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-rose-400/20 bg-rose-400/10 px-5 py-2">
+            <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-rose-400" />
+            <span className="text-[12px] font-medium text-rose-300">
+              80% of patient leads are lost in the first 5 minutes
+            </span>
+          </div>
 
-        {/* CTAs */}
-        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <a
-            href="#pricing"
-            className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-milo-500 to-milo-600 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-milo-500/25 transition-all hover:shadow-xl hover:shadow-milo-500/30"
-          >
-            Start Your Free Trial
-            <ArrowRight
-              size={18}
-              className="transition-transform group-hover:translate-x-1"
-            />
-          </a>
-          <a
-            href="#"
-            className="flex items-center gap-2 rounded-full border border-white/15 px-8 py-4 text-base font-semibold text-gray-300 transition-all hover:border-white/30 hover:text-white"
-          >
-            <Phone size={18} />
-            Book a Demo
-          </a>
-        </div>
+          <h2 className="mb-6 text-[2.5rem] font-extrabold leading-[1.1] tracking-[-0.02em] text-white sm:text-[3.5rem]">
+            Stop losing patients to{" "}
+            <span className="gradient-text">missed calls</span>
+          </h2>
+          <p className="mx-auto mb-10 max-w-2xl text-[17px] leading-relaxed text-gray-400">
+            Every missed call is a patient choosing your competitor. Milo
+            responds in 2 seconds, books them in, and follows up until
+            they&apos;re in your chair.
+          </p>
 
-        {/* Trust signals */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500">
-          <span className="flex items-center gap-1.5">
-            <Star size={14} className="text-amber-400" />
-            14-day free trial
-          </span>
-          <span>No credit card required</span>
-          <span>Cancel any time</span>
-          <span>30-day money-back guarantee</span>
-        </div>
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <a
+              href="#pricing"
+              className="btn-glow group flex items-center gap-2 rounded-full bg-gradient-to-r from-milo-500 via-violet-500 to-milo-500 bg-[length:200%_100%] px-8 py-4 text-[15px] font-semibold text-white transition-all hover:bg-right"
+            >
+              Start Your Free Trial
+              <ArrowRight
+                size={18}
+                className="transition-transform group-hover:translate-x-0.5"
+              />
+            </a>
+            <a
+              href="#"
+              className="flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.02] px-8 py-4 text-[15px] font-medium text-gray-300 transition-all hover:border-white/[0.15] hover:bg-white/[0.04]"
+            >
+              Book a Demo
+            </a>
+          </div>
+
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-[12px] text-gray-600">
+            <span>14-day free trial</span>
+            <span className="h-1 w-1 rounded-full bg-gray-700" />
+            <span>No credit card required</span>
+            <span className="h-1 w-1 rounded-full bg-gray-700" />
+            <span>Cancel any time</span>
+            <span className="h-1 w-1 rounded-full bg-gray-700" />
+            <span>30-day money-back guarantee</span>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

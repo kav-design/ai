@@ -1,162 +1,139 @@
 import {
-  PhoneOff,
-  MessageSquare,
-  Brain,
-  Globe,
-  BellRing,
-  Star,
-  BarChart3,
-  Clock,
-  CalendarDays,
-  ShieldCheck,
-  Repeat,
-  Zap,
+  PhoneOff, MessageSquare, Brain, Globe, BellRing, Star,
+  BarChart3, Clock, CalendarDays, ShieldCheck, Repeat, Zap,
 } from "lucide-react";
+import ScrollReveal from "./ScrollReveal";
 
 const features = [
   {
     icon: PhoneOff,
     title: "Missed Call Text-Back",
-    description:
-      "Every missed call gets an instant SMS within 2 seconds. Milo starts the conversation so patients never feel ignored.",
-    tag: "Core",
-    tagColor: "bg-milo-100 text-milo-700",
+    description: "Every missed call triggers an instant SMS within 2 seconds. Patients never feel ignored.",
+    color: "text-rose-400",
+    glow: "group-hover:shadow-rose-400/10",
   },
   {
     icon: Brain,
     title: "AI Conversation Engine",
-    description:
-      "Powered by advanced AI with dental-specific knowledge. Milo understands emergencies, suggests services, and handles objections.",
-    tag: "AI",
-    tagColor: "bg-purple-100 text-purple-700",
+    description: "Dental-specific AI that understands emergencies, suggests services, and handles objections naturally.",
+    color: "text-violet-400",
+    glow: "group-hover:shadow-violet-400/10",
   },
   {
     icon: Globe,
     title: "Web Chat Widget",
-    description:
-      "Add a chat widget to your website with one line of code. Same smart AI, now catching leads from your site visitors.",
-    tag: "Core",
-    tagColor: "bg-milo-100 text-milo-700",
+    description: "One line of code adds a chat widget to your site. Same smart AI catching leads from visitors.",
+    color: "text-milo-400",
+    glow: "group-hover:shadow-milo-400/10",
   },
   {
     icon: CalendarDays,
     title: "Appointment Booking",
-    description:
-      "Milo qualifies the patient, captures their preferred time, and sends your booking link — or notifies you to confirm.",
-    tag: "Automation",
-    tagColor: "bg-emerald-100 text-emerald-700",
+    description: "Qualifies the patient, captures preferred time, sends your booking link — or notifies you to confirm.",
+    color: "text-emerald-400",
+    glow: "group-hover:shadow-emerald-400/10",
   },
   {
     icon: Repeat,
     title: "Smart Follow-Ups",
-    description:
-      "Leads go quiet? Milo follows up at 24h, 48h, and 5 days with personalised messages that bring patients back.",
-    tag: "Automation",
-    tagColor: "bg-emerald-100 text-emerald-700",
+    description: "Automated 24h, 48h, and 5-day follow-ups with personalised messages that bring patients back.",
+    color: "text-amber-400",
+    glow: "group-hover:shadow-amber-400/10",
   },
   {
     icon: Star,
     title: "Google Review Collection",
-    description:
-      "After appointments, Milo texts patients a review request. Automated follow-up if they haven't left one after 3 days.",
-    tag: "Growth",
-    tagColor: "bg-amber-100 text-amber-700",
+    description: "Automated review requests after appointments with intelligent follow-up for non-responders.",
+    color: "text-yellow-400",
+    glow: "group-hover:shadow-yellow-400/10",
   },
   {
     icon: BellRing,
     title: "Real-Time Notifications",
-    description:
-      "Get SMS and email alerts the moment a lead is qualified. Full conversation transcript included. Respects quiet hours.",
-    tag: "Core",
-    tagColor: "bg-milo-100 text-milo-700",
+    description: "SMS and email alerts when leads are qualified. Full transcript included. Respects quiet hours.",
+    color: "text-milo-400",
+    glow: "group-hover:shadow-milo-400/10",
   },
   {
     icon: BarChart3,
     title: "Analytics Dashboard",
-    description:
-      "See conversations, leads captured, estimated revenue, review conversion rates, and your busiest hours — all in one place.",
-    tag: "Insights",
-    tagColor: "bg-indigo-100 text-indigo-700",
+    description: "Conversations, leads, estimated revenue, review rates, and busiest hours — all in one view.",
+    color: "text-indigo-400",
+    glow: "group-hover:shadow-indigo-400/10",
   },
   {
     icon: MessageSquare,
     title: "Unified Inbox",
-    description:
-      "All SMS and web chat conversations in one place. Staff can jump in and take over from AI at any time with one click.",
-    tag: "Core",
-    tagColor: "bg-milo-100 text-milo-700",
+    description: "All SMS and web chat threads in one place. Staff can take over from AI with one click.",
+    color: "text-teal-400",
+    glow: "group-hover:shadow-teal-400/10",
   },
   {
     icon: Clock,
     title: "24/7 Availability",
-    description:
-      "Milo never sleeps. After-hours calls, weekend enquiries, public holidays — every patient gets an instant response.",
-    tag: "Always On",
-    tagColor: "bg-rose-100 text-rose-700",
+    description: "After-hours, weekends, holidays — every patient gets an instant, intelligent response.",
+    color: "text-rose-400",
+    glow: "group-hover:shadow-rose-400/10",
   },
   {
     icon: Zap,
     title: "5-Minute Setup",
-    description:
-      "Complete the onboarding wizard, get your dedicated phone number, and Milo is ready. No complex integrations needed.",
-    tag: "Easy",
-    tagColor: "bg-teal-100 text-teal-700",
+    description: "Complete the wizard, get your number, start catching leads. No complex integrations.",
+    color: "text-amber-400",
+    glow: "group-hover:shadow-amber-400/10",
   },
   {
     icon: ShieldCheck,
-    title: "Dental Industry Playbooks",
-    description:
-      "Milo knows dental. Emergency detection, upselling whitening after cleans, welcome-back offers — all built in.",
-    tag: "AI",
-    tagColor: "bg-purple-100 text-purple-700",
+    title: "Dental Playbooks",
+    description: "Emergency detection, whitening upsells, welcome-back offers — industry intelligence built in.",
+    color: "text-violet-400",
+    glow: "group-hover:shadow-violet-400/10",
   },
 ];
 
 export default function Features() {
   return (
-    <section id="features" className="bg-gray-50 py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        {/* Section header */}
-        <div className="mb-16 text-center">
-          <p className="mb-3 text-sm font-semibold tracking-wide text-milo-600 uppercase">
-            Everything Milo can do
-          </p>
-          <h2 className="mb-4 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            One AI employee. Every job covered.
-          </h2>
-          <p className="mx-auto max-w-2xl text-lg text-gray-500">
-            From the moment a patient calls to the Google review they leave after
-            their visit — Milo handles the entire journey.
-          </p>
-        </div>
+    <section id="features" className="relative py-32">
+      <div className="section-line" />
 
-        {/* Features grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => (
-            <div
-              key={feature.title}
-              className="card-hover group rounded-2xl border border-gray-100 bg-white p-6"
-            >
-              <div className="mb-4 flex items-start justify-between">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-50 transition-colors group-hover:bg-milo-50">
-                  <feature.icon
-                    size={22}
-                    className="text-gray-600 transition-colors group-hover:text-milo-600"
-                  />
+      {/* Background orbs */}
+      <div className="absolute right-[-10%] top-[20%] h-[500px] w-[500px] orb orb-violet opacity-30" />
+      <div className="absolute left-[-10%] bottom-[10%] h-[400px] w-[400px] orb orb-blue opacity-20" />
+
+      <div className="relative mx-auto max-w-7xl px-6 pt-32 lg:px-8">
+        <ScrollReveal>
+          <div className="mb-20 text-center">
+            <p className="mb-4 text-[11px] font-semibold tracking-[0.15em] text-milo-400 uppercase">
+              Capabilities
+            </p>
+            <h2 className="mb-5 text-[2.5rem] font-extrabold leading-[1.1] tracking-[-0.02em] text-white sm:text-[3rem]">
+              One AI employee.{" "}
+              <span className="gradient-text">Every job covered.</span>
+            </h2>
+            <p className="mx-auto max-w-lg text-[16px] text-gray-400">
+              From the moment a patient calls to the Google review they leave —
+              Milo handles the entire journey.
+            </p>
+          </div>
+        </ScrollReveal>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((feature, i) => (
+            <ScrollReveal key={feature.title} delay={(i % 3) * 80}>
+              <div
+                className={`group glass relative overflow-hidden rounded-2xl p-6 transition-all duration-500 hover:border-white/[0.1] hover:bg-white/[0.04] hover:shadow-[0_0_60px] ${feature.glow}`}
+              >
+                <div className="mb-4">
+                  <feature.icon size={22} className={`${feature.color} transition-transform duration-500 group-hover:scale-110`} />
                 </div>
-                <span
-                  className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${feature.tagColor}`}
-                >
-                  {feature.tag}
-                </span>
+                <h3 className="mb-2 text-[15px] font-semibold text-white">
+                  {feature.title}
+                </h3>
+                <p className="text-[13px] leading-relaxed text-gray-500">
+                  {feature.description}
+                </p>
               </div>
-              <h3 className="mb-2 text-base font-bold text-gray-900">
-                {feature.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-gray-500">
-                {feature.description}
-              </p>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>

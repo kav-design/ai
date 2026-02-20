@@ -1,268 +1,169 @@
 "use client";
 
 import { useState } from "react";
-import { MessageSquare, Phone, Globe } from "lucide-react";
+import { Phone, Globe, MessageSquare } from "lucide-react";
+import ScrollReveal from "./ScrollReveal";
 
 type Scenario = "missed-call" | "web-chat" | "follow-up";
 
-const scenarios: Record<
-  Scenario,
-  {
-    label: string;
-    icon: typeof MessageSquare;
-    messages: { role: "ai" | "customer"; text: string; time: string }[];
-  }
-> = {
+const scenarios: Record<Scenario, {
+  label: string;
+  icon: typeof Phone;
+  status: string;
+  messages: { role: "ai" | "customer"; text: string }[];
+}> = {
   "missed-call": {
     label: "Missed Call",
     icon: Phone,
+    status: "Responding to missed call",
     messages: [
-      {
-        role: "ai",
-        text: "Hey! Thanks for calling Bright Smile Dental. Sorry we missed you \u2014 how can we help? \ud83d\ude0a",
-        time: "2:14 PM",
-      },
-      {
-        role: "customer",
-        text: "Hi, I need a check-up and clean. Haven't been to the dentist in about 2 years...",
-        time: "2:15 PM",
-      },
-      {
-        role: "ai",
-        text: "No worries at all \u2014 welcome back! \ud83d\ude04 We love seeing patients who are ready to get back on track. A check-up and clean is $199. We\u2019ve got spots available this week \u2014 would Thursday or Friday work for you?",
-        time: "2:15 PM",
-      },
-      {
-        role: "customer",
-        text: "Thursday arvo would be great!",
-        time: "2:16 PM",
-      },
-      {
-        role: "ai",
-        text: "Perfect! I\u2019ve got a 2:30pm or 4:00pm on Thursday. What\u2019s your name so I can book you in? \ud83d\udcdd",
-        time: "2:16 PM",
-      },
-      {
-        role: "customer",
-        text: "James Cooper. 4pm works",
-        time: "2:17 PM",
-      },
-      {
-        role: "ai",
-        text: "Awesome, James! I\u2019ll lock in 4:00pm Thursday for your check-up and clean. You\u2019ll get a confirmation shortly. See you then! \ud83e\uddb7\u2728",
-        time: "2:17 PM",
-      },
+      { role: "ai", text: "Hey! Thanks for calling Bright Smile Dental. Sorry we missed you \u2014 how can we help? \ud83d\ude0a" },
+      { role: "customer", text: "Hi, I need a check-up and clean. Haven\u2019t been in about 2 years..." },
+      { role: "ai", text: "No worries at all \u2014 welcome back! \ud83d\ude04 A check-up and clean is $199. We\u2019ve got spots this week \u2014 Thursday or Friday work?" },
+      { role: "customer", text: "Thursday arvo would be great!" },
+      { role: "ai", text: "Perfect! 2:30pm or 4:00pm on Thursday. What\u2019s your name so I can book you in? \ud83d\udcdd" },
+      { role: "customer", text: "James Cooper. 4pm works" },
+      { role: "ai", text: "Awesome, James! Locked in for 4pm Thursday. You\u2019ll get a confirmation shortly. See you then! \ud83e\uddb7\u2728" },
     ],
   },
   "web-chat": {
     label: "Web Chat",
     icon: Globe,
+    status: "Website visitor",
     messages: [
-      {
-        role: "ai",
-        text: "Hi there! \ud83d\udc4b Welcome to Bright Smile Dental. How can I help you today?",
-        time: "10:02 AM",
-      },
-      {
-        role: "customer",
-        text: "How much does teeth whitening cost?",
-        time: "10:03 AM",
-      },
-      {
-        role: "ai",
-        text: "Great question! Our professional in-chair whitening starts from $495, and we also offer take-home kits from $295. The in-chair option gives you results in just one visit \u2014 most patients see 4\u20138 shades whiter! \u2728 Would you like to book a free consultation?",
-        time: "10:03 AM",
-      },
-      {
-        role: "customer",
-        text: "The in-chair one sounds good. Do you have anything this week?",
-        time: "10:04 AM",
-      },
-      {
-        role: "ai",
-        text: "We do! I\u2019ve got Wednesday at 11am or Friday at 3pm available. Can I grab your name and number to book you in?",
-        time: "10:04 AM",
-      },
-      {
-        role: "customer",
-        text: "Emma Zhao, 0412 345 678. Wednesday please!",
-        time: "10:05 AM",
-      },
-      {
-        role: "ai",
-        text: "You\u2019re all set, Emma! Wednesday 11am for your whitening session. We\u2019ll send you a confirmation text shortly. Can\u2019t wait for you to see the results! \ud83d\ude01",
-        time: "10:05 AM",
-      },
+      { role: "ai", text: "Hi there! \ud83d\udc4b Welcome to Bright Smile Dental. How can I help?" },
+      { role: "customer", text: "How much does teeth whitening cost?" },
+      { role: "ai", text: "Great question! In-chair whitening starts from $495 \u2014 results in just one visit, 4\u20138 shades whiter! \u2728 Want to book a free consult?" },
+      { role: "customer", text: "The in-chair one sounds good. Anything this week?" },
+      { role: "ai", text: "Wednesday 11am or Friday 3pm available. Can I grab your name and number?" },
+      { role: "customer", text: "Emma Zhao, 0412 345 678. Wednesday please!" },
+      { role: "ai", text: "You\u2019re all set, Emma! Wednesday 11am. Confirmation text incoming. Can\u2019t wait for you to see the results! \ud83d\ude01" },
     ],
   },
   "follow-up": {
     label: "Follow-Up",
     icon: MessageSquare,
+    status: "Automated follow-up \u2022 Day 1",
     messages: [
-      {
-        role: "ai",
-        text: "Hey Sarah! Just checking in \u2014 did you still want to book that check-up and clean? We\u2019ve got a few spots this week \ud83d\ude0a",
-        time: "Mon 9:00 AM",
-      },
-      {
-        role: "customer",
-        text: "Oh yeah sorry, totally forgot! Yes please",
-        time: "Mon 11:22 AM",
-      },
-      {
-        role: "ai",
-        text: "No worries at all! I\u2019ve got Thursday at 10am or Friday at 2pm. Which works better for you?",
-        time: "Mon 11:22 AM",
-      },
-      {
-        role: "customer",
-        text: "Friday 2pm!",
-        time: "Mon 11:24 AM",
-      },
-      {
-        role: "ai",
-        text: "Done! You\u2019re booked in for Friday at 2pm. We\u2019ll text you a reminder the day before. See you soon, Sarah! \ud83e\uddb7",
-        time: "Mon 11:24 AM",
-      },
+      { role: "ai", text: "Hey Sarah! Just checking in \u2014 did you still want to book that check-up? We\u2019ve got spots this week \ud83d\ude0a" },
+      { role: "customer", text: "Oh yeah sorry, totally forgot! Yes please" },
+      { role: "ai", text: "No worries! Thursday 10am or Friday 2pm \u2014 which works?" },
+      { role: "customer", text: "Friday 2pm!" },
+      { role: "ai", text: "Done! Friday 2pm. We\u2019ll text you a reminder the day before. See you soon, Sarah! \ud83e\uddb7" },
     ],
   },
 };
 
 export default function ConversationDemo() {
   const [active, setActive] = useState<Scenario>("missed-call");
-  const scenario = scenarios[active];
+  const s = scenarios[active];
 
   return (
-    <section className="bg-white py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          {/* Left content */}
-          <div>
-            <p className="mb-3 text-sm font-semibold tracking-wide text-milo-600 uppercase">
-              See Milo in action
-            </p>
-            <h2 className="mb-4 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Real conversations.{" "}
-              <span className="gradient-text">Real bookings.</span>
-            </h2>
-            <p className="mb-8 max-w-lg text-lg text-gray-500">
-              Milo doesn&apos;t sound like a robot. It has natural, helpful
-              conversations that patients actually enjoy — across SMS, web chat,
-              and follow-ups.
-            </p>
+    <section className="relative py-32">
+      <div className="section-line" />
+      <div className="absolute left-[-5%] top-[30%] h-[400px] w-[400px] orb orb-emerald opacity-20" />
 
-            {/* Scenario tabs */}
-            <div className="flex flex-wrap gap-3">
-              {(Object.keys(scenarios) as Scenario[]).map((key) => {
-                const s = scenarios[key];
-                const Icon = s.icon;
-                return (
-                  <button
-                    key={key}
-                    onClick={() => setActive(key)}
-                    className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${
-                      active === key
-                        ? "bg-milo-600 text-white shadow-md shadow-milo-500/25"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    }`}
-                  >
-                    <Icon size={16} />
-                    {s.label}
-                  </button>
-                );
-              })}
-            </div>
+      <div className="relative mx-auto max-w-7xl px-6 pt-32 lg:px-8">
+        <div className="grid items-center gap-16 lg:grid-cols-2">
+          {/* Left */}
+          <ScrollReveal>
+            <div>
+              <p className="mb-4 text-[11px] font-semibold tracking-[0.15em] text-milo-400 uppercase">
+                See it in action
+              </p>
+              <h2 className="mb-5 text-[2.5rem] font-extrabold leading-[1.1] tracking-[-0.02em] text-white sm:text-[3rem]">
+                Real conversations.
+                <br />
+                <span className="gradient-text">Real bookings.</span>
+              </h2>
+              <p className="mb-10 max-w-md text-[16px] leading-relaxed text-gray-400">
+                Milo doesn&apos;t sound like a chatbot. Natural, helpful
+                conversations that patients actually enjoy.
+              </p>
 
-            {/* Key stats for current scenario */}
-            <div className="mt-8 flex gap-6">
-              <div>
-                <p className="text-2xl font-bold text-gray-900">~2 min</p>
-                <p className="text-sm text-gray-500">Avg. to qualified lead</p>
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">93%</p>
-                <p className="text-sm text-gray-500">Patient satisfaction</p>
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">24/7</p>
-                <p className="text-sm text-gray-500">Always available</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Right - Chat mockup */}
-          <div className="mx-auto w-full max-w-md">
-            <div className="rounded-3xl border border-gray-200 bg-gray-50 p-1 shadow-xl shadow-gray-200/50">
-              {/* Chat header */}
-              <div className="flex items-center gap-3 rounded-t-[22px] bg-white px-5 py-4 shadow-sm">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-milo-500 to-emerald-500 text-sm font-bold text-white">
-                  M
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">
-                    Milo AI &mdash; Bright Smile Dental
-                  </p>
-                  <div className="flex items-center gap-1.5">
-                    <div className="h-2 w-2 rounded-full bg-emerald-400" />
-                    <p className="text-xs text-gray-500">
-                      {active === "missed-call"
-                        ? "Responding to missed call"
-                        : active === "web-chat"
-                          ? "Website visitor"
-                          : "Automated follow-up"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Messages */}
-              <div className="flex max-h-[420px] flex-col gap-3 overflow-y-auto px-4 py-4">
-                {scenario.messages.map((msg, i) => (
-                  <div
-                    key={i}
-                    className={`flex flex-col ${
-                      msg.role === "customer" ? "items-end" : "items-start"
-                    }`}
-                  >
-                    <div
-                      className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
-                        msg.role === "ai"
-                          ? "rounded-tl-md bg-white shadow-sm ring-1 ring-gray-100"
-                          : "rounded-tr-md bg-milo-600 text-white"
+              {/* Tabs */}
+              <div className="flex flex-wrap gap-2">
+                {(Object.keys(scenarios) as Scenario[]).map((key) => {
+                  const Icon = scenarios[key].icon;
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => setActive(key)}
+                      className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-semibold transition-all duration-300 ${
+                        active === key
+                          ? "bg-gradient-to-r from-milo-500 to-violet-500 text-white shadow-lg shadow-milo-500/20"
+                          : "border border-white/[0.06] bg-white/[0.02] text-gray-400 hover:border-white/[0.1] hover:text-white"
                       }`}
                     >
-                      <p className="text-[13px] leading-relaxed">{msg.text}</p>
-                    </div>
-                    <p className="mt-1 px-1 text-[10px] text-gray-400">
-                      {msg.time}
-                    </p>
-                  </div>
-                ))}
+                      <Icon size={15} />
+                      {scenarios[key].label}
+                    </button>
+                  );
+                })}
               </div>
+            </div>
+          </ScrollReveal>
 
-              {/* Input area */}
-              <div className="flex items-center gap-2 rounded-b-[22px] border-t border-gray-100 bg-white px-4 py-3">
-                <div className="flex-1 rounded-full bg-gray-100 px-4 py-2">
-                  <p className="text-sm text-gray-400">Type a message...</p>
+          {/* Right - Chat */}
+          <ScrollReveal delay={150}>
+            <div className="mx-auto w-full max-w-md">
+              <div className="glass overflow-hidden rounded-3xl">
+                {/* Header */}
+                <div className="flex items-center gap-3 border-b border-white/[0.04] px-5 py-4">
+                  <div className="relative">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-milo-400 via-violet-500 to-emerald-400 text-xs font-bold text-white">
+                      M
+                    </div>
+                    <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-navy-800 bg-emerald-400" />
+                  </div>
+                  <div>
+                    <p className="text-[13px] font-semibold text-white">
+                      Milo AI
+                    </p>
+                    <p className="text-[11px] text-gray-500">{s.status}</p>
+                  </div>
                 </div>
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-milo-600">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M22 2L11 13" />
-                    <path d="M22 2L15 22L11 13L2 9L22 2Z" />
-                  </svg>
+
+                {/* Messages */}
+                <div className="flex max-h-[380px] flex-col gap-2.5 overflow-y-auto p-4">
+                  {s.messages.map((msg, i) => (
+                    <div
+                      key={`${active}-${i}`}
+                      className={`flex flex-col ${
+                        msg.role === "customer" ? "items-end" : "items-start"
+                      }`}
+                    >
+                      <div
+                        className={`max-w-[84%] rounded-2xl px-3.5 py-2.5 ${
+                          msg.role === "ai"
+                            ? "rounded-tl-sm bg-white/[0.05] ring-1 ring-white/[0.04]"
+                            : "rounded-tr-sm bg-gradient-to-br from-milo-500 to-violet-500"
+                        }`}
+                      >
+                        <p className={`text-[13px] leading-[1.5] ${
+                          msg.role === "ai" ? "text-gray-200" : "text-white"
+                        }`}>
+                          {msg.text}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Input */}
+                <div className="flex items-center gap-2 border-t border-white/[0.04] px-4 py-3">
+                  <div className="flex-1 rounded-full bg-white/[0.03] px-4 py-2.5 ring-1 ring-white/[0.04]">
+                    <p className="text-[12px] text-gray-600">Message...</p>
+                  </div>
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-milo-500 to-violet-500">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M22 2L11 13" /><path d="M22 2L15 22L11 13L2 9L22 2Z" />
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>

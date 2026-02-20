@@ -2,81 +2,70 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import ScrollReveal from "./ScrollReveal";
 
 const faqs = [
   {
-    question: "How quickly can I get set up?",
-    answer:
-      "Most clinics are fully set up in under 5 minutes. Complete the onboarding wizard, get your dedicated Australian phone number, set up call forwarding, and Milo starts handling conversations immediately.",
+    q: "How quickly can I get set up?",
+    a: "Under 5 minutes. Complete the onboarding wizard, get your dedicated Australian number, set up call forwarding, and Milo starts immediately.",
   },
   {
-    question: "Does Milo sound like a robot?",
-    answer:
-      "Not at all. Milo uses advanced AI trained specifically for dental conversations. It uses natural Australian English, understands context, and has genuine personality. Patients regularly think they're chatting with a real receptionist.",
+    q: "Does Milo sound like a robot?",
+    a: "Not at all. Milo uses advanced AI trained for dental conversations. Natural Australian English, understands context, has genuine personality. Patients regularly think they\u2019re chatting with a real person.",
   },
   {
-    question: "What happens if Milo can't handle a conversation?",
-    answer:
-      "Milo knows its limits. If a conversation becomes too complex or the patient specifically asks for a human, Milo smoothly escalates to you with a full conversation transcript and sends you an instant notification. Your staff can take over the conversation at any time from the dashboard.",
+    q: "What if Milo can\u2019t handle a conversation?",
+    a: "Milo knows its limits. Complex conversations get smoothly escalated to you with a full transcript and instant notification. Staff can take over any conversation from the dashboard.",
   },
   {
-    question: "Can I customise what Milo says?",
-    answer:
-      "Absolutely. You can set the AI personality (professional, friendly, or casual), add custom FAQs and responses, configure your services and pricing, and even add custom playbooks. Milo adapts to your practice's unique voice and offerings.",
+    q: "Can I customise what Milo says?",
+    a: "Yes. Set the AI personality, add custom FAQs, configure services and pricing, create custom playbooks. Milo adapts to your practice\u2019s unique voice.",
   },
   {
-    question: "How does the web chat widget work?",
-    answer:
-      "Add a single line of code to your website and a chat bubble appears in the bottom-right corner. Visitors can chat with Milo just like they would via SMS. You can customise the colours and welcome message to match your website. All conversations appear in the same unified inbox.",
+    q: "How does the web chat widget work?",
+    a: "One line of code on your website. Chat bubble in the corner, same AI as SMS. Customisable colours and messaging. All conversations in the same inbox.",
   },
   {
-    question: "Is my patient data secure?",
-    answer:
-      "Yes. We use enterprise-grade security with Supabase (built on PostgreSQL) with row-level security policies ensuring each clinic's data is completely isolated. All data is encrypted in transit and at rest. We're committed to Australian data privacy standards.",
+    q: "Is my patient data secure?",
+    a: "Enterprise-grade security with row-level isolation. Each clinic\u2019s data is completely separated. Encrypted in transit and at rest. Australian data privacy compliant.",
   },
   {
-    question: "What if I already have a phone system?",
-    answer:
-      "Milo works alongside your existing system. You get a dedicated Milo phone number and simply set up call forwarding from your main number. When you miss a call, it routes to Milo, which then handles the text-back. Your existing number stays the same.",
+    q: "What if I already have a phone system?",
+    a: "Milo works alongside it. You get a dedicated Milo number and set up call forwarding from your main line. When you miss a call, Milo handles the text-back.",
   },
   {
-    question: "Can I cancel any time?",
-    answer:
-      "Yes, no lock-in contracts. You can cancel your subscription at any time from your dashboard. We also offer a 30-day money-back guarantee — if Milo doesn't help you capture more leads in the first month, we'll refund every cent.",
+    q: "Can I cancel any time?",
+    a: "Yes. No lock-in contracts. Cancel from your dashboard. Plus a 30-day money-back guarantee \u2014 if Milo doesn\u2019t help, full refund.",
   },
 ];
 
-function FAQItem({
-  question,
-  answer,
-}: {
-  question: string;
-  answer: string;
-}) {
+function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-b border-gray-100 last:border-0">
+    <div className="border-b border-white/[0.04] last:border-0">
       <button
         onClick={() => setOpen(!open)}
         className="flex w-full items-center justify-between py-5 text-left"
       >
-        <span className="pr-4 text-base font-semibold text-gray-900">
-          {question}
+        <span className="pr-4 text-[15px] font-semibold text-white">
+          {q}
         </span>
         <ChevronDown
-          size={20}
-          className={`flex-shrink-0 text-gray-400 transition-transform ${
-            open ? "rotate-180" : ""
+          size={18}
+          className={`flex-shrink-0 text-gray-600 transition-transform duration-300 ${
+            open ? "rotate-180 text-milo-400" : ""
           }`}
         />
       </button>
       <div
-        className={`overflow-hidden transition-all duration-300 ${
-          open ? "max-h-96 pb-5" : "max-h-0"
+        className={`grid transition-all duration-300 ${
+          open ? "grid-rows-[1fr] pb-5" : "grid-rows-[0fr]"
         }`}
       >
-        <p className="text-sm leading-relaxed text-gray-500">{answer}</p>
+        <div className="overflow-hidden">
+          <p className="text-[14px] leading-relaxed text-gray-400">{a}</p>
+        </div>
       </div>
     </div>
   );
@@ -84,24 +73,28 @@ function FAQItem({
 
 export default function FAQ() {
   return (
-    <section id="faq" className="bg-white py-24">
-      <div className="mx-auto max-w-3xl px-6">
-        {/* Section header */}
-        <div className="mb-12 text-center">
-          <p className="mb-3 text-sm font-semibold tracking-wide text-milo-600 uppercase">
-            FAQ
-          </p>
-          <h2 className="mb-4 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            Got questions?
-          </h2>
-        </div>
+    <section id="faq" className="relative py-32">
+      <div className="section-line" />
 
-        {/* FAQ items */}
-        <div className="rounded-2xl border border-gray-100 bg-white px-6 shadow-sm">
-          {faqs.map((faq) => (
-            <FAQItem key={faq.question} {...faq} />
-          ))}
-        </div>
+      <div className="relative mx-auto max-w-3xl px-6 pt-32 lg:px-8">
+        <ScrollReveal>
+          <div className="mb-12 text-center">
+            <p className="mb-4 text-[11px] font-semibold tracking-[0.15em] text-milo-400 uppercase">
+              FAQ
+            </p>
+            <h2 className="text-[2.5rem] font-extrabold tracking-[-0.02em] text-white">
+              Got questions?
+            </h2>
+          </div>
+        </ScrollReveal>
+
+        <ScrollReveal delay={100}>
+          <div className="glass rounded-2xl px-6">
+            {faqs.map((faq) => (
+              <FAQItem key={faq.q} {...faq} />
+            ))}
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );
