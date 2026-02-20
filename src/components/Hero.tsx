@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { ArrowRight, Zap, Clock, Wifi, TrendingUp } from "lucide-react";
+import { ArrowRight, Zap } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const messages = [
   {
     role: "ai" as const,
-    text: "Hey! Thanks for calling Bright Smile Dental. Sorry we missed you — how can we help? 😊",
+    text: "Hey! Thanks for calling Bright Smile Dental. Sorry we missed you \u2014 how can we help? \ud83d\ude0a",
   },
   {
     role: "customer" as const,
@@ -14,7 +15,7 @@ const messages = [
   },
   {
     role: "ai" as const,
-    text: "I'm sorry to hear that! We can fit you in today. What's your name?",
+    text: "I\u2019m sorry to hear that! We can fit you in today. What\u2019s your name?",
   },
   {
     role: "customer" as const,
@@ -22,7 +23,7 @@ const messages = [
   },
   {
     role: "ai" as const,
-    text: "Thanks Sarah! I've got 10:30am or 2pm today — which works? 🦷",
+    text: "Thanks Sarah! I\u2019ve got 10:30am or 2pm today \u2014 which works? \ud83e\uddb7",
   },
   {
     role: "customer" as const,
@@ -30,7 +31,7 @@ const messages = [
   },
   {
     role: "ai" as const,
-    text: "You're all booked for 2pm today, Sarah! We'll text you a reminder. See you soon! ✨",
+    text: "You\u2019re all booked for 2pm today, Sarah! We\u2019ll text you a reminder. See you soon! \u2728",
   },
 ];
 
@@ -42,12 +43,10 @@ function FloatingBubbles() {
 
   useEffect(() => {
     if (visibleCount >= messages.length) {
-      // Show "Appointment Booked" after last message
-      const t = setTimeout(() => setShowBooked(true), 600);
+      const t = setTimeout(() => setShowBooked(true), 500);
       return () => clearTimeout(t);
     }
 
-    // Show "Lead Captured" after customer gives name (index 3)
     if (visibleCount === 4 && !showLeadCapture) {
       setShowLeadCapture(true);
     }
@@ -57,7 +56,6 @@ function FloatingBubbles() {
     return () => clearTimeout(timer);
   }, [visibleCount, showLeadCapture]);
 
-  // Auto-scroll to bottom as messages appear
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -68,7 +66,7 @@ function FloatingBubbles() {
     <div className="relative">
       <div
         ref={scrollRef}
-        className="flex max-h-[460px] flex-col gap-2.5 overflow-y-auto pr-2"
+        className="no-scrollbar flex max-h-[470px] flex-col gap-2.5 overflow-y-auto"
       >
         {messages.map((msg, i) => (
           <div
@@ -103,38 +101,22 @@ function FloatingBubbles() {
         ))}
       </div>
 
-      {/* Lead Captured — subtle floating pill */}
+      {/* Lead Captured — micro notification */}
       {showLeadCapture && (
-        <div className="absolute -left-3 top-[45%] z-10 transition-all duration-500 animate-in sm:-left-8">
-          <div className="flex items-center gap-2 rounded-xl border border-border bg-white px-3 py-2 shadow-lg">
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-teal-light">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5f8577" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <polyline points="16 11 18 13 22 9" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-[10px] font-semibold text-charcoal">Lead Captured</p>
-              <p className="text-[9px] text-muted">Sarah M. — Emergency</p>
-            </div>
+        <div className="absolute -left-2 top-[42%] z-10 animate-in sm:-left-6">
+          <div className="flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 text-[9px] shadow-sm ring-1 ring-black/5 backdrop-blur-sm">
+            <div className="h-1.5 w-1.5 rounded-full bg-teal" />
+            <span className="font-medium text-charcoal">Lead captured</span>
           </div>
         </div>
       )}
 
-      {/* Appointment Booked — subtle floating pill */}
+      {/* Appointment Booked — micro notification */}
       {showBooked && (
-        <div className="absolute -right-2 bottom-2 z-10 transition-all duration-500 animate-in sm:-right-6">
-          <div className="flex items-center gap-2 rounded-xl border border-border bg-white px-3 py-2 shadow-lg">
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-emerald-50">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-[10px] font-semibold text-charcoal">Appointment Booked</p>
-              <p className="text-[9px] text-muted">Today 2:00pm — Emergency</p>
-            </div>
+        <div className="absolute -right-1 bottom-1 z-10 animate-in sm:-right-4">
+          <div className="flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 text-[9px] shadow-sm ring-1 ring-black/5 backdrop-blur-sm">
+            <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            <span className="font-medium text-charcoal">Booked</span>
           </div>
         </div>
       )}
@@ -142,24 +124,42 @@ function FloatingBubbles() {
   );
 }
 
-const stats = [
-  { value: "2s", label: "Response time", icon: Clock, color: "text-teal", bg: "bg-teal-light" },
-  { value: "24/7", label: "Availability", icon: Wifi, color: "text-terracotta", bg: "bg-terracotta-light" },
-  { value: "3x", label: "More bookings", icon: TrendingUp, color: "text-sage", bg: "bg-sage-light" },
-];
-
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const bgY1 = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  const bgY2 = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const bgY3 = useTransform(scrollYProgress, [0, 1], [0, -80]);
+
   return (
-    <section className="relative overflow-hidden pt-28 pb-20 sm:pt-36 sm:pb-28">
-      {/* Organic background shapes */}
-      <div className="organic-shape organic-sage absolute -top-40 -left-32 h-[550px] w-[550px]" />
-      <div className="organic-shape organic-gold absolute -top-20 -right-40 h-[600px] w-[600px]" />
-      <div className="organic-shape organic-blue absolute -bottom-32 left-1/3 h-[450px] w-[450px]" />
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden pt-28 pb-20 sm:pt-36 sm:pb-28"
+    >
+      {/* Organic background shapes with parallax */}
+      <motion.div style={{ y: bgY1 }} className="absolute -top-40 -left-32">
+        <div className="organic-shape organic-sage float-slow h-[550px] w-[550px]" />
+      </motion.div>
+      <motion.div style={{ y: bgY2 }} className="absolute -top-20 -right-40">
+        <div className="organic-shape organic-gold float-medium h-[600px] w-[600px]" />
+      </motion.div>
+      <motion.div style={{ y: bgY3 }} className="absolute -bottom-32 left-1/3">
+        <div className="organic-shape organic-blue float-fast h-[450px] w-[450px]" />
+      </motion.div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid items-center gap-16 lg:grid-cols-2 lg:gap-12">
           {/* Left content */}
-          <div className="text-center lg:text-left">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center lg:text-left"
+          >
             {/* Badge */}
             <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-1.5 shadow-sm">
               <div className="relative h-2 w-2">
@@ -174,14 +174,12 @@ export default function Hero() {
             <h1 className="mb-6 text-[2.75rem] font-bold leading-[1.08] tracking-tight text-charcoal sm:text-5xl lg:text-[3.5rem]">
               Turn missed calls into{" "}
               <br />
-              <span className="text-terracotta">
-                booked patients.
-              </span>
+              <span className="text-terracotta">booked patients.</span>
             </h1>
 
             <p className="mx-auto mb-10 max-w-lg text-[17px] leading-relaxed text-body lg:mx-0">
               Milo responds in 2 seconds via SMS and voice, books appointments,
-              follows up with leads, and collects Google reviews — 24/7, on
+              follows up with leads, and collects Google reviews &mdash; 24/7, on
               autopilot.
             </p>
 
@@ -205,18 +203,19 @@ export default function Hero() {
               </a>
             </div>
 
-            {/* Proof points — styled cards */}
-            <div className="mt-12 flex flex-wrap justify-center gap-4 lg:justify-start">
-              {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="flex items-center gap-3 rounded-2xl border border-border bg-white px-5 py-3 shadow-sm"
-                >
-                  <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${stat.bg}`}>
-                    <stat.icon size={16} className={stat.color} />
-                  </div>
-                  <div>
-                    <p className={`text-lg font-bold leading-none ${stat.color}`}>
+            {/* Proof points — clean with dividers */}
+            <div className="mt-12 flex items-center justify-center gap-0 lg:justify-start">
+              {[
+                { value: "2s", label: "Response time", color: "text-teal" },
+                { value: "24/7", label: "Availability", color: "text-terracotta" },
+                { value: "3x", label: "More bookings", color: "text-charcoal" },
+              ].map((stat, i) => (
+                <div key={stat.label} className="flex items-center">
+                  {i > 0 && (
+                    <div className="mx-6 h-8 w-px bg-border" />
+                  )}
+                  <div className="text-center lg:text-left">
+                    <p className={`text-2xl font-bold tracking-tight ${stat.color}`}>
                       {stat.value}
                     </p>
                     <p className="text-[11px] text-muted">{stat.label}</p>
@@ -224,14 +223,23 @@ export default function Hero() {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Right - Floating chat bubbles */}
-          <div className="flex justify-center lg:justify-end">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.2,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className="flex justify-center lg:justify-end"
+          >
             <div className="w-full max-w-[420px]">
               <FloatingBubbles />
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

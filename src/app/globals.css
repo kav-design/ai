@@ -150,8 +150,32 @@ body {
   margin: 0 auto;
 }
 
+/* === HIDE SCROLLBAR (for chat panels) === */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
 /* === SCROLLBAR === */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
+
+/* === PARALLAX SCROLL === */
+@keyframes subtle-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.float-slow {
+  animation: subtle-float 8s ease-in-out infinite;
+}
+
+.float-medium {
+  animation: subtle-float 6s ease-in-out infinite;
+  animation-delay: -2s;
+}
+
+.float-fast {
+  animation: subtle-float 5s ease-in-out infinite;
+  animation-delay: -4s;
+}

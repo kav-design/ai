@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Phone, ArrowRight } from "lucide-react";
-import ScrollReveal from "./ScrollReveal";
+import { motion, useInView } from "framer-motion";
 
 const transcriptLines = [
   {
@@ -29,7 +29,6 @@ function WaveformVisualizer() {
   return (
     <div className="flex h-[140px] items-end justify-between px-2">
       {Array.from({ length: barCount }).map((_, i) => {
-        // Deterministic pseudo-random based on index (avoids hydration mismatch)
         const seed1 = ((i * 7 + 13) % 20) / 10;
         const seed2 = ((i * 11 + 3) % 16) / 20 + 0.8;
         return (
@@ -51,26 +50,28 @@ function WaveformVisualizer() {
 function LiveCallCard() {
   const [seconds, setSeconds] = useState(0);
   const [visibleLines, setVisibleLines] = useState(0);
+  const cardRef = useRef(null);
+  const isInView = useInView(cardRef, { once: true, amount: 0.4 });
 
-  // Timer counting up from 0:00
   useEffect(() => {
+    if (!isInView) return;
     const interval = setInterval(() => setSeconds((s) => s + 1), 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isInView]);
 
-  // Transcript lines appearing one at a time
   useEffect(() => {
+    if (!isInView) return;
     if (visibleLines >= transcriptLines.length) return;
     const delay = visibleLines === 0 ? 2500 : 2500;
     const timer = setTimeout(() => setVisibleLines((v) => v + 1), delay);
     return () => clearTimeout(timer);
-  }, [visibleLines]);
+  }, [visibleLines, isInView]);
 
   const formatTime = (s: number) =>
     `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm">
+    <div ref={cardRef} className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm">
       {/* Call status header */}
       <div className="mb-6">
         <div className="flex items-center justify-between">
@@ -130,16 +131,19 @@ export default function VoiceAgent() {
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid items-center gap-16 lg:grid-cols-2">
           {/* Left column - Content */}
-          <ScrollReveal>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
             <div>
               <p className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-gold">
                 AI Voice Agent
               </p>
               <h2 className="mb-5 text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl">
                 Hear Milo{" "}
-                <span className="text-terracotta">
-                  answer
-                </span>{" "}
+                <span className="text-terracotta">answer</span>{" "}
                 your phone.
               </h2>
               <p className="mb-8 max-w-md text-[17px] leading-relaxed text-white/70">
@@ -185,12 +189,21 @@ export default function VoiceAgent() {
                 ))}
               </div>
             </div>
-          </ScrollReveal>
+          </motion.div>
 
           {/* Right column - Animated Waveform Visualization */}
-          <ScrollReveal delay={150}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{
+              duration: 0.7,
+              delay: 0.15,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+          >
             <LiveCallCard />
-          </ScrollReveal>
+          </motion.div>
         </div>
       </div>
     </section>

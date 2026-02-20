@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import ScrollReveal from "./ScrollReveal";
+import { motion, useInView } from "framer-motion";
 
 function useCounter(end: number, duration: number, start: boolean) {
   const [count, setCount] = useState(0);
@@ -66,7 +66,7 @@ const stats = [
   {
     value: 2,
     suffix: "s",
-    label: "Milo's response time",
+    label: "Milo\u2019s response time",
     color: "text-teal",
   },
   {
@@ -78,48 +78,45 @@ const stats = [
 ];
 
 export default function SpeedToLead() {
-  const [inView, setInView] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.3 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
   return (
     <section className="py-24 sm:py-32">
       <div className="mx-auto max-w-5xl px-6 lg:px-8">
         {/* Header */}
-        <ScrollReveal>
-          <div className="text-center">
-            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.15em] text-terracotta">
-              The Problem
-            </p>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-charcoal">
-              Every missed call costs you{" "}
-              <span className="text-terracotta">$2,500.</span>
-            </h2>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-body">
-              Australian dental clinics miss 35% of incoming calls.
-              That&rsquo;s $87,000 in lost revenue per year &mdash; per clinic.
-            </p>
-          </div>
-        </ScrollReveal>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center"
+        >
+          <p className="mb-5 text-xs font-semibold uppercase tracking-[0.15em] text-terracotta">
+            The Problem
+          </p>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-charcoal">
+            Every missed call costs you{" "}
+            <span className="text-terracotta">$2,500.</span>
+          </h2>
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-body">
+            Australian dental clinics miss 35% of incoming calls.
+            That&rsquo;s $87,000 in lost revenue per year &mdash; per clinic.
+          </p>
+        </motion.div>
 
         {/* Stats row */}
         <div ref={sectionRef} className="mt-20">
-          <ScrollReveal delay={150}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{
+              duration: 0.6,
+              delay: 0.15,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+          >
             <div className="grid grid-cols-2 gap-y-12 lg:grid-cols-4">
               {stats.map((stat, i) => (
                 <AnimatedStat
@@ -130,19 +127,23 @@ export default function SpeedToLead() {
                   label={stat.label}
                   color={stat.color}
                   divider={i < stats.length - 1}
-                  inView={inView}
+                  inView={isInView}
                 />
               ))}
             </div>
-          </ScrollReveal>
+          </motion.div>
         </div>
 
         {/* Bottom CTA text */}
-        <ScrollReveal delay={300}>
-          <p className="mt-20 text-center text-lg text-body">
-            Milo responds in 2 seconds. Your competitor doesn&rsquo;t.
-          </p>
-        </ScrollReveal>
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-20 text-center text-lg text-body"
+        >
+          Milo responds in 2 seconds. Your competitor doesn&rsquo;t.
+        </motion.p>
       </div>
     </section>
   );
