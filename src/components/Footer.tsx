@@ -37,11 +37,8 @@ export default function Footer() {
         <div className="grid gap-12 md:grid-cols-4">
           {/* Brand */}
           <div>
-            <Link href="/" className="mb-4 flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-terracotta text-sm font-bold text-white">
-                M
-              </div>
-              <span className="text-lg font-semibold text-charcoal">milo</span>
+            <Link href="/" className="mb-4 inline-block">
+              <img src="/logo.png" alt="Milo AI" className="h-8" />
             </Link>
             <p className="mb-4 text-sm leading-relaxed text-body">
               The AI employee that handles missed calls, books appointments, and

@@ -30,13 +30,8 @@ export default function Navbar() {
     >
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 lg:px-8">
         {/* Logo */}
-        <a href="#" className="group flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-terracotta text-sm font-bold text-white transition-all duration-300 group-hover:scale-105 group-hover:shadow-md group-hover:shadow-terracotta/20">
-            M
-          </div>
-          <span className="text-lg font-semibold tracking-tight text-charcoal">
-            milo
-          </span>
+        <a href="/" className="transition-opacity hover:opacity-80">
+          <img src="/logo.png" alt="Milo AI" className="h-8" />
         </a>
 
         {/* Desktop nav */}

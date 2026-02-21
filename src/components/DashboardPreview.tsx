@@ -175,13 +175,8 @@ export default function DashboardPreview() {
                 <div className="flex">
                   {/* Sidebar */}
                   <div className="hidden w-48 flex-shrink-0 border-r border-border bg-white p-4 md:block">
-                    <div className="mb-8 flex items-center gap-2">
-                      <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-terracotta text-[10px] font-bold text-white">
-                        M
-                      </div>
-                      <span className="text-[13px] font-semibold text-charcoal">
-                        milo
-                      </span>
+                    <div className="mb-8">
+                      <img src="/logo.png" alt="Milo AI" className="h-6" />
                     </div>
                     <nav className="flex flex-col gap-0.5">
                       {[
