@@ -151,7 +151,7 @@ export default function ChatWidget() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
             onClick={() => setOpen(true)}
-            className="fixed bottom-6 right-6 z-[9997] flex h-14 w-14 items-center justify-center rounded-full bg-terracotta shadow-lg shadow-terracotta/25 transition-colors hover:bg-terracotta-dark"
+            className="fixed bottom-6 right-6 z-[9999] flex h-14 w-14 items-center justify-center rounded-full bg-terracotta shadow-lg shadow-terracotta/25 transition-colors hover:bg-terracotta-dark"
             aria-label="Open chat"
           >
             <MessageCircle size={24} className="text-white" />
@@ -167,7 +167,7 @@ export default function ChatWidget() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: 20 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed z-[9997] flex flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-2xl max-sm:inset-0 max-sm:rounded-none max-sm:border-0 sm:bottom-6 sm:right-6 sm:h-[560px] sm:w-[400px]"
+            className="fixed z-[9999] flex flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-2xl max-sm:inset-0 max-sm:rounded-none max-sm:border-0 sm:bottom-6 sm:right-6 sm:h-[560px] sm:w-[400px]"
           >
             {/* Header */}
             <div className="flex items-center gap-3 bg-charcoal px-5 py-4">
