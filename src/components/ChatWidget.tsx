@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { X, Send, Zap, Bot } from "lucide-react";
+import { X, Send, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Message = {
@@ -53,6 +53,7 @@ export default function ChatWidget() {
   ]);
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -76,6 +77,19 @@ export default function ChatWidget() {
     if (open && inputRef.current) {
       inputRef.current.focus();
     }
+  }, [open]);
+
+  useEffect(() => {
+    if (open) {
+      setShowTooltip(false);
+      return;
+    }
+    const show = setTimeout(() => setShowTooltip(true), 2000);
+    const hide = setTimeout(() => setShowTooltip(false), 7000);
+    return () => {
+      clearTimeout(show);
+      clearTimeout(hide);
+    };
   }, [open]);
 
   const sendMessage = useCallback(
@@ -170,78 +184,262 @@ export default function ChatWidget() {
 
   return createPortal(
     <>
-      {/* Floating button — subtle float animation */}
+      {/* Tooltip bubble */}
+      <AnimatePresence>
+        {!open && showTooltip && (
+          <motion.div
+            key="tooltip"
+            initial={{ opacity: 0, y: 6, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 4, scale: 0.95 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              position: "fixed" as const,
+              zIndex: 9999,
+              bottom: 96,
+              right: 24,
+              padding: "10px 16px",
+              borderRadius: 14,
+              background: "#ffffff",
+              boxShadow:
+                "0 4px 20px rgba(0,0,0,0.1), 0 1px 4px rgba(0,0,0,0.06)",
+              fontSize: 13,
+              fontWeight: 500,
+              color: "var(--color-charcoal)",
+              whiteSpace: "nowrap" as const,
+              pointerEvents: "none" as const,
+            }}
+          >
+            Chat with Milo
+            <div
+              style={{
+                position: "absolute",
+                bottom: -5,
+                right: 28,
+                width: 10,
+                height: 10,
+                background: "#ffffff",
+                transform: "rotate(45deg)",
+                boxShadow: "2px 2px 4px rgba(0,0,0,0.04)",
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Floating robo-dachshund button */}
       <AnimatePresence>
         {!open && (
           <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, y: 50, scale: 0.4, rotate: -15 }}
             animate={{
               opacity: 1,
+              y: [0, -5, 0],
               scale: 1,
-              y: [0, -4, 0],
+              rotate: 0,
             }}
-            exit={{ opacity: 0, scale: 0.85 }}
+            exit={{ opacity: 0, scale: 0.8, y: 15 }}
             transition={{
-              opacity: { duration: 0.5 },
-              scale: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+              opacity: { duration: 0.4 },
+              scale: {
+                duration: 0.7,
+                ease: [0.34, 1.56, 0.64, 1],
+              },
+              rotate: {
+                duration: 0.7,
+                ease: [0.34, 1.56, 0.64, 1],
+              },
               y: {
                 duration: 3.5,
                 ease: "easeInOut",
                 repeat: Infinity,
-                delay: 0.6,
+                delay: 0.8,
               },
             }}
             onClick={() => setOpen(true)}
             style={{
               ...BTN_STYLE,
-              width: 62,
-              height: 62,
+              width: 66,
+              height: 66,
               borderRadius: "50%",
-              border: "1px solid rgba(255,255,255,0.15)",
+              border: "1px solid rgba(255,255,255,0.18)",
               background:
-                "linear-gradient(135deg, #c47a3a 0%, #b87333 40%, #a0522d 100%)",
+                "linear-gradient(145deg, #c97f3f 0%, #b87333 45%, #9a4e2a 100%)",
               boxShadow:
-                "0 4px 24px rgba(184, 115, 51, 0.35), 0 0px 40px rgba(184, 115, 51, 0.15), inset 0 1px 0 rgba(255,255,255,0.2)",
+                "0 6px 28px rgba(184, 115, 51, 0.4), 0 0 48px rgba(184, 115, 51, 0.15), inset 0 1px 0 rgba(255,255,255,0.22)",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              overflow: "visible",
             }}
             whileHover={{
-              scale: 1.08,
+              scale: 1.1,
               boxShadow:
-                "0 6px 32px rgba(184, 115, 51, 0.45), 0 0px 50px rgba(184, 115, 51, 0.2), inset 0 1px 0 rgba(255,255,255,0.25)",
+                "0 8px 36px rgba(184, 115, 51, 0.5), 0 0 56px rgba(184, 115, 51, 0.22), inset 0 1px 0 rgba(255,255,255,0.28)",
             }}
-            whileTap={{ scale: 0.96 }}
+            whileTap={{ scale: 0.92 }}
             aria-label="Open chat"
           >
-            {/* Animated glow ring */}
+            {/* Glow ring */}
             <motion.span
               style={{
                 position: "absolute",
-                inset: -3,
+                inset: -4,
                 borderRadius: "50%",
-                border: "2px solid rgba(184, 115, 51, 0.3)",
+                border: "2px solid rgba(184, 115, 51, 0.25)",
               }}
               animate={{
-                opacity: [0.4, 0.8, 0.4],
-                scale: [1, 1.08, 1],
+                opacity: [0.3, 0.7, 0.3],
+                scale: [1, 1.1, 1],
               }}
               transition={{
-                duration: 2.5,
+                duration: 3,
                 ease: "easeInOut",
                 repeat: Infinity,
               }}
             />
-            {/* Bot icon */}
-            <Bot
-              size={28}
-              strokeWidth={2}
-              style={{
-                color: "#ffffff",
-                filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.15))",
-              }}
-            />
+
+            {/* Robo-dachshund SVG */}
+            <svg
+              width="36"
+              height="30"
+              viewBox="0 0 40 34"
+              fill="none"
+              style={{ filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.12))" }}
+            >
+              {/* Tail — animated with CSS */}
+              <motion.path
+                d="M4 14C2 11 2 6.5 5 4"
+                stroke="white"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                animate={{ rotate: [0, 12, -5, 10, 0] }}
+                transition={{
+                  duration: 1.8,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                  repeatDelay: 2,
+                }}
+                style={{ transformOrigin: "4px 14px" }}
+              />
+
+              {/* Body */}
+              <rect
+                x="4"
+                y="11"
+                width="23"
+                height="10"
+                rx="5"
+                fill="white"
+              />
+
+              {/* Body seam (robot detail) */}
+              <line
+                x1="10"
+                y1="16"
+                x2="19"
+                y2="16"
+                stroke="rgba(184,115,51,0.25)"
+                strokeWidth="0.8"
+                strokeLinecap="round"
+              />
+              <circle
+                cx="14.5"
+                cy="16"
+                r="0.9"
+                fill="rgba(184,115,51,0.2)"
+              />
+
+              {/* Head */}
+              <circle cx="27" cy="13" r="6" fill="white" />
+
+              {/* Snout */}
+              <ellipse cx="33" cy="14.5" rx="3.2" ry="2.2" fill="white" />
+
+              {/* Nose */}
+              <ellipse
+                cx="35.2"
+                cy="14"
+                rx="1.3"
+                ry="1"
+                fill="rgba(0,0,0,0.2)"
+              />
+
+              {/* Eye */}
+              <circle cx="29" cy="11.5" r="2" fill="#1a1a2e" />
+              <circle cx="29.6" cy="11" r="0.7" fill="white" />
+
+              {/* Ear — floppy */}
+              <path
+                d="M23.5 8C22.5 5.5 21 6 21.5 9"
+                stroke="white"
+                strokeWidth="3"
+                strokeLinecap="round"
+              />
+
+              {/* Antenna */}
+              <line
+                x1="28"
+                y1="7"
+                x2="30.5"
+                y2="2"
+                stroke="white"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
+              {/* Antenna dot — pulsing */}
+              <motion.circle
+                cx="31"
+                cy="1.5"
+                r="1.8"
+                fill="white"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{
+                  duration: 2,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                }}
+              />
+
+              {/* Back legs */}
+              <rect
+                x="7"
+                y="20"
+                width="3"
+                height="7"
+                rx="1.5"
+                fill="white"
+              />
+              <rect
+                x="12"
+                y="20"
+                width="3"
+                height="7"
+                rx="1.5"
+                fill="white"
+                opacity="0.75"
+              />
+
+              {/* Front legs */}
+              <rect
+                x="19"
+                y="20"
+                width="3"
+                height="7"
+                rx="1.5"
+                fill="white"
+                opacity="0.75"
+              />
+              <rect
+                x="23"
+                y="20"
+                width="3"
+                height="7"
+                rx="1.5"
+                fill="white"
+              />
+            </svg>
           </motion.button>
         )}
       </AnimatePresence>
