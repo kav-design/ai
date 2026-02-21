@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, DM_Serif_Display } from "next/font/google";
+import ChatWidget from "@/components/ChatWidget";
 import "./globals.css";
 
 const inter = Inter({
@@ -36,6 +37,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.variable} ${dmSerif.variable} font-sans antialiased noise-overlay`}>
         {children}
+        <ChatWidget />
       </body>
     </html>
   );
