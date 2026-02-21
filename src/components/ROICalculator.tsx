@@ -4,15 +4,16 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, useInView } from "framer-motion";
 import { TrendingUp } from "lucide-react";
 
-// Realistic assumptions:
-// - Not every missed call is a unique new patient (repeat callers, existing patients)
-// - ~60% of missed calls are genuine unique new patient leads
-// - Average first-year patient value in Australia: ~$900 (2 check-ups + 1 treatment)
-// - Milo converts ~50% of leads (texts back, books appointment, patient shows up)
-const UNIQUE_LEAD_RATE = 0.6;
-const FIRST_YEAR_PATIENT_VALUE = 900;
+// Conservative assumptions:
+// - Only 30% of missed calls are genuine new patients who would have booked
+//   (rest are existing patients, repeat callers, spam, tyre-kickers)
+// - Average first-visit value: $350 (check-up + x-rays + clean)
+// - Milo recovers 40% of those potential patients
+//   (texts back → conversation → books → actually shows up)
+const NEW_PATIENT_RATE = 0.3;
+const FIRST_VISIT_VALUE = 350;
 const WEEKS_PER_YEAR = 52;
-const MILO_CONVERSION = 0.5;
+const MILO_RECOVERY = 0.4;
 
 function AnimatedNumber({ value, prefix = "", suffix = "" }: { value: number; prefix?: string; suffix?: string }) {
   const [display, setDisplay] = useState(0);
@@ -69,10 +70,10 @@ export default function ROICalculator() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
-  const uniqueLeadsPerYear = Math.round(missedCalls * WEEKS_PER_YEAR * UNIQUE_LEAD_RATE);
-  const revenueLost = uniqueLeadsPerYear * FIRST_YEAR_PATIENT_VALUE;
-  const patientsRecovered = Math.round(uniqueLeadsPerYear * MILO_CONVERSION);
-  const revenueRecovered = patientsRecovered * FIRST_YEAR_PATIENT_VALUE;
+  const lostPatientsPerYear = Math.round(missedCalls * WEEKS_PER_YEAR * NEW_PATIENT_RATE);
+  const revenueLost = lostPatientsPerYear * FIRST_VISIT_VALUE;
+  const patientsRecovered = Math.round(lostPatientsPerYear * MILO_RECOVERY);
+  const revenueRecovered = patientsRecovered * FIRST_VISIT_VALUE;
   const miloCost = 397 * 12;
   const netROI = revenueRecovered - miloCost;
 
