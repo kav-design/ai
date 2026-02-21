@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 export default function AuthLayout({
   children,
 }: {
@@ -7,7 +11,7 @@ export default function AuthLayout({
     <div className="flex min-h-screen">
       {/* Left — branded visual */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden items-center justify-center bg-[var(--color-cream)]">
-        {/* Flowing gradient washes — matching landing page */}
+        {/* Flowing gradient washes */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -21,11 +25,42 @@ export default function AuthLayout({
           }}
         />
 
-        {/* Organic floating orbs */}
-        <div className="organic-shape organic-sage absolute w-[350px] h-[350px] top-[-5%] right-[10%]" />
-        <div className="organic-shape organic-gold absolute w-[280px] h-[280px] bottom-[5%] left-[-5%]" />
-        <div className="organic-shape organic-teal absolute w-[200px] h-[200px] top-[40%] left-[15%]" />
-        <div className="organic-shape organic-copper absolute w-[300px] h-[300px] bottom-[-10%] right-[20%]" />
+        {/* Animated organic orbs */}
+        <motion.div
+          className="organic-shape organic-sage absolute w-[350px] h-[350px] top-[-5%] right-[10%]"
+          animate={{
+            x: [0, 20, -10, 0],
+            y: [0, -15, 10, 0],
+            scale: [1, 1.05, 0.97, 1],
+          }}
+          transition={{ duration: 18, ease: "easeInOut", repeat: Infinity }}
+        />
+        <motion.div
+          className="organic-shape organic-gold absolute w-[280px] h-[280px] bottom-[5%] left-[-5%]"
+          animate={{
+            x: [0, -15, 20, 0],
+            y: [0, 10, -20, 0],
+            scale: [1, 0.95, 1.06, 1],
+          }}
+          transition={{ duration: 22, ease: "easeInOut", repeat: Infinity }}
+        />
+        <motion.div
+          className="organic-shape organic-teal absolute w-[200px] h-[200px] top-[40%] left-[15%]"
+          animate={{
+            x: [0, 25, -15, 0],
+            y: [0, -20, 15, 0],
+          }}
+          transition={{ duration: 15, ease: "easeInOut", repeat: Infinity }}
+        />
+        <motion.div
+          className="organic-shape organic-copper absolute w-[300px] h-[300px] bottom-[-10%] right-[20%]"
+          animate={{
+            x: [0, -20, 10, 0],
+            y: [0, 15, -10, 0],
+            scale: [1, 1.04, 0.96, 1],
+          }}
+          transition={{ duration: 20, ease: "easeInOut", repeat: Infinity }}
+        />
 
         {/* Noise overlay */}
         <div
@@ -37,54 +72,94 @@ export default function AuthLayout({
           }}
         />
 
-        {/* Subtle border on the right edge */}
+        {/* Right edge divider */}
         <div className="absolute right-0 top-0 bottom-0 w-px bg-[var(--color-border)]" />
 
-        {/* Content */}
+        {/* Content — staggered entrance */}
         <div className="relative z-10 px-16 max-w-lg">
-          <img
+          <motion.img
             src="/logo.png"
             alt="Milo AI"
             className="h-10 mb-12"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           />
-          <h1 className="font-display text-[42px] text-[var(--color-charcoal)] leading-[1.15] mb-5">
+
+          <motion.h1
+            className="font-display text-[42px] text-[var(--color-charcoal)] leading-[1.15] mb-5"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.7,
+              delay: 0.15,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+          >
             Never miss a patient again.
-          </h1>
-          <p className="text-[var(--color-body)] text-[15px] leading-relaxed max-w-sm">
+          </motion.h1>
+
+          <motion.p
+            className="text-[var(--color-body)] text-[15px] leading-relaxed max-w-sm"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.7,
+              delay: 0.3,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+          >
             Milo handles missed calls, books appointments, follows up with
             leads, and collects Google reviews — 24/7.
-          </p>
+          </motion.p>
 
           {/* Stats row */}
-          <div className="flex gap-10 mt-12">
-            <div>
-              <p className="font-display text-3xl text-[var(--color-charcoal)]">
-                2s
-              </p>
-              <p className="text-xs text-[var(--color-muted)] mt-1">
-                Avg. response time
-              </p>
-            </div>
-            <div>
-              <p className="font-display text-3xl text-[var(--color-charcoal)]">
-                24/7
-              </p>
-              <p className="text-xs text-[var(--color-muted)] mt-1">
-                Always on
-              </p>
-            </div>
-            <div>
-              <p className="font-display text-3xl text-[var(--color-charcoal)]">
-                40%
-              </p>
-              <p className="text-xs text-[var(--color-muted)] mt-1">
-                Calls recovered
-              </p>
-            </div>
-          </div>
+          <motion.div
+            className="flex gap-10 mt-12"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.7,
+              delay: 0.45,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+          >
+            {[
+              { value: "2s", label: "Avg. response time" },
+              { value: "24/7", label: "Always on" },
+              { value: "40%", label: "Calls recovered" },
+            ].map((stat, i) => (
+              <motion.div
+                key={stat.value}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.55 + i * 0.1,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <p className="font-display text-3xl text-[var(--color-charcoal)]">
+                  {stat.value}
+                </p>
+                <p className="text-xs text-[var(--color-muted)] mt-1">
+                  {stat.label}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
 
-          {/* Testimonial */}
-          <div className="mt-14 rounded-2xl border border-[var(--color-border)] bg-white/60 backdrop-blur-sm p-6">
+          {/* Testimonial card */}
+          <motion.div
+            className="mt-14 rounded-2xl border border-[var(--color-border)] bg-white/60 backdrop-blur-sm p-6"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.7,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+          >
             <p className="text-[var(--color-charcoal)] text-sm leading-relaxed">
               &ldquo;We recovered 34 patients in the first month that we
               would&apos;ve lost. Milo pays for itself many times over.&rdquo;
@@ -102,14 +177,19 @@ export default function AuthLayout({
                 </p>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
       {/* Right — auth form */}
-      <div className="flex w-full lg:w-1/2 items-center justify-center bg-[var(--color-cream)] px-6 py-12">
+      <motion.div
+        className="flex w-full lg:w-1/2 items-center justify-center bg-[var(--color-cream)] px-6 py-12"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
         <div className="w-full max-w-[420px]">{children}</div>
-      </div>
+      </motion.div>
     </div>
   );
 }
