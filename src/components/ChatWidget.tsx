@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { X, Send, Zap } from "lucide-react";
+import { X, Send, Zap, Bot } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Message = {
@@ -233,22 +233,15 @@ export default function ChatWidget() {
                 repeat: Infinity,
               }}
             />
-            {/* Branded M */}
-            <span
+            {/* Bot icon */}
+            <Bot
+              size={28}
+              strokeWidth={2}
               style={{
-                fontSize: 26,
-                fontWeight: 800,
                 color: "#ffffff",
-                fontFamily:
-                  "'Inter', 'SF Pro Display', -apple-system, sans-serif",
-                letterSpacing: "-0.02em",
-                lineHeight: 1,
-                textShadow: "0 1px 2px rgba(0,0,0,0.15)",
-                userSelect: "none",
+                filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.15))",
               }}
-            >
-              M
-            </span>
+            />
           </motion.button>
         )}
       </AnimatePresence>
