@@ -7,7 +7,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 const messages = [
   {
     role: "ai" as const,
-    text: "Hey! Thanks for calling Bright Smile Dental. Sorry we missed you \u2014 how can we help? \ud83d\ude0a",
+    text: "Hey! Thanks for calling Bright Smile Dental. Sorry we missed you \u2014 how can we help?",
   },
   {
     role: "customer" as const,
@@ -23,7 +23,7 @@ const messages = [
   },
   {
     role: "ai" as const,
-    text: "Thanks Sarah! I\u2019ve got 10:30am or 2pm today \u2014 which works? \ud83e\uddb7",
+    text: "Thanks Sarah! I\u2019ve got 10:30am or 2pm today \u2014 which works?",
   },
   {
     role: "customer" as const,
@@ -31,7 +31,7 @@ const messages = [
   },
   {
     role: "ai" as const,
-    text: "You\u2019re all booked for 2pm today, Sarah! We\u2019ll text you a reminder. See you soon! \u2728",
+    text: "You\u2019re all booked for 2pm today, Sarah! We\u2019ll text you a reminder. See you soon!",
   },
 ];
 

@@ -22,7 +22,7 @@ const scenarios: Record<
     messages: [
       {
         role: "ai",
-        text: "Hey! Thanks for calling Bright Smile Dental. Sorry we missed you \u2014 how can we help? \ud83d\ude0a",
+        text: "Hey! Thanks for calling Bright Smile Dental. Sorry we missed you \u2014 how can we help?",
       },
       {
         role: "customer",
@@ -30,7 +30,7 @@ const scenarios: Record<
       },
       {
         role: "ai",
-        text: "No worries at all \u2014 welcome back! \ud83d\ude04 A check-up and clean is $199. We\u2019ve got spots this week \u2014 Thursday or Friday work?",
+        text: "No worries at all \u2014 welcome back! A check-up and clean is $199. We\u2019ve got spots this week \u2014 Thursday or Friday work?",
       },
       {
         role: "customer",
@@ -38,7 +38,7 @@ const scenarios: Record<
       },
       {
         role: "ai",
-        text: "Perfect! 2:30pm or 4:00pm on Thursday. What\u2019s your name so I can book you in? \ud83d\udcdd",
+        text: "Perfect! 2:30pm or 4:00pm on Thursday. What\u2019s your name so I can book you in?",
       },
       {
         role: "customer",
@@ -46,7 +46,7 @@ const scenarios: Record<
       },
       {
         role: "ai",
-        text: "Awesome, James! Locked in for 4pm Thursday. You\u2019ll get a confirmation shortly. See you then! \ud83e\uddb7\u2728",
+        text: "Awesome, James! Locked in for 4pm Thursday. You\u2019ll get a confirmation shortly. See you then!",
       },
     ],
   },
@@ -57,7 +57,7 @@ const scenarios: Record<
     messages: [
       {
         role: "ai",
-        text: "Hi there! \ud83d\udc4b Welcome to Bright Smile Dental. How can I help?",
+        text: "Hi there! Welcome to Bright Smile Dental. How can I help?",
       },
       {
         role: "customer",
@@ -65,7 +65,7 @@ const scenarios: Record<
       },
       {
         role: "ai",
-        text: "Great question! In-chair whitening starts from $495 \u2014 results in just one visit, 4\u20138 shades whiter! \u2728 Want to book a free consult?",
+        text: "Great question! In-chair whitening starts from $495 \u2014 results in just one visit, 4\u20138 shades whiter! Want to book a free consult?",
       },
       {
         role: "customer",
@@ -81,7 +81,7 @@ const scenarios: Record<
       },
       {
         role: "ai",
-        text: "You\u2019re all set, Emma! Wednesday 11am. Confirmation text incoming. Can\u2019t wait for you to see the results! \ud83d\ude01",
+        text: "You\u2019re all set, Emma! Wednesday 11am. Confirmation text incoming. Can\u2019t wait for you to see the results!",
       },
     ],
   },
@@ -92,7 +92,7 @@ const scenarios: Record<
     messages: [
       {
         role: "ai",
-        text: "Hey Sarah! Just checking in \u2014 did you still want to book that check-up? We\u2019ve got spots this week \ud83d\ude0a",
+        text: "Hey Sarah! Just checking in \u2014 did you still want to book that check-up? We\u2019ve got spots this week",
       },
       {
         role: "customer",
@@ -108,7 +108,7 @@ const scenarios: Record<
       },
       {
         role: "ai",
-        text: "Done! Friday 2pm. We\u2019ll text you a reminder the day before. See you soon, Sarah! \ud83e\uddb7",
+        text: "Done! Friday 2pm. We\u2019ll text you a reminder the day before. See you soon, Sarah!",
       },
     ],
   },
