@@ -1,95 +1,109 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { Zap, Phone, Star, Calendar } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  MessageSquare,
+  Users,
+  Star,
+  TrendingUp,
+  Zap,
+  ArrowRight,
+} from "lucide-react";
 
-const chatMessages = [
-  {
-    role: "ai" as const,
-    text: "Hey! Thanks for calling Bright Smile Dental. Sorry we missed you — how can we help?",
-  },
-  {
-    role: "customer" as const,
-    text: "Hi! I have a really bad toothache, need an emergency appointment",
-  },
-  {
-    role: "ai" as const,
-    text: "I'm sorry to hear that! We can fit you in today. What's your name?",
-  },
-  { role: "customer" as const, text: "Sarah Mitchell" },
-  {
-    role: "ai" as const,
-    text: "Thanks Sarah! I've got 10:30am or 2pm today — which works?",
-  },
-  { role: "customer" as const, text: "2pm works!" },
-  {
-    role: "ai" as const,
-    text: "You're all booked for 2pm today! We'll text you a reminder 😊",
-  },
-];
-
-function AnimatedChat() {
-  const [visibleCount, setVisibleCount] = useState(0);
-
+/* ── Animated counter ── */
+function Counter({ value, prefix = "" }: { value: number; prefix?: string }) {
+  const [count, setCount] = useState(0);
   useEffect(() => {
-    if (visibleCount >= chatMessages.length) {
-      const reset = setTimeout(() => setVisibleCount(0), 4000);
-      return () => clearTimeout(reset);
-    }
-    const timer = setTimeout(
-      () => setVisibleCount((c) => c + 1),
-      visibleCount === 0 ? 800 : 1200,
-    );
-    return () => clearTimeout(timer);
-  }, [visibleCount]);
-
+    let start: number;
+    const step = (ts: number) => {
+      if (!start) start = ts;
+      const p = Math.min((ts - start) / 1400, 1);
+      setCount(Math.floor(p * value));
+      if (p < 1) requestAnimationFrame(step);
+    };
+    const t = setTimeout(() => requestAnimationFrame(step), 600);
+    return () => clearTimeout(t);
+  }, [value]);
   return (
-    <div className="flex flex-col gap-2.5 px-4 py-3 overflow-hidden">
-      {chatMessages.slice(0, visibleCount).map((msg, i) => (
-        <motion.div
-          key={`${i}-${visibleCount > chatMessages.length ? "r" : ""}`}
-          initial={{ opacity: 0, y: 12, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{
-            duration: 0.4,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-          className={`flex ${msg.role === "customer" ? "justify-end" : "justify-start"}`}
-        >
-          <div
-            className={`max-w-[82%] px-3.5 py-2.5 text-[12px] leading-relaxed ${
-              msg.role === "ai"
-                ? "bg-[var(--color-teal)] text-white rounded-[14px_14px_14px_4px]"
-                : "bg-white text-[var(--color-charcoal)] rounded-[14px_14px_4px_14px] shadow-[0_1px_3px_rgba(0,0,0,0.06)]"
-            }`}
-          >
-            {msg.text}
-          </div>
-        </motion.div>
-      ))}
-      {visibleCount < chatMessages.length && visibleCount > 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex justify-start"
-        >
-          <div className="bg-[var(--color-teal)] rounded-full px-3.5 py-2.5 flex items-center gap-1">
-            <span className="w-[5px] h-[5px] rounded-full bg-white/60 animate-pulse" />
-            <span
-              className="w-[5px] h-[5px] rounded-full bg-white/60 animate-pulse"
-              style={{ animationDelay: "0.15s" }}
-            />
-            <span
-              className="w-[5px] h-[5px] rounded-full bg-white/60 animate-pulse"
-              style={{ animationDelay: "0.3s" }}
-            />
-          </div>
-        </motion.div>
-      )}
-    </div>
+    <>
+      {prefix}
+      {count.toLocaleString()}
+    </>
   );
 }
+
+/* ── Snake border (draws on mount) ── */
+function SnakeBorder({ color }: { color: string }) {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const rectRef = useRef<SVGRectElement>(null);
+
+  useEffect(() => {
+    const svg = svgRef.current;
+    const rect = rectRef.current;
+    if (!svg || !rect) return;
+    const { width, height } = svg.getBoundingClientRect();
+    const i = 3;
+    rect.setAttribute("x", String(i));
+    rect.setAttribute("y", String(i));
+    rect.setAttribute("width", String(Math.max(0, width - i * 2)));
+    rect.setAttribute("height", String(Math.max(0, height - i * 2)));
+    const len = rect.getTotalLength();
+    rect.style.strokeDasharray = `${len}`;
+    rect.style.strokeDashoffset = `${len}`;
+    requestAnimationFrame(() => {
+      if (rect) {
+        rect.style.transition =
+          "stroke-dashoffset 1.4s cubic-bezier(0.16, 1, 0.3, 1)";
+        rect.style.strokeDashoffset = "0";
+      }
+    });
+  }, []);
+
+  return (
+    <svg
+      ref={svgRef}
+      className="absolute inset-0 w-full h-full pointer-events-none"
+    >
+      <rect
+        ref={rectRef}
+        rx="16"
+        ry="16"
+        fill="none"
+        stroke={color}
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+/* ── Mini conversation rows ── */
+const conversations = [
+  {
+    name: "Sarah Mitchell",
+    msg: "Emergency — toothache",
+    time: "2m ago",
+    status: "New Lead",
+    sBg: "bg-terracotta-light",
+    sText: "text-terracotta",
+  },
+  {
+    name: "James Cooper",
+    msg: "Check-up & clean",
+    time: "14m ago",
+    status: "Booked",
+    sBg: "bg-teal-light",
+    sText: "text-teal",
+  },
+  {
+    name: "Emma Zhao",
+    msg: "Teeth whitening",
+    time: "1h ago",
+    status: "Booked",
+    sBg: "bg-teal-light",
+    sText: "text-teal",
+  },
+];
 
 export default function AuthLayout({
   children,
@@ -98,55 +112,74 @@ export default function AuthLayout({
 }) {
   return (
     <div className="flex min-h-screen">
-      {/* Left — branded visual */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden items-center justify-center bg-[var(--color-cream)]">
-        {/* Flowing gradient washes */}
+      {/* ══════════ LEFT — premium visual ══════════ */}
+      <div className="hidden lg:flex lg:w-[52%] relative overflow-hidden items-center justify-center bg-[var(--color-cream)]">
+        {/* Gradient washes */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background: [
-              "radial-gradient(ellipse 80% 60% at 15% 10%, rgba(133, 142, 98, 0.2), transparent 55%)",
-              "radial-gradient(ellipse 70% 50% at 85% 15%, rgba(225, 166, 96, 0.18), transparent 50%)",
-              "radial-gradient(ellipse 60% 45% at 75% 50%, rgba(184, 115, 51, 0.1), transparent 45%)",
-              "radial-gradient(ellipse 80% 55% at 20% 65%, rgba(122, 158, 147, 0.16), transparent 50%)",
+              "radial-gradient(ellipse 80% 60% at 15% 10%, rgba(133,142,98,0.18), transparent 55%)",
+              "radial-gradient(ellipse 70% 50% at 85% 15%, rgba(225,166,96,0.16), transparent 50%)",
+              "radial-gradient(ellipse 60% 45% at 75% 55%, rgba(184,115,51,0.08), transparent 45%)",
+              "radial-gradient(ellipse 80% 55% at 20% 70%, rgba(122,158,147,0.14), transparent 50%)",
             ].join(", "),
           }}
         />
 
-        {/* Animated organic orbs */}
+        {/* Organic orbs */}
         <motion.div
-          className="organic-shape organic-sage absolute w-[350px] h-[350px] top-[-5%] right-[10%]"
+          className="organic-shape organic-sage absolute w-[400px] h-[400px] -top-[10%] right-[5%]"
           animate={{ x: [0, 20, -10, 0], y: [0, -15, 10, 0] }}
           transition={{ duration: 18, ease: "easeInOut", repeat: Infinity }}
         />
         <motion.div
-          className="organic-shape organic-gold absolute w-[280px] h-[280px] bottom-[5%] left-[-5%]"
+          className="organic-shape organic-gold absolute w-[300px] h-[300px] bottom-[0%] -left-[8%]"
           animate={{ x: [0, -15, 20, 0], y: [0, 10, -20, 0] }}
           transition={{ duration: 22, ease: "easeInOut", repeat: Infinity }}
         />
         <motion.div
-          className="organic-shape organic-teal absolute w-[200px] h-[200px] top-[40%] left-[15%]"
+          className="organic-shape organic-teal absolute w-[250px] h-[250px] top-[45%] left-[10%]"
           animate={{ x: [0, 25, -15, 0], y: [0, -20, 15, 0] }}
-          transition={{ duration: 15, ease: "easeInOut", repeat: Infinity }}
+          transition={{ duration: 16, ease: "easeInOut", repeat: Infinity }}
         />
 
-        {/* Noise overlay */}
+        {/* Noise */}
         <div
           className="absolute inset-0 pointer-events-none opacity-[0.03]"
           style={{
             backgroundImage:
-              'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")',
+              'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\'/%3E%3C/svg%3E")',
             backgroundSize: "200px 200px",
           }}
         />
 
-        {/* Right edge divider */}
+        {/* Right divider */}
         <div className="absolute right-0 top-0 bottom-0 w-px bg-[var(--color-border)]" />
 
-        {/* Main visual content */}
-        <div className="relative z-10 flex flex-col items-center">
-          {/* Phone mockup with live chat */}
+        {/* ── Content ── */}
+        <div className="relative z-10 w-full max-w-[480px] px-10">
+          {/* Header */}
           <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-terracotta">
+              Your command centre
+            </p>
+            <h1 className="font-display text-[34px] leading-[1.15] text-charcoal mb-3">
+              See what Milo does for your{" "}
+              <span className="gradient-text-copper">clinic</span>
+            </h1>
+            <p className="text-sm text-body leading-relaxed max-w-sm mb-8">
+              Real-time dashboard with conversations, leads, and revenue.
+            </p>
+          </motion.div>
+
+          {/* ── Dashboard mockup card ── */}
+          <motion.div
+            className="relative rounded-2xl border border-border bg-white shadow-xl overflow-hidden"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -154,182 +187,161 @@ export default function AuthLayout({
               delay: 0.2,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className="relative"
           >
-            {/* Floating badges around the phone */}
-            <motion.div
-              className="absolute -left-28 top-8 flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-white/80 backdrop-blur-sm px-3.5 py-2.5 shadow-lg shadow-black/[0.03]"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0, y: [0, -6, 0] }}
-              transition={{
-                opacity: { duration: 0.5, delay: 0.8 },
-                x: { duration: 0.5, delay: 0.8 },
-                y: {
-                  duration: 4,
-                  ease: "easeInOut",
-                  repeat: Infinity,
-                  delay: 1,
-                },
-              }}
-            >
-              <div className="w-7 h-7 rounded-lg bg-[var(--color-teal-light)] flex items-center justify-center">
-                <Phone size={13} className="text-[var(--color-teal-dark)]" />
+            <SnakeBorder color="var(--color-terracotta)" />
+
+            {/* Browser chrome */}
+            <div className="flex items-center gap-2 border-b border-border bg-cream-dark px-4 py-2.5">
+              <div className="flex gap-1.5">
+                <div className="h-2.5 w-2.5 rounded-full bg-border" />
+                <div className="h-2.5 w-2.5 rounded-full bg-border" />
+                <div className="h-2.5 w-2.5 rounded-full bg-border" />
               </div>
-              <div>
-                <p className="text-[11px] font-semibold text-[var(--color-charcoal)]">
-                  Missed call caught
+              <div className="ml-2 flex-1 rounded-md border border-border bg-white px-3 py-1">
+                <p className="text-[10px] text-muted">
+                  app.getmilo.com.au/dashboard
                 </p>
-                <p className="text-[10px] text-[var(--color-muted)]">
-                  2 seconds ago
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="absolute -right-24 top-28 flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-white/80 backdrop-blur-sm px-3.5 py-2.5 shadow-lg shadow-black/[0.03]"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0, y: [0, -8, 0] }}
-              transition={{
-                opacity: { duration: 0.5, delay: 1.2 },
-                x: { duration: 0.5, delay: 1.2 },
-                y: {
-                  duration: 5,
-                  ease: "easeInOut",
-                  repeat: Infinity,
-                  delay: 1.5,
-                },
-              }}
-            >
-              <div className="w-7 h-7 rounded-lg bg-[var(--color-terracotta-light)] flex items-center justify-center">
-                <Calendar
-                  size={13}
-                  className="text-[var(--color-terracotta)]"
-                />
-              </div>
-              <div>
-                <p className="text-[11px] font-semibold text-[var(--color-charcoal)]">
-                  Appointment booked
-                </p>
-                <p className="text-[10px] text-[var(--color-muted)]">
-                  Today, 2:00 PM
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="absolute -left-20 bottom-24 flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-white/80 backdrop-blur-sm px-3.5 py-2.5 shadow-lg shadow-black/[0.03]"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0, y: [0, -5, 0] }}
-              transition={{
-                opacity: { duration: 0.5, delay: 1.6 },
-                x: { duration: 0.5, delay: 1.6 },
-                y: {
-                  duration: 4.5,
-                  ease: "easeInOut",
-                  repeat: Infinity,
-                  delay: 2,
-                },
-              }}
-            >
-              <div className="w-7 h-7 rounded-lg bg-[var(--color-gold-light)] flex items-center justify-center">
-                <Star size={13} className="text-[var(--color-gold)]" />
-              </div>
-              <div>
-                <p className="text-[11px] font-semibold text-[var(--color-charcoal)]">
-                  Review requested
-                </p>
-                <p className="text-[10px] text-[var(--color-muted)]">
-                  Sent via SMS
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Phone frame */}
-            <div className="w-[280px] rounded-[32px] border border-[var(--color-border)] bg-white shadow-2xl shadow-black/[0.08] overflow-hidden">
-              {/* Phone notch area */}
-              <div className="flex items-center justify-center pt-3 pb-1">
-                <div className="w-20 h-[5px] rounded-full bg-[var(--color-cream-dark)]" />
-              </div>
-
-              {/* Chat header */}
-              <div className="flex items-center gap-2.5 px-4 py-3 border-b border-[var(--color-border)]">
-                <div className="relative">
-                  <div className="w-8 h-8 rounded-full bg-[var(--color-teal)] flex items-center justify-center">
-                    <Zap size={12} fill="white" stroke="none" />
-                  </div>
-                  <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white" />
-                </div>
-                <div>
-                  <p className="text-[12px] font-semibold text-[var(--color-charcoal)]">
-                    Milo
-                  </p>
-                  <p className="text-[10px] text-emerald-500">Online now</p>
-                </div>
-              </div>
-
-              {/* Live animated chat */}
-              <div className="h-[340px] bg-[var(--color-cream)] overflow-hidden">
-                <AnimatedChat />
-              </div>
-
-              {/* Input bar */}
-              <div className="flex items-center gap-2 px-3 py-2.5 border-t border-[var(--color-border)] bg-white">
-                <div className="flex-1 h-8 rounded-full bg-[var(--color-cream)] border border-[var(--color-border)] px-3 flex items-center">
-                  <span className="text-[11px] text-[var(--color-light)]">
-                    Type a message...
-                  </span>
-                </div>
-                <div className="w-8 h-8 rounded-full bg-[var(--color-border)] flex items-center justify-center">
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="var(--color-muted)"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M22 2L11 13" />
-                    <path d="M22 2L15 22L11 13L2 9L22 2Z" />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Phone home bar */}
-              <div className="flex items-center justify-center py-2">
-                <div className="w-28 h-[4px] rounded-full bg-[var(--color-charcoal)] opacity-20" />
               </div>
             </div>
+
+            {/* Stats grid */}
+            <div className="grid grid-cols-3 gap-px bg-border">
+              {[
+                {
+                  icon: MessageSquare,
+                  label: "Conversations",
+                  val: 47,
+                  change: "+18%",
+                  bg: "bg-terracotta-light",
+                  color: "text-terracotta",
+                },
+                {
+                  icon: Users,
+                  label: "Leads Captured",
+                  val: 23,
+                  change: "+24%",
+                  bg: "bg-teal-light",
+                  color: "text-teal",
+                },
+                {
+                  icon: Star,
+                  label: "Reviews",
+                  val: 12,
+                  change: "+50%",
+                  bg: "bg-gold-light",
+                  color: "text-gold",
+                },
+              ].map((s, i) => (
+                <motion.div
+                  key={s.label}
+                  className="bg-white p-3.5"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.5 + i * 0.1,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div
+                      className={`w-7 h-7 rounded-lg ${s.bg} flex items-center justify-center`}
+                    >
+                      <s.icon size={13} className={s.color} />
+                    </div>
+                    <span className="flex items-center gap-0.5 text-[10px] font-medium text-emerald-600">
+                      <TrendingUp size={10} />
+                      {s.change}
+                    </span>
+                  </div>
+                  <p className="text-lg font-bold text-charcoal leading-none">
+                    <Counter value={s.val} />
+                  </p>
+                  <p className="text-[10px] text-muted mt-1">{s.label}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Conversation list */}
+            <motion.div
+              className="border-t border-border"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.9 }}
+            >
+              <div className="px-3.5 py-2 border-b border-border flex items-center justify-between">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-muted">
+                  Recent conversations
+                </p>
+                <Zap size={10} className="text-terracotta" />
+              </div>
+              {conversations.map((c, i) => (
+                <motion.div
+                  key={c.name}
+                  className="flex items-center gap-2.5 px-3.5 py-2.5 border-b border-border last:border-0 hover:bg-cream transition-colors"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    duration: 0.4,
+                    delay: 1.0 + i * 0.12,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  <div className="w-7 h-7 rounded-full bg-cream-dark flex items-center justify-center text-[10px] font-semibold text-charcoal flex-shrink-0">
+                    {c.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[11px] font-medium text-charcoal truncate">
+                      {c.name}
+                    </p>
+                    <p className="text-[10px] text-muted truncate">{c.msg}</p>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <span
+                      className={`inline-block px-2 py-0.5 rounded-full text-[9px] font-medium ${c.sBg} ${c.sText}`}
+                    >
+                      {c.status}
+                    </span>
+                    <p className="text-[9px] text-light mt-0.5">{c.time}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
           </motion.div>
 
-          {/* Tagline below phone */}
+          {/* Proof points below */}
           <motion.div
-            className="mt-8 text-center"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.6,
-              delay: 0.6,
-              ease: [0.16, 1, 0.3, 1],
-            }}
+            className="flex items-center justify-center gap-6 mt-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 1.3 }}
           >
-            <p className="font-display text-xl text-[var(--color-charcoal)]">
-              Your AI receptionist, always on.
-            </p>
-            <p className="text-[13px] text-[var(--color-muted)] mt-1.5">
-              Missed call to booked appointment in under 30 seconds.
-            </p>
+            {[
+              "2-second response",
+              "No code setup",
+              "Cancel anytime",
+            ].map((t) => (
+              <span
+                key={t}
+                className="flex items-center gap-1.5 text-[11px] text-muted"
+              >
+                <ArrowRight size={10} className="text-terracotta" />
+                {t}
+              </span>
+            ))}
           </motion.div>
         </div>
       </div>
 
-      {/* Right — auth form */}
+      {/* ══════════ RIGHT — auth form ══════════ */}
       <motion.div
-        className="flex w-full lg:w-1/2 items-center justify-center bg-[var(--color-cream)] px-6 py-12"
+        className="flex w-full lg:w-[48%] items-center justify-center bg-[var(--color-cream)] px-6 py-12"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
+        transition={{ duration: 0.5, delay: 0.15 }}
       >
         <div className="w-full max-w-[420px]">{children}</div>
       </motion.div>
