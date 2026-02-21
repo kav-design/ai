@@ -220,17 +220,6 @@ export default function Hero() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="text-center lg:text-left"
           >
-            {/* Badge */}
-            <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-white/80 px-4 py-1.5 shadow-sm backdrop-blur-sm">
-              <div className="relative h-2 w-2">
-                <div className="absolute inset-0 animate-ping rounded-full bg-terracotta opacity-75" />
-                <div className="relative h-2 w-2 rounded-full bg-terracotta" />
-              </div>
-              <span className="text-xs font-medium text-body">
-                AI Employee for Dental Clinics
-              </span>
-            </div>
-
             <h1 className="mb-6 text-[2.75rem] font-bold leading-[1.08] tracking-tight text-charcoal sm:text-5xl lg:text-[3.5rem]">
               Turn missed calls into{" "}
               <br />
