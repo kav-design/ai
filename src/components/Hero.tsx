@@ -286,7 +286,7 @@ export default function Hero() {
             {/* CTAs */}
             <div className="flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
               <a
-                href="#pricing"
+                href="/signup"
                 className="group inline-flex items-center gap-2.5 rounded-full bg-terracotta px-8 py-4 text-[15px] font-semibold text-white transition-colors hover:bg-terracotta-dark"
               >
                 Start Free Trial

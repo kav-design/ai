@@ -51,13 +51,13 @@ export default function Navbar() {
         {/* Desktop CTA */}
         <div className="hidden items-center gap-4 md:flex">
           <a
-            href="#"
+            href="/login"
             className="text-sm font-medium text-body transition-colors hover:text-charcoal"
           >
             Log in
           </a>
           <a
-            href="#pricing"
+            href="/signup"
             className="rounded-full bg-charcoal px-5 py-2 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#333] hover:shadow-lg hover:shadow-charcoal/15"
           >
             Get Started
@@ -89,7 +89,7 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="#pricing"
+              href="/signup"
               className="mt-3 rounded-full bg-charcoal px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#333]"
             >
               Get Started

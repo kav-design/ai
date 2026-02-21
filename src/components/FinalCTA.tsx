@@ -32,7 +32,7 @@ export default function FinalCTA() {
 
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
-              href="#pricing"
+              href="/signup"
               className="group flex items-center gap-2 rounded-full bg-terracotta px-8 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-terracotta-dark"
             >
               Start Your Free Trial
@@ -42,7 +42,7 @@ export default function FinalCTA() {
               />
             </a>
             <a
-              href="#"
+              href="/contact"
               className="rounded-full border-2 border-charcoal px-8 py-3.5 text-sm font-semibold text-charcoal transition-colors hover:bg-charcoal hover:text-white"
             >
               Book a Demo

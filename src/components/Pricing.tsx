@@ -127,7 +127,7 @@ export default function Pricing() {
                   </div>
 
                   <a
-                    href="#"
+                    href="/signup"
                     className={`mb-7 flex w-full items-center justify-center rounded-full py-3.5 text-sm font-semibold transition-colors ${
                       plan.popular
                         ? "bg-terracotta text-white hover:bg-terracotta-dark"

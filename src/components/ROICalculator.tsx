@@ -238,7 +238,7 @@ export default function ROICalculator() {
                 </p>
               </div>
               <a
-                href="#pricing"
+                href="/signup"
                 className="inline-flex items-center gap-2 rounded-full bg-terracotta px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-terracotta-dark"
               >
                 Start Free Trial
