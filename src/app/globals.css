@@ -284,6 +284,49 @@ input[type="range"]::-moz-range-thumb {
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
+/* === PROSE (sub-pages) === */
+.prose-milo h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-charcoal);
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+.prose-milo h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-charcoal);
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+.prose-milo p {
+  color: var(--color-body);
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+.prose-milo ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.prose-milo li {
+  color: var(--color-body);
+  line-height: 1.75;
+  margin-bottom: 0.25rem;
+}
+.prose-milo a {
+  color: var(--color-terracotta);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-milo a:hover {
+  color: var(--color-terracotta-dark);
+}
+.prose-milo strong {
+  color: var(--color-charcoal);
+  font-weight: 600;
+}
+
 /* === NOISE TEXTURE OVERLAY === */
 .noise-overlay::after {
   content: '';

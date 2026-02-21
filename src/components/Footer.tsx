@@ -1,3 +1,35 @@
+import Link from "next/link";
+
+const productLinks = [
+  { label: "Missed Call Text-Back", href: "/#features" },
+  { label: "AI Conversations", href: "/#features" },
+  { label: "Web Chat Widget", href: "/#features" },
+  { label: "Follow-Up Sequences", href: "/#features" },
+  { label: "Google Reviews", href: "/#features" },
+  { label: "Analytics", href: "/#features" },
+];
+
+const companyLinks = [
+  { label: "About", href: "/about" },
+  { label: "Pricing", href: "/#pricing" },
+  { label: "Blog", href: "/blog" },
+  { label: "Careers", href: "/careers" },
+  { label: "Contact", href: "/contact" },
+];
+
+const legalLinks = [
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Service", href: "/terms" },
+  { label: "Data Security", href: "/security" },
+  { label: "Spam Act Compliance", href: "/spam-compliance" },
+];
+
+const socialLinks = [
+  { label: "Twitter", href: "https://twitter.com" },
+  { label: "LinkedIn", href: "https://linkedin.com" },
+  { label: "Instagram", href: "https://instagram.com" },
+];
+
 export default function Footer() {
   return (
     <footer className="border-t border-border py-16">
@@ -5,12 +37,12 @@ export default function Footer() {
         <div className="grid gap-12 md:grid-cols-4">
           {/* Brand */}
           <div>
-            <div className="mb-4 flex items-center gap-2.5">
+            <Link href="/" className="mb-4 flex items-center gap-2.5">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-terracotta text-sm font-bold text-white">
                 M
               </div>
               <span className="text-lg font-semibold text-charcoal">milo</span>
-            </div>
+            </Link>
             <p className="mb-4 text-sm leading-relaxed text-body">
               The AI employee that handles missed calls, books appointments, and
               grows your practice — 24/7.
@@ -26,15 +58,13 @@ export default function Footer() {
               Product
             </h4>
             <ul className="flex flex-col gap-2.5">
-              {["Missed Call Text-Back", "AI Conversations", "Web Chat Widget", "Follow-Up Sequences", "Google Reviews", "Analytics"].map(
-                (item) => (
-                  <li key={item}>
-                    <a href="#features" className="text-sm text-body transition-colors hover:text-charcoal">
-                      {item}
-                    </a>
-                  </li>
-                )
-              )}
+              {productLinks.map((item) => (
+                <li key={item.label}>
+                  <Link href={item.href} className="text-sm text-body transition-colors hover:text-charcoal">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -44,11 +74,11 @@ export default function Footer() {
               Company
             </h4>
             <ul className="flex flex-col gap-2.5">
-              {["About", "Pricing", "Blog", "Careers", "Contact"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-sm text-body transition-colors hover:text-charcoal">
-                    {item}
-                  </a>
+              {companyLinks.map((item) => (
+                <li key={item.label}>
+                  <Link href={item.href} className="text-sm text-body transition-colors hover:text-charcoal">
+                    {item.label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -60,15 +90,13 @@ export default function Footer() {
               Legal
             </h4>
             <ul className="flex flex-col gap-2.5">
-              {["Privacy Policy", "Terms of Service", "Data Security", "Spam Act Compliance"].map(
-                (item) => (
-                  <li key={item}>
-                    <a href="#" className="text-sm text-body transition-colors hover:text-charcoal">
-                      {item}
-                    </a>
-                  </li>
-                )
-              )}
+              {legalLinks.map((item) => (
+                <li key={item.label}>
+                  <Link href={item.href} className="text-sm text-body transition-colors hover:text-charcoal">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -78,9 +106,15 @@ export default function Footer() {
             &copy; 2026 Milo AI Pty Ltd. All rights reserved.
           </p>
           <div className="flex gap-6">
-            {["Twitter", "LinkedIn", "Instagram"].map((s) => (
-              <a key={s} href="#" className="text-xs text-muted transition-colors hover:text-charcoal">
-                {s}
+            {socialLinks.map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-muted transition-colors hover:text-charcoal"
+              >
+                {s.label}
               </a>
             ))}
           </div>
