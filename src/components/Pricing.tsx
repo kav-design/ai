@@ -1,5 +1,6 @@
 import { Check, Zap, Sparkles, Building2 } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
+import TiltCard from "./TiltCard";
 
 const plans = [
   {
@@ -95,7 +96,7 @@ export default function Pricing() {
         <div className="mx-auto grid max-w-5xl gap-6 lg:grid-cols-3">
           {plans.map((plan, i) => (
             <ScrollReveal key={plan.name} delay={i * 100}>
-              <div
+              <TiltCard
                 className={`relative h-full overflow-hidden rounded-2xl ${
                   plan.popular
                     ? "border-2 border-charcoal shadow-lg"
@@ -145,7 +146,7 @@ export default function Pricing() {
                     ))}
                   </ul>
                 </div>
-              </div>
+              </TiltCard>
             </ScrollReveal>
           ))}
         </div>

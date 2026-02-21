@@ -187,7 +187,7 @@ export default function Features() {
                   delay: i * 0.05,
                   ease: [0.16, 1, 0.3, 1],
                 }}
-                className={`group relative overflow-hidden rounded-2xl border transition-all duration-300 hover:shadow-md ${
+                className={`group relative overflow-hidden rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
                   f.colSpan === 2 ? "sm:col-span-2" : ""
                 } ${
                   isDark

@@ -9,9 +9,14 @@ import Features from "@/components/Features";
 import DashboardPreview from "@/components/DashboardPreview";
 import Testimonials from "@/components/Testimonials";
 import Pricing from "@/components/Pricing";
+import ROICalculator from "@/components/ROICalculator";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
+
+function SectionDivider() {
+  return <div className="section-divider-gradient" />;
+}
 
 export default function Home() {
   return (
@@ -20,13 +25,21 @@ export default function Home() {
       <Hero />
       <LogoBar />
       <SpeedToLead />
+      <SectionDivider />
       <HowItWorks />
+      <SectionDivider />
       <ConversationDemo />
       <VoiceAgent />
+      <SectionDivider />
       <Features />
+      <SectionDivider />
       <DashboardPreview />
+      <SectionDivider />
       <Testimonials />
+      <ROICalculator />
+      <SectionDivider />
       <Pricing />
+      <SectionDivider />
       <FAQ />
       <FinalCTA />
       <Footer />

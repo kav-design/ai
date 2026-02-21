@@ -274,7 +274,7 @@ export default function Hero() {
             <h1 className="mb-6 text-[2.75rem] font-bold leading-[1.08] tracking-tight text-charcoal sm:text-5xl lg:text-[3.5rem]">
               Turn missed calls into{" "}
               <br />
-              <span className="text-terracotta">booked patients.</span>
+              <span className="gradient-text-copper">booked patients.</span>
             </h1>
 
             <p className="mx-auto mb-10 max-w-lg text-[17px] leading-relaxed text-body lg:mx-0">
