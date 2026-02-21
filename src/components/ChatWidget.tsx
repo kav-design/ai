@@ -170,37 +170,47 @@ export default function ChatWidget() {
 
   return createPortal(
     <>
-      {/* Floating button with pulse ring */}
+      {/* Floating button — subtle float animation */}
       <AnimatePresence>
         {!open && (
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            style={BTN_STYLE}
+          <motion.button
+            initial={{ opacity: 0, y: 10 }}
+            animate={{
+              opacity: 1,
+              y: [0, -4, 0],
+            }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{
+              opacity: { duration: 0.4 },
+              y: {
+                duration: 3.5,
+                ease: "easeInOut",
+                repeat: Infinity,
+                delay: 0.4,
+              },
+            }}
+            onClick={() => setOpen(true)}
+            style={{
+              ...BTN_STYLE,
+              width: 56,
+              height: 56,
+              borderRadius: "50%",
+              border: "none",
+              background: "var(--color-terracotta)",
+              boxShadow: "0 4px 20px rgba(184, 115, 51, 0.3)",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            whileHover={{
+              scale: 1.06,
+              boxShadow: "0 6px 28px rgba(184, 115, 51, 0.4)",
+            }}
+            aria-label="Open chat"
           >
-            {/* Pulse ring */}
-            <span
-              className="pulse-ring"
-              style={{
-                position: "absolute",
-                inset: -4,
-                borderRadius: "9999px",
-                border: "2px solid var(--color-terracotta)",
-                opacity: 0.4,
-                pointerEvents: "none",
-              }}
-            />
-            <button
-              onClick={() => setOpen(true)}
-              className="relative flex h-14 w-14 items-center justify-center rounded-full bg-terracotta shadow-lg transition-all hover:bg-terracotta-dark hover:scale-105"
-              style={{ boxShadow: "0 4px 24px rgba(184, 115, 51, 0.35)" }}
-              aria-label="Open chat"
-            >
-              <MessageCircle size={24} className="text-white" />
-            </button>
-          </motion.div>
+            <MessageCircle size={24} className="text-white" />
+          </motion.button>
         )}
       </AnimatePresence>
 
