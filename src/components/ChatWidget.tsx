@@ -11,18 +11,43 @@ type Message = {
 };
 
 const WELCOME_MESSAGE =
-  "Hey there! I'm Milo, the AI assistant. Got questions about how Milo works, pricing, or want to book a demo? I'm here to help!";
+  "Hey! I'm Milo. Ask me anything about how we help dental clinics catch more patients, or I can set you up with a demo.";
 
 const QUICK_CHIPS = [
   "How does Milo work?",
   "What's the pricing?",
-  "Can I get a demo?",
+  "Book a demo",
   "What results do clinics see?",
 ];
+
+// All positioning uses inline styles because the unlayered `body > *`
+// CSS rule overrides Tailwind's layered utilities for position/z-index.
+const PANEL_STYLE = {
+  position: "fixed" as const,
+  zIndex: 9999,
+  bottom: 24,
+  right: 24,
+  width: 400,
+  height: 580,
+};
+
+const PANEL_MOBILE_STYLE = {
+  position: "fixed" as const,
+  zIndex: 9999,
+  inset: 0,
+};
+
+const BTN_STYLE = {
+  position: "fixed" as const,
+  bottom: 24,
+  right: 24,
+  zIndex: 9999,
+};
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: WELCOME_MESSAGE },
   ]);
@@ -31,9 +56,12 @@ export default function ChatWidget() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Wait for client mount before rendering portal
   useEffect(() => {
     setMounted(true);
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
   }, []);
 
   const scrollToBottom = useCallback(() => {
@@ -60,7 +88,6 @@ export default function ChatWidget() {
       setInput("");
       setIsStreaming(true);
 
-      // Add empty assistant message for streaming
       setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
 
       try {
@@ -75,13 +102,10 @@ export default function ChatWidget() {
           }),
         });
 
-        if (!res.ok) {
-          throw new Error(res.statusText);
-        }
+        if (!res.ok) throw new Error(res.statusText);
 
         const reader = res.body?.getReader();
         const decoder = new TextDecoder();
-
         if (!reader) throw new Error("No reader");
 
         let buffer = "";
@@ -140,30 +164,45 @@ export default function ChatWidget() {
     sendMessage(input);
   };
 
-  const handleChip = (text: string) => {
-    sendMessage(text);
-  };
-
-  // Only show chips if there's just the welcome message
   const showChips = messages.length === 1;
 
   if (!mounted) return null;
 
-  // Use portal to escape body > * stacking context (z-index: 1)
-  // so the widget renders above the noise-overlay::after (z-index: 9998)
   return createPortal(
     <>
-      {/* Floating button — inline style needed because unlayered body>* CSS overrides Tailwind layers */}
-      {!open && (
-        <button
-          onClick={() => setOpen(true)}
-          style={{ position: "fixed", bottom: 24, right: 24, zIndex: 9999 }}
-          className="flex h-14 w-14 items-center justify-center rounded-full bg-terracotta shadow-lg shadow-terracotta/25 transition-all hover:bg-terracotta-dark hover:scale-105"
-          aria-label="Open chat"
-        >
-          <MessageCircle size={24} className="text-white" />
-        </button>
-      )}
+      {/* Floating button with pulse ring */}
+      <AnimatePresence>
+        {!open && (
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            style={BTN_STYLE}
+          >
+            {/* Pulse ring */}
+            <span
+              className="pulse-ring"
+              style={{
+                position: "absolute",
+                inset: -4,
+                borderRadius: "9999px",
+                border: "2px solid var(--color-terracotta)",
+                opacity: 0.4,
+                pointerEvents: "none",
+              }}
+            />
+            <button
+              onClick={() => setOpen(true)}
+              className="relative flex h-14 w-14 items-center justify-center rounded-full bg-terracotta shadow-lg transition-all hover:bg-terracotta-dark hover:scale-105"
+              style={{ boxShadow: "0 4px 24px rgba(184, 115, 51, 0.35)" }}
+              aria-label="Open chat"
+            >
+              <MessageCircle size={24} className="text-white" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Chat panel */}
       <AnimatePresence>
@@ -173,53 +212,146 @@ export default function ChatWidget() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: 20 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            style={{ position: "fixed", zIndex: 9999 }}
-            className="flex flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-2xl max-sm:inset-0 max-sm:rounded-none max-sm:border-0 sm:bottom-6 sm:right-6 sm:h-[560px] sm:w-[400px]"
+            style={{
+              ...(isMobile ? PANEL_MOBILE_STYLE : PANEL_STYLE),
+              display: "flex",
+              flexDirection: "column",
+              overflow: "hidden",
+              borderRadius: isMobile ? 0 : 20,
+              background: "#ffffff",
+              border: isMobile ? "none" : "1px solid var(--color-border)",
+              boxShadow: isMobile
+                ? "none"
+                : "0 25px 60px -12px rgba(0,0,0,0.15), 0 8px 20px -8px rgba(0,0,0,0.1)",
+            }}
           >
             {/* Header */}
-            <div className="flex items-center gap-3 bg-charcoal px-5 py-4">
-              <div className="relative">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-teal text-sm font-bold text-white">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                padding: "16px 20px",
+                background: "var(--color-charcoal)",
+                borderBottom: "1px solid rgba(255,255,255,0.05)",
+              }}
+            >
+              <div style={{ position: "relative" }}>
+                <div
+                  className="flex items-center justify-center rounded-full bg-teal text-sm font-bold text-white"
+                  style={{ width: 38, height: 38 }}
+                >
                   M
                 </div>
-                <div className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-charcoal bg-emerald-400" />
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: -1,
+                    right: -1,
+                    width: 11,
+                    height: 11,
+                    borderRadius: "50%",
+                    background: "#34d399",
+                    border: "2px solid var(--color-charcoal)",
+                  }}
+                />
               </div>
-              <div className="flex-1">
+              <div style={{ flex: 1 }}>
                 <p className="text-sm font-semibold text-white">Milo</p>
-                <p className="text-xs text-white/50">Online</p>
+                <p
+                  style={{
+                    fontSize: 11,
+                    color: "rgba(255,255,255,0.45)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 4,
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: "50%",
+                      background: "#34d399",
+                      display: "inline-block",
+                    }}
+                  />
+                  Online now
+                </p>
               </div>
               <button
                 onClick={() => setOpen(false)}
-                className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-white/10"
+                className="flex items-center justify-center rounded-full transition-colors hover:bg-white/10"
+                style={{ width: 32, height: 32 }}
                 aria-label="Close chat"
               >
-                <X size={18} className="text-white/70" />
+                <X size={16} className="text-white/60" />
               </button>
             </div>
 
-            {/* Messages */}
-            <div className="no-scrollbar flex-1 overflow-y-auto p-5">
-              <div className="flex flex-col gap-3">
+            {/* Messages area */}
+            <div
+              className="no-scrollbar"
+              style={{
+                flex: 1,
+                overflowY: "auto",
+                padding: 20,
+                background: "var(--color-cream)",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 12,
+                }}
+              >
                 {messages.map((msg, i) => (
                   <div
                     key={i}
-                    className={`flex items-end gap-2 ${
-                      msg.role === "user" ? "flex-row-reverse" : "flex-row"
-                    }`}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-end",
+                      gap: 8,
+                      flexDirection:
+                        msg.role === "user" ? "row-reverse" : "row",
+                    }}
                   >
                     {msg.role === "assistant" && (
-                      <div className="mb-1 flex-shrink-0">
-                        <Zap size={12} className="text-terracotta" />
+                      <div style={{ marginBottom: 4, flexShrink: 0 }}>
+                        <Zap size={11} className="text-terracotta" />
                       </div>
                     )}
                     <div
-                      className={`max-w-[84%] px-4 py-3 ${
-                        msg.role === "assistant"
-                          ? "rounded-2xl rounded-tl-sm bg-teal text-white"
-                          : "rounded-2xl rounded-tr-sm bg-cream-dark text-charcoal"
-                      }`}
+                      style={{
+                        maxWidth: "82%",
+                        padding: "10px 14px",
+                        borderRadius:
+                          msg.role === "assistant"
+                            ? "16px 16px 16px 4px"
+                            : "16px 16px 4px 16px",
+                        background:
+                          msg.role === "assistant"
+                            ? "var(--color-teal)"
+                            : "#ffffff",
+                        color:
+                          msg.role === "assistant"
+                            ? "#ffffff"
+                            : "var(--color-charcoal)",
+                        boxShadow:
+                          msg.role === "user"
+                            ? "0 1px 3px rgba(0,0,0,0.06)"
+                            : "none",
+                      }}
                     >
-                      <p className="whitespace-pre-wrap text-[13px] leading-[1.55]">
+                      <p
+                        style={{
+                          fontSize: 13,
+                          lineHeight: 1.55,
+                          margin: 0,
+                          whiteSpace: "pre-wrap",
+                        }}
+                      >
                         {msg.content}
                         {msg.role === "assistant" &&
                           msg.content === "" &&
@@ -237,12 +369,42 @@ export default function ChatWidget() {
 
                 {/* Quick suggestion chips */}
                 {showChips && (
-                  <div className="mt-2 flex flex-wrap gap-2">
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: 8,
+                      marginTop: 4,
+                    }}
+                  >
                     {QUICK_CHIPS.map((chip) => (
                       <button
                         key={chip}
-                        onClick={() => handleChip(chip)}
-                        className="rounded-full border border-border bg-cream px-3.5 py-2 text-xs font-medium text-body transition-colors hover:border-teal hover:text-teal"
+                        onClick={() => sendMessage(chip)}
+                        style={{
+                          padding: "8px 14px",
+                          borderRadius: 9999,
+                          border: "1px solid var(--color-border)",
+                          background: "#ffffff",
+                          fontSize: 12,
+                          fontWeight: 500,
+                          color: "var(--color-body)",
+                          cursor: "pointer",
+                          transition: "all 0.15s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.borderColor =
+                            "var(--color-teal)";
+                          e.currentTarget.style.color = "var(--color-teal)";
+                          e.currentTarget.style.background =
+                            "var(--color-teal-light)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.borderColor =
+                            "var(--color-border)";
+                          e.currentTarget.style.color = "var(--color-body)";
+                          e.currentTarget.style.background = "#ffffff";
+                        }}
                       >
                         {chip}
                       </button>
@@ -254,27 +416,66 @@ export default function ChatWidget() {
               </div>
             </div>
 
-            {/* Input */}
+            {/* Input bar */}
             <form
               onSubmit={handleSubmit}
-              className="flex items-center gap-2 border-t border-border px-4 py-3"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "12px 16px",
+                borderTop: "1px solid var(--color-border)",
+                background: "#ffffff",
+              }}
             >
               <input
                 ref={inputRef}
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Message..."
+                placeholder="Ask Milo anything..."
                 disabled={isStreaming}
-                className="flex-1 rounded-full border border-border bg-cream px-4 py-2.5 text-xs text-charcoal outline-none placeholder:text-muted focus:border-teal disabled:opacity-50"
+                style={{
+                  flex: 1,
+                  padding: "10px 16px",
+                  borderRadius: 9999,
+                  border: "1px solid var(--color-border)",
+                  background: "var(--color-cream)",
+                  fontSize: 13,
+                  color: "var(--color-charcoal)",
+                  outline: "none",
+                  opacity: isStreaming ? 0.5 : 1,
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = "var(--color-teal)";
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = "var(--color-border)";
+                }}
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isStreaming}
-                className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-teal transition-colors hover:bg-teal-dark disabled:opacity-40"
+                style={{
+                  width: 38,
+                  height: 38,
+                  flexShrink: 0,
+                  borderRadius: "50%",
+                  border: "none",
+                  background:
+                    !input.trim() || isStreaming
+                      ? "var(--color-border)"
+                      : "var(--color-teal)",
+                  cursor:
+                    !input.trim() || isStreaming ? "not-allowed" : "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  transition: "background 0.15s ease",
+                }}
                 aria-label="Send message"
               >
-                <Send size={14} className="text-white" />
+                <Send size={15} className="text-white" />
               </button>
             </form>
           </motion.div>
