@@ -192,6 +192,24 @@ body > * {
   animation: draw-border 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* === CAROUSEL PROGRESS RING === */
+@keyframes progress-ring {
+  from {
+    stroke-dashoffset: 44;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.progress-ring {
+  stroke-dasharray: 44;
+  stroke-dashoffset: 44;
+  animation: progress-ring linear forwards;
+  transform: rotate(-90deg);
+  transform-origin: center;
+}
+
 /* === SECTION DIVIDER === */
 .section-divider {
   height: 1px;
