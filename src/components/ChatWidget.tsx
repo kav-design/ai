@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { MessageCircle, X, Send, Zap } from "lucide-react";
+import { X, Send, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Message = {
@@ -174,42 +174,81 @@ export default function ChatWidget() {
       <AnimatePresence>
         {!open && (
           <motion.button
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{
               opacity: 1,
+              scale: 1,
               y: [0, -4, 0],
             }}
-            exit={{ opacity: 0, scale: 0.9 }}
+            exit={{ opacity: 0, scale: 0.85 }}
             transition={{
-              opacity: { duration: 0.4 },
+              opacity: { duration: 0.5 },
+              scale: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
               y: {
                 duration: 3.5,
                 ease: "easeInOut",
                 repeat: Infinity,
-                delay: 0.4,
+                delay: 0.6,
               },
             }}
             onClick={() => setOpen(true)}
             style={{
               ...BTN_STYLE,
-              width: 56,
-              height: 56,
+              width: 62,
+              height: 62,
               borderRadius: "50%",
-              border: "none",
-              background: "var(--color-terracotta)",
-              boxShadow: "0 4px 20px rgba(184, 115, 51, 0.3)",
+              border: "1px solid rgba(255,255,255,0.15)",
+              background:
+                "linear-gradient(135deg, #c47a3a 0%, #b87333 40%, #a0522d 100%)",
+              boxShadow:
+                "0 4px 24px rgba(184, 115, 51, 0.35), 0 0px 40px rgba(184, 115, 51, 0.15), inset 0 1px 0 rgba(255,255,255,0.2)",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
             whileHover={{
-              scale: 1.06,
-              boxShadow: "0 6px 28px rgba(184, 115, 51, 0.4)",
+              scale: 1.08,
+              boxShadow:
+                "0 6px 32px rgba(184, 115, 51, 0.45), 0 0px 50px rgba(184, 115, 51, 0.2), inset 0 1px 0 rgba(255,255,255,0.25)",
             }}
+            whileTap={{ scale: 0.96 }}
             aria-label="Open chat"
           >
-            <MessageCircle size={24} className="text-white" />
+            {/* Animated glow ring */}
+            <motion.span
+              style={{
+                position: "absolute",
+                inset: -3,
+                borderRadius: "50%",
+                border: "2px solid rgba(184, 115, 51, 0.3)",
+              }}
+              animate={{
+                opacity: [0.4, 0.8, 0.4],
+                scale: [1, 1.08, 1],
+              }}
+              transition={{
+                duration: 2.5,
+                ease: "easeInOut",
+                repeat: Infinity,
+              }}
+            />
+            {/* Branded M */}
+            <span
+              style={{
+                fontSize: 26,
+                fontWeight: 800,
+                color: "#ffffff",
+                fontFamily:
+                  "'Inter', 'SF Pro Display', -apple-system, sans-serif",
+                letterSpacing: "-0.02em",
+                lineHeight: 1,
+                textShadow: "0 1px 2px rgba(0,0,0,0.15)",
+                userSelect: "none",
+              }}
+            >
+              M
+            </span>
           </motion.button>
         )}
       </AnimatePresence>
