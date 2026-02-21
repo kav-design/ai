@@ -38,7 +38,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <Link href="/" className="mb-4 inline-block">
-              <img src="/logo.png" alt="Milo AI" className="h-8" />
+              <img src="/logo.png" alt="Milo AI" className="h-12" />
             </Link>
             <p className="mb-4 text-sm leading-relaxed text-body">
               The AI employee that handles missed calls, books appointments, and

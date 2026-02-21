@@ -176,7 +176,7 @@ export default function DashboardPreview() {
                   {/* Sidebar */}
                   <div className="hidden w-48 flex-shrink-0 border-r border-border bg-white p-4 md:block">
                     <div className="mb-8">
-                      <img src="/logo.png" alt="Milo AI" className="h-6" />
+                      <img src="/logo.png" alt="Milo AI" className="h-8" />
                     </div>
                     <nav className="flex flex-col gap-0.5">
                       {[
