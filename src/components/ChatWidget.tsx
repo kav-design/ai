@@ -40,7 +40,7 @@ const PANEL_MOBILE_STYLE = {
 const BTN_STYLE = {
   position: "fixed" as const,
   bottom: 24,
-  right: 24,
+  right: 32,
   zIndex: 9999,
 };
 
@@ -196,8 +196,8 @@ export default function ChatWidget() {
             style={{
               position: "fixed" as const,
               zIndex: 9999,
-              bottom: 80,
-              right: 24,
+              bottom: 76,
+              right: 32,
               padding: "10px 16px",
               borderRadius: 14,
               background: "#ffffff",
