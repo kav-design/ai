@@ -196,7 +196,7 @@ export default function ChatWidget() {
             style={{
               position: "fixed" as const,
               zIndex: 9999,
-              bottom: 96,
+              bottom: 80,
               right: 24,
               padding: "10px 16px",
               borderRadius: 14,
@@ -254,9 +254,10 @@ export default function ChatWidget() {
             onClick={() => setOpen(true)}
             style={{
               ...BTN_STYLE,
-              width: 60,
-              height: 60,
-              borderRadius: 18,
+              width: "auto",
+              height: 48,
+              padding: "0 20px",
+              borderRadius: 9999,
               border: "1px solid rgba(255,255,255,0.06)",
               background:
                 "linear-gradient(145deg, #242428 0%, #1a1a1e 100%)",
@@ -270,7 +271,7 @@ export default function ChatWidget() {
               gap: 0,
             }}
             whileHover={{
-              scale: 1.08,
+              scale: 1.05,
               boxShadow:
                 "0 10px 40px rgba(0, 0, 0, 0.35), 0 0 24px rgba(122, 158, 147, 0.15), 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.08)",
             }}
@@ -282,7 +283,7 @@ export default function ChatWidget() {
               style={{
                 position: "absolute",
                 inset: -3,
-                borderRadius: 21,
+                borderRadius: 9999,
                 border: "1.5px solid rgba(122, 158, 147, 0.15)",
               }}
               animate={{
