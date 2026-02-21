@@ -301,7 +301,7 @@ export default function ChatWidget() {
               src="/logo.png"
               alt="Milo AI"
               style={{
-                height: 28,
+                height: 38,
                 width: "auto",
                 filter: "brightness(0) invert(1)",
                 userSelect: "none",
