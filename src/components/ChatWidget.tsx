@@ -256,24 +256,23 @@ export default function ChatWidget() {
               ...BTN_STYLE,
               width: "auto",
               height: 48,
-              padding: "0 20px",
+              padding: "0 18px",
               borderRadius: 9999,
-              border: "1px solid rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.15)",
               background:
-                "linear-gradient(145deg, #242428 0%, #1a1a1e 100%)",
+                "linear-gradient(145deg, #c97f3f 0%, #b87333 45%, #9a4e2a 100%)",
               boxShadow:
-                "0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.06)",
+                "0 6px 28px rgba(184, 115, 51, 0.4), 0 0 48px rgba(184, 115, 51, 0.12), inset 0 1px 0 rgba(255,255,255,0.18)",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               overflow: "visible",
-              gap: 0,
             }}
             whileHover={{
               scale: 1.05,
               boxShadow:
-                "0 10px 40px rgba(0, 0, 0, 0.35), 0 0 24px rgba(122, 158, 147, 0.15), 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.08)",
+                "0 8px 36px rgba(184, 115, 51, 0.5), 0 0 56px rgba(184, 115, 51, 0.18), inset 0 1px 0 rgba(255,255,255,0.22)",
             }}
             whileTap={{ scale: 0.94 }}
             aria-label="Open chat"
@@ -284,7 +283,7 @@ export default function ChatWidget() {
                 position: "absolute",
                 inset: -3,
                 borderRadius: 9999,
-                border: "1.5px solid rgba(122, 158, 147, 0.15)",
+                border: "1.5px solid rgba(184, 115, 51, 0.25)",
               }}
               animate={{
                 opacity: [0.3, 0.6, 0.3],
@@ -297,43 +296,18 @@ export default function ChatWidget() {
               }}
             />
 
-            {/* MAi mark */}
-            <span
+            {/* Logo */}
+            <img
+              src="/logo.png"
+              alt="Milo AI"
               style={{
-                display: "flex",
-                alignItems: "flex-start",
-                lineHeight: 1,
+                height: 22,
+                width: "auto",
+                filter: "brightness(0) invert(1)",
                 userSelect: "none",
-                position: "relative",
+                pointerEvents: "none",
               }}
-            >
-              <span
-                style={{
-                  fontSize: 22,
-                  fontWeight: 300,
-                  color: "#ffffff",
-                  fontFamily:
-                    "'Inter', 'SF Pro Display', -apple-system, sans-serif",
-                  letterSpacing: "-0.04em",
-                }}
-              >
-                M
-              </span>
-              <span
-                style={{
-                  fontSize: 11,
-                  fontWeight: 500,
-                  color: "#7a9e93",
-                  fontFamily:
-                    "'Inter', 'SF Pro Display', -apple-system, sans-serif",
-                  letterSpacing: "0.04em",
-                  marginTop: 2,
-                  marginLeft: -1,
-                }}
-              >
-                ai
-              </span>
-            </span>
+            />
           </motion.button>
         )}
       </AnimatePresence>
