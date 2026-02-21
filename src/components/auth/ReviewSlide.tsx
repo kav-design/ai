@@ -1,161 +1,147 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Star, Zap } from "lucide-react";
-import { SnakeBorder } from "./SnakeBorder";
+import { Star } from "lucide-react";
 
-const smsMessages = [
+const testimonials = [
   {
-    role: "ai" as const,
-    text: "Hi Sarah! Thanks for visiting Bright Smile Dental today. We hope everything went well! \ud83d\ude0a",
+    quote:
+      "We were missing 30% of our calls. Now Milo catches every one and books them before we even know they called.",
+    name: "Dr. Emily Chen",
+    role: "Bright Smile Dental",
+    location: "Melbourne, VIC",
+    metric: "+40%",
+    metricLabel: "bookings",
   },
   {
-    role: "customer" as const,
-    text: "It was great, thank you!",
+    quote:
+      "The follow-up sequences are incredible. Patients who would have disappeared now come back and book. Milo paid for itself in the first week.",
+    name: "Dr. James Patel",
+    role: "Pacific Dental Group",
+    location: "Sydney, NSW",
+    metric: "12x",
+    metricLabel: "ROI month one",
   },
   {
-    role: "ai" as const,
-    text: "So glad to hear that! Would you mind leaving us a quick Google review? It really helps us out \u2764\ufe0f",
-  },
-  {
-    role: "customer" as const,
-    text: "Sure, happy to!",
-  },
-  {
-    role: "ai" as const,
-    text: "Amazing, here\u2019s the link: g.page/brightsmile/review \u2014 Thank you Sarah!",
+    quote:
+      "Google reviews went from 2 per month to 15. We\u2019re now the top-rated clinic in our area. The automated texts make it effortless.",
+    name: "Dr. Sarah Kim",
+    role: "Coastal Smiles",
+    location: "Gold Coast, QLD",
+    metric: "7x",
+    metricLabel: "more reviews",
   },
 ];
 
-function ReviewCard() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="relative mt-6 rounded-xl bg-white p-4 shadow-lg shadow-terracotta/5"
-    >
-      <div className="flex items-center gap-2 mb-2">
-        <div className="flex">
-          {[...Array(5)].map((_, i) => (
-            <Star
-              key={i}
-              size={14}
-              className="text-gold fill-gold"
-            />
-          ))}
-        </div>
-        <span className="text-[11px] text-muted">Just now</span>
-      </div>
-      <p className="text-[13px] text-charcoal leading-relaxed">
-        &ldquo;Best dental experience ever! The staff was so friendly and everything was seamless.&rdquo;
-      </p>
-      <p className="mt-1.5 text-[11px] font-medium text-charcoal">
-        Sarah M.
-      </p>
-      <SnakeBorder label="Review collected" color="#B87333" />
-    </motion.div>
-  );
-}
-
-function SMSBubbles() {
-  const [visibleCount, setVisibleCount] = useState(0);
-  const [showReviewCard, setShowReviewCard] = useState(false);
-
-  useEffect(() => {
-    if (visibleCount >= smsMessages.length) {
-      const t = setTimeout(() => setShowReviewCard(true), 600);
-      return () => clearTimeout(t);
-    }
-
-    const delay = visibleCount === 0 ? 600 : 900;
-    const timer = setTimeout(() => setVisibleCount((c) => c + 1), delay);
-    return () => clearTimeout(timer);
-  }, [visibleCount]);
-
-  return (
-    <div>
-      <div className="flex flex-col gap-3 py-4">
-        {smsMessages.map((msg, i) => (
-          <div
-            key={i}
-            className={`flex ${
-              msg.role === "customer" ? "justify-end" : "justify-start"
-            } transition-all duration-500 ${
-              i < visibleCount
-                ? "translate-y-0 opacity-100"
-                : "pointer-events-none translate-y-3 opacity-0"
-            }`}
-          >
-            <div className="flex max-w-[82%] items-end gap-1.5">
-              {msg.role === "ai" && (
-                <Zap
-                  size={12}
-                  className="mb-2.5 flex-shrink-0 text-terracotta"
-                  fill="currentColor"
-                />
-              )}
-              <div className="relative">
-                <div
-                  className={`rounded-2xl px-4 py-2.5 ${
-                    msg.role === "ai"
-                      ? "rounded-tl-sm bg-terracotta text-white shadow-lg shadow-terracotta/10"
-                      : "rounded-tr-sm bg-white text-charcoal shadow-md"
-                  }`}
-                >
-                  <p className="text-[13px] leading-relaxed">{msg.text}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-      {showReviewCard && <ReviewCard />}
-    </div>
-  );
-}
+const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function ReviewSlide() {
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActive((prev) => (prev + 1) % testimonials.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const t = testimonials[active];
+
   return (
     <div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.7, ease }}
         className="mb-8"
       >
         <h1 className="font-display text-[36px] leading-[1.12] text-charcoal">
-          Reviews on{" "}
-          <span className="gradient-text-copper">autopilot</span>
+          What clinics{" "}
+          <span className="gradient-text-copper">say</span>
         </h1>
         <p className="mt-3 text-sm text-muted leading-relaxed">
-          Milo follows up after every visit and collects 5-star reviews automatically.
+          Don&apos;t take our word for it &mdash; hear from real dental practices.
         </p>
       </motion.div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: 0.8,
-          delay: 0.15,
-          ease: [0.16, 1, 0.3, 1],
-        }}
+        transition={{ duration: 0.8, delay: 0.15, ease }}
       >
-        <SMSBubbles />
-      </motion.div>
+        {/* Testimonial card */}
+        <div className="relative rounded-2xl border border-border bg-white p-7 shadow-sm min-h-[280px]">
+          {/* Quote mark */}
+          <div className="mb-3 text-5xl leading-none text-border font-display">
+            &ldquo;
+          </div>
 
-      <motion.div
-        className="mt-8 flex justify-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 1.5 }}
-      >
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-terracotta/10 px-3 py-1 text-xs font-semibold text-terracotta">
-          <Star size={12} fill="currentColor" />
-          7x more reviews
-        </span>
+          {/* Stars */}
+          <div className="mb-4 flex gap-1">
+            {[...Array(5)].map((_, j) => (
+              <Star key={j} size={14} className="fill-gold text-gold" />
+            ))}
+          </div>
+
+          {/* Rotating quote */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.4, ease }}
+            >
+              <p className="mb-5 text-[14px] leading-relaxed text-body">
+                {t.quote}
+              </p>
+
+              {/* Metric badge */}
+              <div className="mb-5 inline-flex items-baseline gap-1.5 rounded-full bg-teal-light px-3 py-1">
+                <span className="text-sm font-bold text-teal">
+                  {t.metric}
+                </span>
+                <span className="text-xs text-teal">{t.metricLabel}</span>
+              </div>
+
+              {/* Author */}
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-cream-dark text-[12px] font-bold text-body">
+                  {t.name
+                    .split(" ")
+                    .slice(1)
+                    .map((n) => n[0])
+                    .join("")}
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-charcoal">
+                    {t.name}
+                  </p>
+                  <p className="text-xs text-muted">
+                    {t.role} &middot; {t.location}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Mini dots for testimonial rotation */}
+          <div className="mt-5 flex justify-center gap-2">
+            {testimonials.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActive(i)}
+                aria-label={`Testimonial ${i + 1}`}
+                className={`rounded-full transition-all duration-300 ${
+                  i === active
+                    ? "h-2 w-2 bg-terracotta"
+                    : "h-1.5 w-1.5 bg-charcoal/15 hover:bg-charcoal/30"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
       </motion.div>
     </div>
   );
