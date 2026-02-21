@@ -296,12 +296,20 @@ export default function ChatWidget() {
               }}
             />
 
+            {/* Lightning bolt */}
+            <Zap
+              size={14}
+              fill="rgba(255,255,255,0.9)"
+              stroke="none"
+              style={{ marginRight: 6, flexShrink: 0 }}
+            />
+
             {/* Logo */}
             <img
               src="/logo.png"
               alt="Milo AI"
               style={{
-                height: 38,
+                height: 40,
                 width: "auto",
                 filter: "brightness(0) invert(1)",
                 userSelect: "none",
