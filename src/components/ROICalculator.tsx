@@ -205,7 +205,7 @@ export default function ROICalculator() {
               </div>
               <div className="rounded-2xl border border-border bg-white p-5 text-center shadow-sm">
                 <p className="text-2xl font-bold tracking-tight text-teal sm:text-3xl">
-                  <AnimatedNumber value={Math.round(netROI / miloCost * 100)} suffix="x" />
+                  <AnimatedNumber value={Math.round(revenueRecovered / miloCost)} suffix="x" />
                 </p>
                 <p className="mt-1 text-xs text-muted">
                   Return on investment
