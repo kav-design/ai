@@ -4,9 +4,15 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, useInView } from "framer-motion";
 import { TrendingUp } from "lucide-react";
 
-const AVG_PATIENT_VALUE = 250;
+// Realistic assumptions:
+// - Not every missed call is a unique new patient (repeat callers, existing patients)
+// - ~60% of missed calls are genuine unique new patient leads
+// - Average first-year patient value in Australia: ~$900 (2 check-ups + 1 treatment)
+// - Milo converts ~50% of leads (texts back, books appointment, patient shows up)
+const UNIQUE_LEAD_RATE = 0.6;
+const FIRST_YEAR_PATIENT_VALUE = 900;
 const WEEKS_PER_YEAR = 52;
-const MILO_CONVERSION = 0.7;
+const MILO_CONVERSION = 0.5;
 
 function AnimatedNumber({ value, prefix = "", suffix = "" }: { value: number; prefix?: string; suffix?: string }) {
   const [display, setDisplay] = useState(0);
@@ -63,11 +69,10 @@ export default function ROICalculator() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
-  const revenueLost = missedCalls * WEEKS_PER_YEAR * AVG_PATIENT_VALUE;
-  const patientsRecovered = Math.round(
-    missedCalls * WEEKS_PER_YEAR * MILO_CONVERSION
-  );
-  const revenueRecovered = patientsRecovered * AVG_PATIENT_VALUE;
+  const uniqueLeadsPerYear = Math.round(missedCalls * WEEKS_PER_YEAR * UNIQUE_LEAD_RATE);
+  const revenueLost = uniqueLeadsPerYear * FIRST_YEAR_PATIENT_VALUE;
+  const patientsRecovered = Math.round(uniqueLeadsPerYear * MILO_CONVERSION);
+  const revenueRecovered = patientsRecovered * FIRST_YEAR_PATIENT_VALUE;
   const miloCost = 397 * 12;
   const netROI = revenueRecovered - miloCost;
 
@@ -228,7 +233,7 @@ export default function ROICalculator() {
                   Milo Professional costs $397/mo
                 </p>
                 <p className="text-xs text-muted">
-                  That's less than {missedCalls > 1 ? "2 recovered patients" : "1 recovered patient"} to break even.
+                  Milo pays for itself with just 1 new patient per month.
                 </p>
               </div>
               <a
