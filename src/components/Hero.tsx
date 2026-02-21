@@ -127,7 +127,7 @@ function FloatingBubbles() {
     <div className="relative">
       <div
         ref={scrollRef}
-        className="no-scrollbar flex max-h-[470px] flex-col gap-2.5 overflow-y-auto pt-2 pb-8"
+        className="flex flex-col gap-2.5 pt-2 pb-8"
       >
         {messages.map((msg, i) => {
           const isLeadMsg = i === 3;
