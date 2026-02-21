@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import AuthCarousel from "@/components/auth/AuthCarousel";
 
 export default function AuthLayout({
@@ -66,11 +68,18 @@ export default function AuthLayout({
 
       {/* ══════════ RIGHT — auth form ══════════ */}
       <motion.div
-        className="flex w-full lg:w-[48%] items-center justify-center bg-[var(--color-cream)] px-6 py-12"
+        className="relative flex w-full lg:w-[48%] items-center justify-center bg-[var(--color-cream)] px-6 py-12"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.15 }}
       >
+        <Link
+          href="/"
+          className="absolute top-6 left-6 flex items-center gap-1.5 text-xs text-muted hover:text-charcoal transition-colors"
+        >
+          <ArrowLeft size={14} />
+          Back to home
+        </Link>
         <div className="w-full max-w-[420px]">{children}</div>
       </motion.div>
     </div>
