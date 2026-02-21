@@ -100,11 +100,11 @@ export default function ROICalculator() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="grid items-start gap-8 lg:grid-cols-5"
+          className="grid items-stretch gap-8 lg:grid-cols-5"
         >
           {/* Left — Slider control */}
           <div className="lg:col-span-2">
-            <div className="rounded-2xl border border-border bg-white p-8 shadow-sm">
+            <div className="flex h-full flex-col rounded-2xl border border-border bg-white p-8 shadow-sm">
               <p className="mb-1 text-sm font-medium text-charcoal">
                 Missed calls per week
               </p>
@@ -146,7 +146,7 @@ export default function ROICalculator() {
               </div>
 
               {/* Lost revenue callout */}
-              <div className="mt-8 rounded-xl bg-cream-dark p-4">
+              <div className="mt-auto rounded-xl bg-cream-dark p-4 pt-8">
                 <p className="text-xs font-medium uppercase tracking-wider text-muted">
                   You're losing
                 </p>
