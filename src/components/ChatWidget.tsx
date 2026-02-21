@@ -231,26 +231,21 @@ export default function ChatWidget() {
       <AnimatePresence>
         {!open && (
           <motion.button
-            initial={{ opacity: 0, y: 50, scale: 0.4, rotate: -15 }}
+            initial={{ opacity: 0, y: 40, scale: 0.5 }}
             animate={{
               opacity: 1,
               y: [0, -5, 0],
               scale: 1,
-              rotate: 0,
             }}
-            exit={{ opacity: 0, scale: 0.8, y: 15 }}
+            exit={{ opacity: 0, scale: 0.85, y: 10 }}
             transition={{
-              opacity: { duration: 0.4 },
+              opacity: { duration: 0.5 },
               scale: {
-                duration: 0.7,
-                ease: [0.34, 1.56, 0.64, 1],
-              },
-              rotate: {
-                duration: 0.7,
+                duration: 0.6,
                 ease: [0.34, 1.56, 0.64, 1],
               },
               y: {
-                duration: 3.5,
+                duration: 4,
                 ease: "easeInOut",
                 repeat: Infinity,
                 delay: 0.8,
@@ -259,81 +254,83 @@ export default function ChatWidget() {
             onClick={() => setOpen(true)}
             style={{
               ...BTN_STYLE,
-              width: 66,
-              height: 66,
-              borderRadius: "50%",
-              border: "1px solid rgba(255,255,255,0.18)",
+              width: 60,
+              height: 60,
+              borderRadius: 18,
+              border: "1px solid rgba(255,255,255,0.06)",
               background:
-                "linear-gradient(145deg, #c97f3f 0%, #b87333 45%, #9a4e2a 100%)",
+                "linear-gradient(145deg, #242428 0%, #1a1a1e 100%)",
               boxShadow:
-                "0 6px 28px rgba(184, 115, 51, 0.4), 0 0 48px rgba(184, 115, 51, 0.15), inset 0 1px 0 rgba(255,255,255,0.22)",
+                "0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.06)",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               overflow: "visible",
+              gap: 0,
             }}
             whileHover={{
-              scale: 1.1,
+              scale: 1.08,
               boxShadow:
-                "0 8px 36px rgba(184, 115, 51, 0.5), 0 0 56px rgba(184, 115, 51, 0.22), inset 0 1px 0 rgba(255,255,255,0.28)",
+                "0 10px 40px rgba(0, 0, 0, 0.35), 0 0 24px rgba(122, 158, 147, 0.15), 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.08)",
             }}
-            whileTap={{ scale: 0.92 }}
+            whileTap={{ scale: 0.94 }}
             aria-label="Open chat"
           >
-            {/* Glow ring */}
+            {/* Subtle glow ring */}
             <motion.span
               style={{
                 position: "absolute",
-                inset: -4,
-                borderRadius: "50%",
-                border: "2px solid rgba(184, 115, 51, 0.25)",
+                inset: -3,
+                borderRadius: 21,
+                border: "1.5px solid rgba(122, 158, 147, 0.15)",
               }}
               animate={{
-                opacity: [0.3, 0.7, 0.3],
-                scale: [1, 1.1, 1],
+                opacity: [0.3, 0.6, 0.3],
+                scale: [1, 1.04, 1],
               }}
               transition={{
-                duration: 3,
+                duration: 3.5,
                 ease: "easeInOut",
                 repeat: Infinity,
               }}
             />
 
-            {/* MAi wordmark */}
+            {/* MAi mark */}
             <span
               style={{
                 display: "flex",
-                alignItems: "baseline",
+                alignItems: "flex-start",
                 lineHeight: 1,
                 userSelect: "none",
-                filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.12))",
+                position: "relative",
               }}
             >
               <span
                 style={{
-                  fontSize: 24,
-                  fontWeight: 500,
+                  fontSize: 22,
+                  fontWeight: 300,
                   color: "#ffffff",
                   fontFamily:
                     "'Inter', 'SF Pro Display', -apple-system, sans-serif",
-                  letterSpacing: "-0.03em",
+                  letterSpacing: "-0.04em",
                 }}
               >
                 M
               </span>
               <span
                 style={{
-                  fontSize: 15,
-                  fontWeight: 400,
-                  color: "rgba(255,255,255,0.7)",
+                  fontSize: 11,
+                  fontWeight: 500,
+                  color: "#7a9e93",
                   fontFamily:
                     "'Inter', 'SF Pro Display', -apple-system, sans-serif",
-                  letterSpacing: "0.01em",
+                  letterSpacing: "0.04em",
+                  marginTop: 2,
                   marginLeft: -1,
                 }}
               >
-                Ai
+                ai
               </span>
             </span>
           </motion.button>
