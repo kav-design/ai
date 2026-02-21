@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { ArrowRight, Zap } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
@@ -180,6 +180,55 @@ function FloatingBubbles() {
   );
 }
 
+const roles = [
+  "Receptionist",
+  "Appointment Booker",
+  "Review Collector",
+  "Follow-Up Specialist",
+  "After-Hours Agent",
+];
+
+function RoleTyper() {
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [text, setText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const tick = useCallback(() => {
+    const current = roles[roleIndex];
+
+    if (!isDeleting) {
+      setText(current.slice(0, text.length + 1));
+      if (text.length + 1 === current.length) {
+        setTimeout(() => setIsDeleting(true), 1800);
+        return;
+      }
+    } else {
+      setText(current.slice(0, text.length - 1));
+      if (text.length - 1 === 0) {
+        setIsDeleting(false);
+        setRoleIndex((i) => (i + 1) % roles.length);
+        return;
+      }
+    }
+  }, [text, isDeleting, roleIndex]);
+
+  useEffect(() => {
+    const speed = isDeleting ? 40 : 80;
+    const timer = setTimeout(tick, speed);
+    return () => clearTimeout(timer);
+  }, [tick, isDeleting]);
+
+  return (
+    <p className="mb-5 text-sm font-medium tracking-wide text-muted lg:text-base">
+      Your AI{" "}
+      <span className="text-terracotta">
+        {text}
+        <span className="ml-[1px] inline-block w-[2px] animate-pulse bg-terracotta align-middle" style={{ height: "1.1em" }} />
+      </span>
+    </p>
+  );
+}
+
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -220,6 +269,8 @@ export default function Hero() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="text-center lg:text-left"
           >
+            <RoleTyper />
+
             <h1 className="mb-6 text-[2.75rem] font-bold leading-[1.08] tracking-tight text-charcoal sm:text-5xl lg:text-[3.5rem]">
               Turn missed calls into{" "}
               <br />
