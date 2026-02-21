@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { MessageCircle, X, Send, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -21,6 +22,7 @@ const QUICK_CHIPS = [
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: WELCOME_MESSAGE },
   ]);
@@ -28,6 +30,11 @@ export default function ChatWidget() {
   const [isStreaming, setIsStreaming] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Wait for client mount before rendering portal
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -140,24 +147,22 @@ export default function ChatWidget() {
   // Only show chips if there's just the welcome message
   const showChips = messages.length === 1;
 
-  return (
+  if (!mounted) return null;
+
+  // Use portal to escape body > * stacking context (z-index: 1)
+  // so the widget renders above the noise-overlay::after (z-index: 9998)
+  return createPortal(
     <>
       {/* Floating button */}
-      <AnimatePresence>
-        {!open && (
-          <motion.button
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            onClick={() => setOpen(true)}
-            className="fixed bottom-6 right-6 z-[9999] flex h-14 w-14 items-center justify-center rounded-full bg-terracotta shadow-lg shadow-terracotta/25 transition-colors hover:bg-terracotta-dark"
-            aria-label="Open chat"
-          >
-            <MessageCircle size={24} className="text-white" />
-          </motion.button>
-        )}
-      </AnimatePresence>
+      {!open && (
+        <button
+          onClick={() => setOpen(true)}
+          className="fixed bottom-6 right-6 z-[9999] flex h-14 w-14 items-center justify-center rounded-full bg-terracotta shadow-lg shadow-terracotta/25 transition-all hover:bg-terracotta-dark hover:scale-105"
+          aria-label="Open chat"
+        >
+          <MessageCircle size={24} className="text-white" />
+        </button>
+      )}
 
       {/* Chat panel */}
       <AnimatePresence>
@@ -273,6 +278,7 @@ export default function ChatWidget() {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </>,
+    document.body,
   );
 }
