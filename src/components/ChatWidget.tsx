@@ -255,8 +255,8 @@ export default function ChatWidget() {
             style={{
               ...BTN_STYLE,
               width: "auto",
-              height: 48,
-              padding: "0 18px",
+              height: 52,
+              padding: "0 28px",
               borderRadius: 9999,
               border: "1px solid rgba(255,255,255,0.15)",
               background:
@@ -301,7 +301,7 @@ export default function ChatWidget() {
               src="/logo.png"
               alt="Milo AI"
               style={{
-                height: 22,
+                height: 24,
                 width: "auto",
                 filter: "brightness(0) invert(1)",
                 userSelect: "none",
